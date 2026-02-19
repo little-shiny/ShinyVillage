@@ -1,55 +1,37 @@
 fileFormatVersion: 2
-guid: 9cf9378629a34b14c93845b655954cc1
+guid: 6f8c8316e57b01246b0db5e131860e9a
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -4453138599731579729
-    second: basic_character_sprites_0
+      213: -5281422124547630143
+    second: Chest_0
   - first:
-      213: 3047437171569751649
-    second: basic_character_sprites_1
+      213: 4714410783012859700
+    second: Chest_1
   - first:
-      213: 2384728753097618848
-    second: basic_character_sprites_2
+      213: -4685547431992939551
+    second: Chest_2
   - first:
-      213: -7071472222284559468
-    second: basic_character_sprites_3
+      213: 8985439187258846068
+    second: Chest_3
   - first:
-      213: 5207758627401910804
-    second: basic_character_sprites_4
+      213: -5279824056886119778
+    second: Chest_4
   - first:
-      213: -6811679742514016532
-    second: basic_character_sprites_5
+      213: 826535257128478662
+    second: Chest_5
   - first:
-      213: 3143811091625387559
-    second: basic_character_sprites_6
+      213: 6800871473378233394
+    second: Chest_6
   - first:
-      213: -7771085610071064665
-    second: basic_character_sprites_7
+      213: 8322665274642746122
+    second: Chest_7
   - first:
-      213: -8060874802243722141
-    second: basic_character_sprites_8
+      213: -1722722728150929444
+    second: Chest_8
   - first:
-      213: -1393652524820857272
-    second: basic_character_sprites_9
-  - first:
-      213: -4139249129294087960
-    second: basic_character_sprites_10
-  - first:
-      213: -2344184371656634101
-    second: basic_character_sprites_11
-  - first:
-      213: -6226692770389304618
-    second: basic_character_sprites_12
-  - first:
-      213: 8927667125340697653
-    second: basic_character_sprites_13
-  - first:
-      213: -1774359531991661020
-    second: basic_character_sprites_14
-  - first:
-      213: -7841942030889223925
-    second: basic_character_sprites_15
+      213: 6093387866532032824
+    second: Chest_9
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -158,353 +140,441 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: basic_character_sprites_0
-      rect:
-        serializedVersion: 2
-        x: 16
-        y: 159
-        width: 16
-        height: 18
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: fa43b6b89064332c0800000000000000
-      internalID: -4453138599731579729
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: basic_character_sprites_1
-      rect:
-        serializedVersion: 2
-        x: 64
-        y: 159
-        width: 16
-        height: 18
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 1667cb626fbaa4a20800000000000000
-      internalID: 3047437171569751649
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: basic_character_sprites_2
-      rect:
-        serializedVersion: 2
-        x: 112
-        y: 159
-        width: 16
-        height: 18
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 0a53b068a22481120800000000000000
-      internalID: 2384728753097618848
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: basic_character_sprites_3
+      name: Chest_0
       rect:
         serializedVersion: 2
         x: 160
-        y: 159
+        y: 80
         width: 16
-        height: 18
+        height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 49bcfa7ea751ddd90800000000000000
-      internalID: -7071472222284559468
+      spriteID: 1cb13755f8e94b6b0800000000000000
+      internalID: -5281422124547630143
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: basic_character_sprites_4
+      name: Chest_1
+      rect:
+        serializedVersion: 2
+        x: 208
+        y: 80
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 43fa0ce01a3fc6140800000000000000
+      internalID: 4714410783012859700
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Chest_2
       rect:
         serializedVersion: 2
         x: 16
-        y: 111
+        y: 64
         width: 16
-        height: 18
+        height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 41a444631eca54840800000000000000
-      internalID: 5207758627401910804
+      spriteID: 1eb21d98f6799feb0800000000000000
+      internalID: -4685547431992939551
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: basic_character_sprites_5
+      name: Chest_3
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 64
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 47b207b7551b2bc70800000000000000
+      internalID: 8985439187258846068
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Chest_4
       rect:
         serializedVersion: 2
         x: 64
-        y: 111
+        y: 64
         width: 16
-        height: 18
+        height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: cee4abf2d5d0871a0800000000000000
-      internalID: -6811679742514016532
+      spriteID: e92bdb47efb4ab6b0800000000000000
+      internalID: -5279824056886119778
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: basic_character_sprites_6
+      name: Chest_5
+      rect:
+        serializedVersion: 2
+        x: 80
+        y: 64
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6c7aa7bef61787b00800000000000000
+      internalID: 826535257128478662
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Chest_6
       rect:
         serializedVersion: 2
         x: 112
-        y: 111
+        y: 64
         width: 16
-        height: 18
+        height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 726a34df78f01ab20800000000000000
-      internalID: 3143811091625387559
+      spriteID: 23c0ccd829c816e50800000000000000
+      internalID: 6800871473378233394
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: basic_character_sprites_7
+      name: Chest_7
       rect:
         serializedVersion: 2
         x: 160
-        y: 111
+        y: 64
         width: 16
-        height: 18
+        height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 7af70948fce872490800000000000000
-      internalID: -7771085610071064665
+      spriteID: a0b4f8fc8fb008370800000000000000
+      internalID: 8322665274642746122
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: basic_character_sprites_8
+      name: Chest_8
       rect:
         serializedVersion: 2
-        x: 18
-        y: 63
-        width: 12
-        height: 18
+        x: 208
+        y: 64
+        width: 16
+        height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 364ad516315022090800000000000000
-      internalID: -8060874802243722141
+      spriteID: cdf621e5ec8a718e0800000000000000
+      internalID: -1722722728150929444
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: basic_character_sprites_9
+      name: Chest_9
       rect:
         serializedVersion: 2
-        x: 66
-        y: 63
-        width: 12
-        height: 18
+        x: 16
+        y: 32
+        width: 16
+        height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 84ef9bd9960c8ace0800000000000000
-      internalID: -1393652524820857272
+      spriteID: 831315ffaff009450800000000000000
+      internalID: 6093387866532032824
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: basic_character_sprites_10
+      name: Chest_10
       rect:
         serializedVersion: 2
-        x: 114
-        y: 63
-        width: 12
-        height: 18
+        x: 64
+        y: 32
+        width: 16
+        height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 8e8b49bf8de6e86c0800000000000000
-      internalID: -4139249129294087960
+      spriteID: b1f5ce9c42a74c345b56fce5ce506edb
+      internalID: -698412562
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: basic_character_sprites_11
+      name: Chest_11
       rect:
         serializedVersion: 2
-        x: 162
-        y: 63
-        width: 12
-        height: 18
+        x: 112
+        y: 32
+        width: 16
+        height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: b015267ebb8c77fd0800000000000000
-      internalID: -2344184371656634101
+      spriteID: 59c2928cc5a7f9149b3fbe4afabd27a3
+      internalID: -724705729
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: basic_character_sprites_12
+      name: Chest_12
       rect:
         serializedVersion: 2
-        x: 18
-        y: 15
-        width: 12
-        height: 18
+        x: 160
+        y: 32
+        width: 16
+        height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 6dad37f6ae75699a0800000000000000
-      internalID: -6226692770389304618
+      spriteID: f443538f5c7df454bbd39ec63f4cc741
+      internalID: -1204847934
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: basic_character_sprites_13
+      name: Chest_13
       rect:
         serializedVersion: 2
-        x: 66
-        y: 15
-        width: 12
-        height: 18
+        x: 208
+        y: 32
+        width: 16
+        height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 5347dde13f175eb70800000000000000
-      internalID: 8927667125340697653
+      spriteID: 019310090bb3ef942a6538ac49e32337
+      internalID: -1165658930
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: basic_character_sprites_14
+      name: Chest_14
       rect:
         serializedVersion: 2
-        x: 114
-        y: 15
-        width: 12
-        height: 18
+        x: 16
+        y: 16
+        width: 16
+        height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 4260fc718653067e0800000000000000
-      internalID: -1774359531991661020
+      spriteID: 151d279e00b6a8a4c8cb5f14b99d99bd
+      internalID: -1937846678
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: basic_character_sprites_15
+      name: Chest_15
       rect:
         serializedVersion: 2
-        x: 162
-        y: 15
-        width: 12
-        height: 18
+        x: 48
+        y: 16
+        width: 16
+        height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: b0974a37543db2390800000000000000
-      internalID: -7841942030889223925
+      spriteID: acf068d1cb0d52a41a79f1af714700ab
+      internalID: 96627724
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Chest_16
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 16
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4b6b5428d2d16f248974aa4d8175cf91
+      internalID: -1941265391
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Chest_17
+      rect:
+        serializedVersion: 2
+        x: 112
+        y: 16
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4d534f916d2ed0d42a25a64a0fc5913d
+      internalID: 1556032344
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Chest_18
+      rect:
+        serializedVersion: 2
+        x: 160
+        y: 16
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f1c1ea5d6fa50f745855e5fc55b4e127
+      internalID: 243636481
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Chest_19
+      rect:
+        serializedVersion: 2
+        x: 208
+        y: 16
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b2d66eb5bb6324b499c2baa650b51d99
+      internalID: -524292996
       vertices: []
       indices: 
       edges: []
@@ -513,7 +583,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 415dbcfd419b1ad46a1805444b6814f4
     internalID: 0
     vertices: []
     indices: 
@@ -521,24 +591,30 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     spriteCustomMetadata:
-      entries: []
+      entries:
+      - key: SpriteEditor.SliceSettings
+        value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":16.0,"y":16.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":1,"keepEmptyRects":false,"isAlternate":false}'
     nameFileIdTable:
-      basic_character_sprites_0: -4453138599731579729
-      basic_character_sprites_1: 3047437171569751649
-      basic_character_sprites_10: -4139249129294087960
-      basic_character_sprites_11: -2344184371656634101
-      basic_character_sprites_12: -6226692770389304618
-      basic_character_sprites_13: 8927667125340697653
-      basic_character_sprites_14: -1774359531991661020
-      basic_character_sprites_15: -7841942030889223925
-      basic_character_sprites_2: 2384728753097618848
-      basic_character_sprites_3: -7071472222284559468
-      basic_character_sprites_4: 5207758627401910804
-      basic_character_sprites_5: -6811679742514016532
-      basic_character_sprites_6: 3143811091625387559
-      basic_character_sprites_7: -7771085610071064665
-      basic_character_sprites_8: -8060874802243722141
-      basic_character_sprites_9: -1393652524820857272
+      Chest_0: -5281422124547630143
+      Chest_1: 4714410783012859700
+      Chest_10: -698412562
+      Chest_11: -724705729
+      Chest_12: -1204847934
+      Chest_13: -1165658930
+      Chest_14: -1937846678
+      Chest_15: 96627724
+      Chest_16: -1941265391
+      Chest_17: 1556032344
+      Chest_18: 243636481
+      Chest_19: -524292996
+      Chest_2: -4685547431992939551
+      Chest_3: 8985439187258846068
+      Chest_4: -5279824056886119778
+      Chest_5: 826535257128478662
+      Chest_6: 6800871473378233394
+      Chest_7: 8322665274642746122
+      Chest_8: -1722722728150929444
+      Chest_9: 6093387866532032824
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

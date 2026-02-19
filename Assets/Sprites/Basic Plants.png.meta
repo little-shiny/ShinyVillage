@@ -1,55 +1,43 @@
 fileFormatVersion: 2
-guid: 9cf9378629a34b14c93845b655954cc1
+guid: d7f61d5182a51984a9b718b15322b309
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -4453138599731579729
-    second: basic_character_sprites_0
+      213: 5196230094273877852
+    second: Basic Plants_0
   - first:
-      213: 3047437171569751649
-    second: basic_character_sprites_1
+      213: 7842502339710366499
+    second: Basic Plants_1
   - first:
-      213: 2384728753097618848
-    second: basic_character_sprites_2
+      213: 8009980020533041875
+    second: Basic Plants_2
   - first:
-      213: -7071472222284559468
-    second: basic_character_sprites_3
+      213: 873675997408803650
+    second: Basic Plants_3
   - first:
-      213: 5207758627401910804
-    second: basic_character_sprites_4
+      213: 8411801333702420389
+    second: Basic Plants_4
   - first:
-      213: -6811679742514016532
-    second: basic_character_sprites_5
+      213: -5659601288151787448
+    second: Basic Plants_5
   - first:
-      213: 3143811091625387559
-    second: basic_character_sprites_6
+      213: -386788524301670192
+    second: Basic Plants_6
   - first:
-      213: -7771085610071064665
-    second: basic_character_sprites_7
+      213: -1361314268720151567
+    second: Basic Plants_7
   - first:
-      213: -8060874802243722141
-    second: basic_character_sprites_8
+      213: 6325485877500199750
+    second: Basic Plants_8
   - first:
-      213: -1393652524820857272
-    second: basic_character_sprites_9
+      213: -8709406779607625839
+    second: Basic Plants_9
   - first:
-      213: -4139249129294087960
-    second: basic_character_sprites_10
+      213: -8097741200915394387
+    second: Basic Plants_10
   - first:
-      213: -2344184371656634101
-    second: basic_character_sprites_11
-  - first:
-      213: -6226692770389304618
-    second: basic_character_sprites_12
-  - first:
-      213: 8927667125340697653
-    second: basic_character_sprites_13
-  - first:
-      213: -1774359531991661020
-    second: basic_character_sprites_14
-  - first:
-      213: -7841942030889223925
-    second: basic_character_sprites_15
+      213: 5822373649741285269
+    second: Basic Plants_11
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -158,353 +146,265 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: basic_character_sprites_0
+      name: Basic Plants_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 16
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c57936c6db7bc1840800000000000000
+      internalID: 5196230094273877852
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Basic Plants_1
       rect:
         serializedVersion: 2
         x: 16
-        y: 159
+        y: 16
         width: 16
-        height: 18
+        height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: fa43b6b89064332c0800000000000000
-      internalID: -4453138599731579729
+      spriteID: 3233b9c935a26dc60800000000000000
+      internalID: 7842502339710366499
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: basic_character_sprites_1
+      name: Basic Plants_2
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 16
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3da19d5d36a292f60800000000000000
+      internalID: 8009980020533041875
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Basic Plants_3
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 16
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 24b3652d0bbef1c00800000000000000
+      internalID: 873675997408803650
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Basic Plants_4
       rect:
         serializedVersion: 2
         x: 64
-        y: 159
+        y: 16
         width: 16
-        height: 18
+        height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 1667cb626fbaa4a20800000000000000
-      internalID: 3047437171569751649
+      spriteID: 5a76d70deb8bcb470800000000000000
+      internalID: 8411801333702420389
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: basic_character_sprites_2
+      name: Basic Plants_5
       rect:
         serializedVersion: 2
-        x: 112
-        y: 159
+        x: 80
+        y: 16
         width: 16
-        height: 18
+        height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 0a53b068a22481120800000000000000
-      internalID: 2384728753097618848
+      spriteID: 8489e514d9e0571b0800000000000000
+      internalID: -5659601288151787448
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: basic_character_sprites_3
+      name: Basic Plants_6
       rect:
         serializedVersion: 2
-        x: 160
-        y: 159
+        x: 0
+        y: 0
         width: 16
-        height: 18
+        height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 49bcfa7ea751ddd90800000000000000
-      internalID: -7071472222284559468
+      spriteID: 0d82dcde2e9d1aaf0800000000000000
+      internalID: -386788524301670192
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: basic_character_sprites_4
+      name: Basic Plants_7
       rect:
         serializedVersion: 2
         x: 16
-        y: 111
+        y: 0
         width: 16
-        height: 18
+        height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 41a444631eca54840800000000000000
-      internalID: 5207758627401910804
+      spriteID: 1f3c34992e3ab1de0800000000000000
+      internalID: -1361314268720151567
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: basic_character_sprites_5
+      name: Basic Plants_8
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 0
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 643462844e3a8c750800000000000000
+      internalID: 6325485877500199750
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Basic Plants_9
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 0
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 19fcb19ada8f12780800000000000000
+      internalID: -8709406779607625839
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Basic Plants_10
       rect:
         serializedVersion: 2
         x: 64
-        y: 111
+        y: 0
         width: 16
-        height: 18
+        height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: cee4abf2d5d0871a0800000000000000
-      internalID: -6811679742514016532
+      spriteID: da0946c084b0f9f80800000000000000
+      internalID: -8097741200915394387
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: basic_character_sprites_6
+      name: Basic Plants_11
       rect:
         serializedVersion: 2
-        x: 112
-        y: 111
+        x: 80
+        y: 0
         width: 16
-        height: 18
+        height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 726a34df78f01ab20800000000000000
-      internalID: 3143811091625387559
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: basic_character_sprites_7
-      rect:
-        serializedVersion: 2
-        x: 160
-        y: 111
-        width: 16
-        height: 18
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 7af70948fce872490800000000000000
-      internalID: -7771085610071064665
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: basic_character_sprites_8
-      rect:
-        serializedVersion: 2
-        x: 18
-        y: 63
-        width: 12
-        height: 18
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 364ad516315022090800000000000000
-      internalID: -8060874802243722141
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: basic_character_sprites_9
-      rect:
-        serializedVersion: 2
-        x: 66
-        y: 63
-        width: 12
-        height: 18
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 84ef9bd9960c8ace0800000000000000
-      internalID: -1393652524820857272
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: basic_character_sprites_10
-      rect:
-        serializedVersion: 2
-        x: 114
-        y: 63
-        width: 12
-        height: 18
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 8e8b49bf8de6e86c0800000000000000
-      internalID: -4139249129294087960
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: basic_character_sprites_11
-      rect:
-        serializedVersion: 2
-        x: 162
-        y: 63
-        width: 12
-        height: 18
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: b015267ebb8c77fd0800000000000000
-      internalID: -2344184371656634101
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: basic_character_sprites_12
-      rect:
-        serializedVersion: 2
-        x: 18
-        y: 15
-        width: 12
-        height: 18
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 6dad37f6ae75699a0800000000000000
-      internalID: -6226692770389304618
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: basic_character_sprites_13
-      rect:
-        serializedVersion: 2
-        x: 66
-        y: 15
-        width: 12
-        height: 18
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 5347dde13f175eb70800000000000000
-      internalID: 8927667125340697653
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: basic_character_sprites_14
-      rect:
-        serializedVersion: 2
-        x: 114
-        y: 15
-        width: 12
-        height: 18
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 4260fc718653067e0800000000000000
-      internalID: -1774359531991661020
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: basic_character_sprites_15
-      rect:
-        serializedVersion: 2
-        x: 162
-        y: 15
-        width: 12
-        height: 18
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: b0974a37543db2390800000000000000
-      internalID: -7841942030889223925
+      spriteID: 5978c667cf93dc050800000000000000
+      internalID: 5822373649741285269
       vertices: []
       indices: 
       edges: []
@@ -513,7 +413,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: c91e8d345c6092740aafa8bf3d06a061
     internalID: 0
     vertices: []
     indices: 
@@ -521,24 +421,22 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     spriteCustomMetadata:
-      entries: []
+      entries:
+      - key: SpriteEditor.SliceSettings
+        value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":16.0,"y":16.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":1,"keepEmptyRects":false,"isAlternate":false}'
     nameFileIdTable:
-      basic_character_sprites_0: -4453138599731579729
-      basic_character_sprites_1: 3047437171569751649
-      basic_character_sprites_10: -4139249129294087960
-      basic_character_sprites_11: -2344184371656634101
-      basic_character_sprites_12: -6226692770389304618
-      basic_character_sprites_13: 8927667125340697653
-      basic_character_sprites_14: -1774359531991661020
-      basic_character_sprites_15: -7841942030889223925
-      basic_character_sprites_2: 2384728753097618848
-      basic_character_sprites_3: -7071472222284559468
-      basic_character_sprites_4: 5207758627401910804
-      basic_character_sprites_5: -6811679742514016532
-      basic_character_sprites_6: 3143811091625387559
-      basic_character_sprites_7: -7771085610071064665
-      basic_character_sprites_8: -8060874802243722141
-      basic_character_sprites_9: -1393652524820857272
+      Basic Plants_0: 5196230094273877852
+      Basic Plants_1: 7842502339710366499
+      Basic Plants_10: -8097741200915394387
+      Basic Plants_11: 5822373649741285269
+      Basic Plants_2: 8009980020533041875
+      Basic Plants_3: 873675997408803650
+      Basic Plants_4: 8411801333702420389
+      Basic Plants_5: -5659601288151787448
+      Basic Plants_6: -386788524301670192
+      Basic Plants_7: -1361314268720151567
+      Basic Plants_8: 6325485877500199750
+      Basic Plants_9: -8709406779607625839
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
