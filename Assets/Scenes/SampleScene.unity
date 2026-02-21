@@ -489,8 +489,8 @@ GameObject:
   m_Component:
   - component: {fileID: 906464750}
   - component: {fileID: 906464749}
-  - component: {fileID: 906464748}
   - component: {fileID: 906464747}
+  - component: {fileID: 906464751}
   m_Layer: 0
   m_Name: Collectable
   m_TagString: Untagged
@@ -510,52 +510,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c6a76796c4eb8b49b4b0c48532ff92e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Collectable
---- !u!61 &906464748
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 906464746}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ForceSendLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ForceReceiveLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ContactCaptureLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_CallbackLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_CompositeOperation: 0
-  m_CompositeOrder: 0
-  m_Offset: {x: 0.0063560605, y: -0.027013645}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1, y: 1}
-    newSize: {x: 1, y: 1}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  m_Size: {x: 0.7457541, y: 0.8061373}
-  m_EdgeRadius: 0
+  type: 1
 --- !u!212 &906464749
 SpriteRenderer:
   serializedVersion: 2
@@ -630,6 +585,55 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!68 &906464751
+EdgeCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 906464746}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0, y: 0}
+  m_EdgeRadius: 0
+  m_Points:
+  - {x: -0.3220954, y: 0.3412866}
+  - {x: -0.31933844, y: -0.3025158}
+  - {x: -0.12666881, y: -0.39433378}
+  - {x: 0.21082926, y: -0.40361643}
+  - {x: 0.34285998, y: -0.19474924}
+  - {x: 0.3400905, y: 0.14410134}
+  - {x: 0.27370906, y: 0.33732778}
+  - {x: -0.29149437, y: 0.33039448}
+  m_AdjacentStartPoint: {x: 0, y: 0}
+  m_AdjacentEndPoint: {x: 0, y: 0}
+  m_UseAdjacentStartPoint: 0
+  m_UseAdjacentEndPoint: 0
 --- !u!1 &1044165870
 GameObject:
   m_ObjectHideFlags: 0
@@ -13953,7 +13957,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 15f589e42427ba9488c83f9210af6737, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Player
-  numOnionSeed: 0
+  inventory:
+    slots: []
 --- !u!1 &1690764550
 GameObject:
   m_ObjectHideFlags: 0
