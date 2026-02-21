@@ -18,6 +18,7 @@ public class Collectable : MonoBehaviour
 
         if (player)
         {
+            player.inventory.Add(type);
             //Ahora se elimina el item porque se ha "recogido"
             Destroy(this.gameObject); // Pasamos el item para eliminarlo
         }
