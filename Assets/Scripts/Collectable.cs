@@ -6,7 +6,7 @@ using UnityEngine;
 public class Collectable : MonoBehaviour
 {
     public CollectableType type;
-    
+
     // Función que detecta el trigger del collider del item. el problema es que no sabemos que collider es y si es el del player
     // Para ello se necesita otro script para saber que viene del player (Script Player.cs)
     
@@ -18,8 +18,6 @@ public class Collectable : MonoBehaviour
 
         if (player)
         {
-            player.numOnionSeed++;
-
             //Ahora se elimina el item porque se ha "recogido"
             Destroy(this.gameObject); // Pasamos el item para eliminarlo
         }
