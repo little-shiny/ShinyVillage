@@ -12,6 +12,8 @@ public class Inventory // No es monoBehaviour porque no se le atribuye a ningun 
         // Necesitamos saber que tipo de item es
         public CollectableType type;
 
+        public Sprite icon;
+
         // boolean para el control al añadir elementos al inventario
         // Ahora crearemos el inventario que es una lista de Slots
         // Devuelve true si el inventario tiene huecos 
@@ -26,9 +28,11 @@ public class Inventory // No es monoBehaviour porque no se le atribuye a ningun 
         }
 
         //Función que añade el item en el slot
-        public void AddItem(CollectableType type)
+        // Se cambia CollectableType por COllectable para poder acceder así al icono desde inventory_ui
+        public void AddItem(Collectable item)
         {
-            this.type = type; //Le atribuimos al slot el tipo de objeto para poder aplicarlo
+            this.type = item.type; //Le atribuimos al slot el tipo de objeto para poder aplicarlo
+            this.icon = item.icon;
             count++; // Se suma uno a la cantidad de items en el slot
         }
     }
@@ -50,16 +54,16 @@ public class Inventory // No es monoBehaviour porque no se le atribuye a ningun 
     }
 
     // método que nos permite añadir items en el inventario
-    public void Add(CollectableType typeToAdd)
+    public void Add(Collectable item)
     {
         // Ahora buscamos si ya hay items como el que queremos añadir en el inventarioi
         foreach(Slot slot in slots)
         {
             //En caso de que ya haya un item de ese tipo y quepa: 
 
-            if(slot.type == typeToAdd && slot.CanAddItem()) // si ya 
+            if(slot.type == item.type && slot.CanAddItem()) // si ya 
             {
-                slot.AddItem(typeToAdd); // se añade el item al slot
+                slot.AddItem(item); // se añade el item al slot
                 return; // Termionamos
             }
 
@@ -70,7 +74,7 @@ public class Inventory // No es monoBehaviour porque no se le atribuye a ningun 
         {
             if (slot.type == CollectableType.NONE) // Si el slot está vacío
             {
-                slot.AddItem(typeToAdd);
+                slot.AddItem(item);
                 return; 
             }
         }
