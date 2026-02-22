@@ -49,7 +49,12 @@ public class Inventory // No es monoBehaviour porque no se le atribuye a ningun 
         for(int i =0; i < numSlots; i++)
         {
             Slot slot = new Slot();
+
+            // Iicialización de las variables
+            slot.type = CollectableType.NONE;
+            slot.count = 0;
             slot.maxAllowed = 99; // Añadido inicialización de la variable para que el foreach no sea falso siempre
+            
             slots.Add(slot);
         }
     }

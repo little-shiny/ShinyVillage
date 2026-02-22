@@ -40,6 +40,7 @@ public class Inventory_UI : MonoBehaviour
         // Se encontraba el problema de que el inventario mostraba cuadrados blancos:
         // lo que pasaba era que si type != none pero count == 0 setItem mostraba 0 , y como el icono puede ser null se dibujaba en blanco
         // entonces lo que hacemos es que se considera el slot vacio en el caso de que el type sea none o el count sea cero (no hay items)
+        
         for(int i = 0; i < slots.Count; i++)
         {
         

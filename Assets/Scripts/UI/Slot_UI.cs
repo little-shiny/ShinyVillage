@@ -11,11 +11,15 @@ public class Slot_UI : MonoBehaviour
 // obtiene los datos de inventory y los utiliza para mostrar la información
     public void SetItem(Inventory.Slot slot)
     {
-        if(slot != null)// Si hay algo en el slot
+        if(slot != null && slot.count > 0) // Si hay algo en el slot
         {
             itemIcon.sprite = slot.icon; // leemos el icono del slot
             itemIcon.color = new Color(1, 1, 1, 1); 
             quantityText.text = slot.count.ToString(); // obtenemos el numero de items del mismo tipo del slot y lo mostramos en el tmprotext
+        }
+        else // Ahora si no hay nada lo que hacemos es establecerlo vacío forzándolo a que no pueda ser cero
+        {
+            SetEmpty();
         }
     }
 
