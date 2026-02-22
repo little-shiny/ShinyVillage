@@ -36,19 +36,18 @@ public class Inventory_UI : MonoBehaviour
     {
         // Comprueba si el script de inventario y el de inventory_ui tienen los mismos slots para añadirlos 
         // Hay que comprobar si cuando se van agregando los slots, hay alguno que sea vacío. por eso el bucle repite mientras estén llenos
-        if(slots.Count == player.inventory.slots.Count)
+        
+        for(int i = 0; i < slots.Count; i++)
         {
-            for(int i = 0; i < slots.Count; i++)
+            if(player.inventory.slots[i].type != CollectableType.NONE) // si el slot no esta vacío se configura
             {
-                if(player.inventory.slots[i].type != CollectableType.NONE) // si el slot no esta vacío se configura
-                {
-                    slots[i].SetItem(player.inventory.slots[i]); // se hace el slot visible en la interfaz
-                }
-                else
-                {
-                    slots[i].SetEmpty(); // si no hay nada lo "pintamos" vacio
-                }
+                slots[i].SetItem(player.inventory.slots[i]); // se hace el slot visible en la interfaz
+            }
+            else
+            {
+                slots[i].SetEmpty(); // si no hay nada lo "pintamos" vacio
             }
         }
+        
     }
 }

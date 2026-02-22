@@ -21,6 +21,14 @@ public class Collectable : MonoBehaviour
         {
             player.inventory.Add(this);
             //Ahora se elimina el item porque se ha "recogido"
+
+            // Forzamos el pintar el inventario de nuevo 
+            Inventory_UI ui = FindFirstObjectByType<Inventory_UI>(); // encuentra el objeto inventario
+            if(ui != null)
+            {
+                ui.SendMessage("Setup"); // refresca el inventario haciendo setup en el inventario
+            }
+
             Destroy(this.gameObject); // Pasamos el item para eliminarlo
         }
     }
