@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class Player : MonoBehaviour
 {
@@ -9,7 +10,24 @@ public class Player : MonoBehaviour
     {
         // Creamos la instancia del inventario con la cantidad máxima de slots que queremos que tenga
         inventory = new Inventory(21);
-    } 
+    }
+
+    void Update()
+    {
+        // Usaremos la tecla espacio para interactuar con las zonas del tilemap interactuable
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            //Convertimos la posicion en un vector para poder usarla como parámetro
+            Vector3Int position = new Vector3Int((int)transform.position.x, (int)transform.position.y, 0);
+
+            if (GameManager.instance.tileManager.IsInteractable(position))
+            {
+                Debug.Log("Tile is interactable");
+                GameManager.instance.tileManager.SetInteracted(position);
+            }
+
+        }
+    }
 
     // Efecto visual al soltar items del inventario para que vuelvan a aparecer en el mapa
     public void DropItem(Collectable item)
