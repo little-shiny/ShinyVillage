@@ -15979,7 +15979,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e3a8a4d203ac7544ae67088bc6c03bd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Movement
-  speed: 2
+  speed: 4
   animator: {fileID: 1290445620}
 --- !u!95 &1471948936
 Animator:

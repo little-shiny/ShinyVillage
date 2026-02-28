@@ -23,7 +23,7 @@ public class Inventory_UI : MonoBehaviour
         if (!inventoryPanel.activeSelf)
         {
             inventoryPanel.SetActive(true); // Hace visible el inventario
-            Setup(); // Se carga la información del inventario
+            Refresh(); // Se carga la información del inventario
         }
         else
         {
@@ -32,7 +32,7 @@ public class Inventory_UI : MonoBehaviour
     }
 
     // Método que obtiene la información del inventario para mostrarla al abrirlo
-    void Setup()
+    void Refresh()
     {
         // Comprueba si el script de inventario y el de inventory_ui tienen los mismos slots para añadirlos 
         // Hay que comprobar si cuando se van agregando los slots, hay alguno que sea vacío. por eso el bucle repite mientras estén llenos
@@ -62,5 +62,12 @@ public class Inventory_UI : MonoBehaviour
             }
         }
         
+    }
+
+    // Función que activa la eliminación de un item del inventario tras pulsar el botón
+    public void Remove(int slotID)
+    {
+        player.inventory.Remove(slotID);
+        Refresh(); // Volovemos a pintar el inventario para que se muestre de nuevo la cantidad que hay
     }
 }

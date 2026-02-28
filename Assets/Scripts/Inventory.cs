@@ -35,6 +35,23 @@ public class Inventory // No es monoBehaviour porque no se le atribuye a ningun 
             this.icon = item.icon;
             count++; // Se suma uno a la cantidad de items en el slot
         }
+
+        //Función que elimina un item de un slot del inventario
+        // Se comprueba si el slot está vacío antes para evitar errores
+        public void RemoveItem()
+        {
+            if(count > 0) // Si hay al menos 1 item en el slot
+            {
+                count--;
+
+                if(count == 0) // Si el slot se queda vacío
+                {
+                    icon = null;
+                    type = CollectableType.NONE;
+                }
+            }
+        }
+
     }
 
     
@@ -85,5 +102,12 @@ public class Inventory // No es monoBehaviour porque no se le atribuye a ningun 
             }
         }
 
+    }
+
+    // Función que elimina un item del inventario. Necesitamos obtener el indice del slot en el que se encuentra el item antes de eliminarlo ya que es una lista
+
+    public void Remove(int index)
+    {
+        slots[index].RemoveItem();
     }
 }
