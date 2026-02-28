@@ -8,9 +8,13 @@ public class Collectable : MonoBehaviour
     public CollectableType type;
     public Sprite icon; // Necesitamos esta propiedad para poder identificar el icono del item y enviarlo al inventario
 
+    public Rigidbody2D rb2d;
+    private void Awake()
+    {
+        rb2d= GetComponent<Rigidbody2D>(); //Se asocia la propiedad del prefab con la variable
+    }
     // Función que detecta el trigger del collider del item. el problema es que no sabemos que collider es y si es el del player
     // Para ello se necesita otro script para saber que viene del player (Script Player.cs)
-    
     private void OnTriggerEnter2D(Collider2D collision)
     {
         Player player = collision.GetComponent<Player>(); // Busca si existe el script del componente Player y si colisiona con el item

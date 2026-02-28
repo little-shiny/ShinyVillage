@@ -25,6 +25,9 @@ public class Player : MonoBehaviour
 
         // Instanciamos el item que se suelta del inventario, como le volvieramos a "dar vida"
         // La función instantiate usa el collectable en cuestión, las coordenadas del jugador + el offset y la rotación del prefab
-        Instantiate(item, spawnLocation + spawnOffset, Quaternion.identity);
+        Collectable droppedItem = Instantiate(item, spawnLocation + spawnOffset, Quaternion.identity);
+
+        // Añadimos el "efecto" al soltar con la física de unity
+        droppedItem.rb2d.AddForce(spawnOffset * 2f, ForceMode2D.Impulse);
     }
 }

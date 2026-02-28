@@ -73,8 +73,9 @@ public class Inventory_UI : MonoBehaviour
 
         if(itemToDrop != null)
         {
+            player.DropItem(itemToDrop);
             player.inventory.Remove(slotID);
-        Refresh(); // Volovemos a pintar el inventario para que se muestre de nuevo la cantidad que hay
+            Refresh(); // Volovemos a pintar el inventario para que se muestre de nuevo la cantidad que hay
         }
     }
 }
