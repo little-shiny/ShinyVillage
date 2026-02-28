@@ -26,7 +26,7 @@ public class Collectable : MonoBehaviour
             Inventory_UI ui = FindFirstObjectByType<Inventory_UI>(); // encuentra el objeto inventario
             if(ui != null)
             {
-                ui.SendMessage("Setup"); // refresca el inventario haciendo setup en el inventario
+                ui.SendMessage("Update"); // refresca el inventario haciendo setup en el inventario
             }
 
             Destroy(this.gameObject); // Pasamos el item para eliminarlo
