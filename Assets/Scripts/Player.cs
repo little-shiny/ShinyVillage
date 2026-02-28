@@ -15,19 +15,16 @@ public class Player : MonoBehaviour
     public void DropItem(Collectable item)
     {
         // Posición donde se van a soltar(Spawn) es la posición del jugador
-        Vector3 spawnLocation = transform.position;
-        // Creamos un offset para que el objeto salga fuera del collider del jugador y evitar que se recoja automáticamente
-        float randX = Random.Range(-1f, 1f);
-        float randY = Random.Range(-1f, 1f);
+        Vector2 spawnLocation = transform.position;
 
-        // Vector con el offset ya aplicado para el spawn del objeto
-        Vector3 spawnOffset = new Vector3(randX, randY, 0f).normalized; 
+        // Creamos un offset para que el objeto salga fuera del collider del jugador y evitar que se recoja automáticamente
+        Vector2 spawnOffset = Random.insideUnitCircle * 1.05f;
 
         // Instanciamos el item que se suelta del inventario, como le volvieramos a "dar vida"
         // La función instantiate usa el collectable en cuestión, las coordenadas del jugador + el offset y la rotación del prefab
         Collectable droppedItem = Instantiate(item, spawnLocation + spawnOffset, Quaternion.identity);
 
         // Añadimos el "efecto" al soltar con la física de unity
-        droppedItem.rb2d.AddForce(spawnOffset * 2f, ForceMode2D.Impulse);
+        droppedItem.rb2d.AddForce(spawnOffset * .2f, ForceMode2D.Impulse);
     }
 }
