@@ -22,6 +22,7 @@ public class Slot_UI : MonoBehaviour
         {
             SetEmpty();
         }
+        Debug.Log("ICONO: "+ slot.icon);
     }
 
     // Por defecto unity muestra un cuadrado blanco cuando no hay un sprite asociado en la imagen

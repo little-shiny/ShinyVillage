@@ -10,7 +10,12 @@ public class Collectable : MonoBehaviour
 
     public Rigidbody2D rb2d;
     private void Awake()
-    {
+    {   
+        // Este bucle permite que si el collectable que se añade a la esccena no se ha especificado el icono, asigne uno por defecto para evitar que salga como vacío
+        if(icon == null)
+        {
+            icon = GetComponent<SpriteRenderer>().sprite;
+        }
         rb2d= GetComponent<Rigidbody2D>(); //Se asocia la propiedad del prefab con la variable
     }
     // Función que detecta el trigger del collider del item. el problema es que no sabemos que collider es y si es el del player
