@@ -4,6 +4,7 @@ using UnityEngine.UIElements;
 public class Player : MonoBehaviour
 {
     public Inventory inventory;
+    public Transform interactionPoint; // Objeto que definimos en unity para que sea el punto el cual interacciona
 
     // Awake lo que hace es incializa las variables antes de que se inicie la aplicacion, de manera que solo se carga una vez
     private void Awake()
@@ -18,7 +19,7 @@ public class Player : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space))
         {
             //Convertimos la posicion en un vector para poder usarla como parámetro
-            Vector3Int position = new Vector3Int((int)transform.position.x, (int)transform.position.y, 0);
+            Vector3Int position = GameManager.instance.tileManager.GetCellPosition(interactionPoint.position);
 
             if (GameManager.instance.tileManager.IsInteractable(position))
             {

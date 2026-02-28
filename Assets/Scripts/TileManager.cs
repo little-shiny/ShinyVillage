@@ -19,15 +19,14 @@ public class TileManager : MonoBehaviour
 
     public bool IsInteractable(Vector3Int position)
     {
-        TileBase tile = interactableMap.GetTile(position); // Obtenemos el tile donde nos encontramos
-
-        if(tile != null) // Si existe tile
+        if (position.x == int.MinValue) return false; // posición inválida por borde
+    
+        TileBase tile = interactableMap.GetTile(position);
+        if(tile != null && tile.name == "invisible_int")
         {
-            if(tile.name == "invisible_int") // Si es tile interactable
-            {
-                return true; 
-            }
+            return true;
         }
+        
         return false;
     }
 
@@ -35,6 +34,23 @@ public class TileManager : MonoBehaviour
     public void SetInteracted(Vector3Int position)
     {
         interactableMap.SetTile(position, InteractedTile);
+    }
+
+    // Método que obtiene la posición de la celda del tilemap (No en el mundo)
+    public Vector3Int GetCellPosition(Vector3 worldPosition)
+    {
+        Vector3Int cellPos = interactableMap.WorldToCell(worldPosition);
+        Vector3 cellCenter = interactableMap.GetCellCenterWorld(cellPos);
+
+        // Establecemos un limite para el cual el interactionPoint sea preciso para que no pinte tiles adyacentes
+        float threshold = 0.3f;
+
+        if(Vector3.Distance(worldPosition,cellCenter) > threshold)
+        {
+            return new Vector3Int(int.MinValue, int.MinValue, 0);
+        }
+
+        return cellPos;
     }
 
 }
