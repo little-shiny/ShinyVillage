@@ -67,7 +67,14 @@ public class Inventory_UI : MonoBehaviour
     // Función que activa la eliminación de un item del inventario tras pulsar el botón
     public void Remove(int slotID)
     {
-        player.inventory.Remove(slotID);
+        //Obtenemos el collectable que tiene el Game Manager 
+        Collectable itemToDrop = GameManager.instance.itemManager.GetItemByType(
+            player.inventory.slots[slotID].type);
+
+        if(itemToDrop != null)
+        {
+            player.inventory.Remove(slotID);
         Refresh(); // Volovemos a pintar el inventario para que se muestre de nuevo la cantidad que hay
+        }
     }
 }
