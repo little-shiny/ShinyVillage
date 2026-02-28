@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 1868046498287808307}
   - component: {fileID: 211350379321841569}
   - component: {fileID: 5680408481383619467}
+  - component: {fileID: 6922955469487356630}
   m_Layer: 0
   m_Name: Collectable
   m_TagString: Untagged
@@ -106,9 +107,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c6a76796c4eb8b49b4b0c48532ff92e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Collectable
-  type: 1
-  icon: {fileID: 0}
-  rb2d: {fileID: 0}
 --- !u!68 &211350379321841569
 EdgeCollider2D:
   m_ObjectHideFlags: 0
@@ -185,3 +183,17 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
+--- !u!114 &6922955469487356630
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4159775481822502430}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9cab11cafb20eac45be72697fe3d2f5b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Item
+  data: {fileID: 11400000, guid: c837056d9c789b74b85935bb7249f0b8, type: 2}
+  rb2d: {fileID: 0}

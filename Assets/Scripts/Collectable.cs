@@ -1,23 +1,11 @@
 using UnityEngine;
-// Se necesita que el player se ponga encima del collectable
-// Se añade el collectable al player
-// se elimina el collectable de la escena
+// Separación de antiguo Collectable en Item y Collectable.
 
+
+[RequireComponent(typeof(Item))]
 public class Collectable : MonoBehaviour
 {
-    public CollectableType type;
-    public Sprite icon; // Necesitamos esta propiedad para poder identificar el icono del item y enviarlo al inventario
-
-    public Rigidbody2D rb2d;
-    private void Awake()
-    {   
-        // Este bucle permite que si el collectable que se añade a la esccena no se ha especificado el icono, asigne uno por defecto para evitar que salga como vacío
-        if(icon == null)
-        {
-            icon = GetComponent<SpriteRenderer>().sprite;
-        }
-        rb2d= GetComponent<Rigidbody2D>(); //Se asocia la propiedad del prefab con la variable
-    }
+   
     // Función que detecta el trigger del collider del item. el problema es que no sabemos que collider es y si es el del player
     // Para ello se necesita otro script para saber que viene del player (Script Player.cs)
     private void OnTriggerEnter2D(Collider2D collision)
@@ -25,28 +13,21 @@ public class Collectable : MonoBehaviour
         Player player = collision.GetComponent<Player>(); // Busca si existe el script del componente Player y si colisiona con el item
 
         // Si player existe
-
         if (player)
         {
-            player.inventory.Add(this);
-            //Ahora se elimina el item porque se ha "recogido"
-
-            // Forzamos el pintar el inventario de nuevo 
-            Inventory_UI ui = FindFirstObjectByType<Inventory_UI>(); // encuentra el objeto inventario
-            if(ui != null)
+            Item item = GetComponent<Item>();
+            if(item != null)
             {
-                ui.SendMessage("Update"); // refresca el inventario haciendo setup en el inventario
+                player.inventory.Add(item);
+                //Ahora se elimina el item porque se ha "recogido"
+                // Forzamos el pintar el inventario de nuevo 
+                Inventory_UI ui = FindFirstObjectByType<Inventory_UI>();
+                if(ui != null)
+                {
+                    ui.Refresh();
+                }
+                Destroy(this.gameObject); // Pasamos el item para eliminarlo
             }
-
-            Destroy(this.gameObject); // Pasamos el item para eliminarlo
         }
-    }
-    
-}
-
-// Función que nos permite saber el tipo de item que se recoge
-// Por defecto son integers, NONE es 0, ONION_SEED es 1
-public enum CollectableType
-{
-    NONE, ONION_SEED
+    }    
 }

@@ -5,35 +5,35 @@ using UnityEngine;
 // Se utiliza un Diccionario, ya que almacena pares de valores asociados
 public class ItemManager : MonoBehaviour
 {
-    public Collectable[] collectableItems;
-    private Dictionary<CollectableType, Collectable> collectableItemsDict = 
-        new Dictionary<CollectableType, Collectable>();
+    public Item[] items;
+    private Dictionary<string, Item> nameToItemDict = 
+        new Dictionary<string, Item>();
 
-    // Funcion que inicia el diccionario con los collectables que existen
+    // Funcion que inicia el diccionario con los Items que existen
     private void Awake()
     {
-        foreach (Collectable item in collectableItems)
+        foreach (Item item in items)
         {
             AddItem(item);
         }
     }
 
 // Método que añade un item al diccionario
-    private void AddItem(Collectable item)
+    private void AddItem(Item item)
     {
         // Se comprueba qye no exista ya en el diccionario
-        if (!collectableItemsDict.ContainsKey(item.type))
+        if (!nameToItemDict.ContainsKey(item.data.itemName))
         {
-            collectableItemsDict.Add(item.type, item);
+            nameToItemDict.Add(item.data.itemName, item);
         }
     }
 
-    //Función que devuelve un collectable del diccionario del tipo introducido por parámetro
-    public Collectable GetItemByType(CollectableType type)
+    //Función que devuelve un Item del diccionario del tipo introducido por parámetro
+    public Item GetItemByName(string key)
     {
-        if (collectableItemsDict.ContainsKey(type))
+        if (nameToItemDict.ContainsKey(key))
         {
-            return collectableItemsDict[type];
+            return nameToItemDict[key];
         }
         return null;
     }

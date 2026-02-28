@@ -7,12 +7,22 @@ public class Inventory // No es monoBehaviour porque no se le atribuye a ningun 
     [System.Serializable]
     public class Slot
     {
+        public string itemName;
         public int count; // Cantidad de items en el slot
         public int maxAllowed;
         // Necesitamos saber que tipo de item es
-        public CollectableType type;
-
         public Sprite icon;
+
+
+        //Constructor
+        public Slot()
+        {
+            itemName = "";
+            count = 0;
+            maxAllowed = 99;
+        }
+       
+        
 
         // boolean para el control al añadir elementos al inventario
         // Ahora crearemos el inventario que es una lista de Slots
@@ -28,11 +38,11 @@ public class Inventory // No es monoBehaviour porque no se le atribuye a ningun 
         }
 
         //Función que añade el item en el slot
-        // Se cambia CollectableType por COllectable para poder acceder así al icono desde inventory_ui
-        public void AddItem(Collectable item)
+        // Se cambia ItemType por Item para poder acceder así al icono desde inventory_ui
+        public void AddItem(Item item)
         {
-            this.type = item.type; //Le atribuimos al slot el tipo de objeto para poder aplicarlo
-            this.icon = item.icon;
+            this.itemName = item.data.itemName; //Le atribuimos al slot el tipo de objeto para poder aplicarlo
+            this.icon = item.data.icon;
             count++; // Se suma uno a la cantidad de items en el slot
         }
 
@@ -47,18 +57,16 @@ public class Inventory // No es monoBehaviour porque no se le atribuye a ningun 
                 if(count == 0) // Si el slot se queda vacío
                 {
                     icon = null;
-                    type = CollectableType.NONE;
+                    itemName = "";
                 }
             }
         }
-
     }
 
     
-
     public List<Slot> slots = new List<Slot>();
 
-    // Constructoir
+    // Constructor
 
     public Inventory(int numSlots)
     {
@@ -66,25 +74,19 @@ public class Inventory // No es monoBehaviour porque no se le atribuye a ningun 
         for(int i =0; i < numSlots; i++)
         {
             Slot slot = new Slot();
-
-            // Iicialización de las variables
-            slot.type = CollectableType.NONE;
-            slot.count = 0;
-            slot.maxAllowed = 99; // Añadido inicialización de la variable para que el foreach no sea falso siempre
-            
             slots.Add(slot);
         }
     }
 
     // método que nos permite añadir items en el inventario
-    public void Add(Collectable item)
+    public void Add(Item item)
     {
         // Ahora buscamos si ya hay items como el que queremos añadir en el inventarioi
         foreach(Slot slot in slots)
         {
             //En caso de que ya haya un item de ese tipo y quepa: 
 
-            if(slot.type == item.type && slot.CanAddItem()) // si ya 
+            if(slot.itemName == item.data.itemName && slot.CanAddItem()) // si ya 
             {
                 slot.AddItem(item); // se añade el item al slot
                 return; // Termionamos
@@ -95,7 +97,7 @@ public class Inventory // No es monoBehaviour porque no se le atribuye a ningun 
          // En caso de que no haya ningun item de ese tipo
         foreach(Slot slot in slots)
         {
-            if (slot.type == CollectableType.NONE) // Si el slot está vacío
+            if (slot.itemName == "") // Si el slot está vacío
             {
                 slot.AddItem(item);
                 return; 

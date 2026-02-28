@@ -32,7 +32,7 @@ public class Inventory_UI : MonoBehaviour
     }
 
     // Método que obtiene la información del inventario para mostrarla al abrirlo
-    void Refresh()
+    public void Refresh()
     {
         // Comprueba si el script de inventario y el de inventory_ui tienen los mismos slots para añadirlos 
         // Hay que comprobar si cuando se van agregando los slots, hay alguno que sea vacío. por eso el bucle repite mientras estén llenos
@@ -40,57 +40,30 @@ public class Inventory_UI : MonoBehaviour
         // Se encontraba el problema de que el inventario mostraba cuadrados blancos:
         // lo que pasaba era que si type != none pero count == 0 setItem mostraba 0 , y como el icono puede ser null se dibujaba en blanco
         // entonces lo que hacemos es que se considera el slot vacio en el caso de que el type sea none o el count sea cero (no hay items)
-        
+
         for(int i = 0; i < slots.Count; i++)
         {
-        
-            if(i < player.inventory.slots.Count) // 
+            if(i < player.inventory.slots.Count && player.inventory.slots[i].itemName != "" && player.inventory.slots[i].count > 0)
             {
-                var invSlot = player.inventory.slots[i];
-                if (invSlot.type != CollectableType.NONE && invSlot.count > 0)
-                {
-                    slots[i].SetItem(invSlot);
-                }
-                else
-                {
-                    slots[i].SetEmpty();
-                }
+                slots[i].SetItem(player.inventory.slots[i]);
             }
             else
             {
-                slots[i].SetEmpty(); // si no hay nada lo "pintamos" vacio
+                slots[i].SetEmpty();
             }
         }
-        
     }
 
     // Función que activa la eliminación de un item del inventario tras pulsar el botón
     public void Remove(int slotID)
     {
-        // Guarda el slot antes de eliminarlo
-        Inventory.Slot slot = player.inventory.slots[slotID];
+        Item itemToDrop = GameManager.instance.itemManager.GetItemByName(player.inventory.slots[slotID].itemName);
 
-        if(slot.count < 0 || slot.type == CollectableType.NONE)
+        if(itemToDrop != null)
         {
-            return;
+            player.DropItem(itemToDrop);
+            player.inventory.Remove(slotID);
+            Refresh();
         }
-
-        // Guarda el tipo antes de borrarlo
-        CollectableType typeToDrop = slot.type;
-
-        // Elimina del inventario
-
-        player.inventory.Remove(slotID);
-
-        // Busca el prefab correcto con itemManager
-
-        ItemManager manager = FindFirstObjectByType<ItemManager>();
-        Collectable prefab = manager.GetItemByType(typeToDrop);
-
-        // Suelta a la escena
-        player.DropItem(prefab);
-
-        // Refresh de la UI
-        Refresh();
     }
 }
