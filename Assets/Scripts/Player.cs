@@ -10,4 +10,21 @@ public class Player : MonoBehaviour
         // Creamos la instancia del inventario con la cantidad máxima de slots que queremos que tenga
         inventory = new Inventory(21);
     } 
+
+    // Efecto visual al soltar items del inventario para que vuelvan a aparecer en el mapa
+    public void DropItem(Collectable item)
+    {
+        // Posición donde se van a soltar(Spawn) es la posición del jugador
+        Vector3 spawnLocation = transform.position;
+        // Creamos un offset para que el objeto salga fuera del collider del jugador y evitar que se recoja automáticamente
+        float randX = Random.Range(-1f, 1f);
+        float randY = Random.Range(-1f, 1f);
+
+        // Vector con el offset ya aplicado para el spawn del objeto
+        Vector3 spawnOffset = new Vector3(randX, randY, 0f).normalized; 
+
+        // Instanciamos el item que se suelta del inventario, como le volvieramos a "dar vida"
+        // La función instantiate usa el collectable en cuestión, las coordenadas del jugador + el offset y la rotación del prefab
+        Instantiate(item, spawnLocation + spawnOffset, Quaternion.identity);
+    }
 }
