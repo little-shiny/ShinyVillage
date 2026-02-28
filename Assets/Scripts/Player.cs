@@ -18,7 +18,7 @@ public class Player : MonoBehaviour
         Vector2 spawnLocation = transform.position;
 
         // Creamos un offset para que el objeto salga fuera del collider del jugador y evitar que se recoja automáticamente
-        Vector2 spawnOffset = Random.insideUnitCircle * 1.05f;
+        Vector2 spawnOffset = Random.insideUnitCircle * 2f;
 
         // Instanciamos el item que se suelta del inventario, como le volvieramos a "dar vida"
         // La función instantiate usa el collectable en cuestión, las coordenadas del jugador + el offset y la rotación del prefab
