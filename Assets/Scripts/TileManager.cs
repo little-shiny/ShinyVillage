@@ -10,7 +10,7 @@ public class TileManager : MonoBehaviour
 
     public void Start()
     {
-        // Establece las tiles en nuestra variable del script
+        Debug.Log("TileManager Start - interactableMap: " + interactableMap);
         foreach(var position in interactableMap.cellBounds.allPositionsWithin)
         {
             interactableMap.SetTile(position, hiddenInteractableTile);
@@ -20,21 +20,21 @@ public class TileManager : MonoBehaviour
     // Comprueba si la tile en la posición dada es interactuable
     public bool IsInteractable(Vector3Int position)
     {
-        TileBase tile = interactableMap.GetTile(position); // Obtenemos el tile donde nos encontramos
-
-        if(tile != null && tile.name == "invisible_int") // Si existe tile y es interactuable
-        {
+        TileBase tile = interactableMap.GetTile(position);
+        Debug.Log("IsInteractable pos: " + position + " tile: " + (tile != null ? tile.name : "NULL"));
+        
+        if(tile != null && tile.name == "invisible_int")
             return true;
-        }
 
         return false;
     }
 
     // Método que establece las tiles como "interactuadas"
     public void SetInteracted(Vector3Int position)
-    {
-        interactableMap.SetTile(position, InteractedTile);
-    }
+{
+    Debug.Log("SetInteracted pos: " + position + " InteractedTile: " + InteractedTile);
+    interactableMap.SetTile(position, InteractedTile);
+}
 
     // Método que obtiene la posición de la celda del tilemap (no en el mundo)
     public Vector3Int GetCellPosition(Vector3 worldPosition)

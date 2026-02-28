@@ -22,5 +22,9 @@ public class GameManager : MonoBehaviour
         DontDestroyOnLoad(this.gameObject);
         itemManager = GetComponent<ItemManager>();
         tileManager = GetComponent<TileManager>();
+        
+        Debug.Log("tileManager: " + tileManager);  // ¿Es null?
+        Debug.Log("itemManager: " + itemManager);  // ¿Es null?
+
     }
 }
