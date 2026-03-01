@@ -2,13 +2,15 @@
 // Se coloca en el prefab de "fila de partida" que se instancia dinámicamente
 // en el menú de carga. Cada instancia recibe sus datos desde MainMenuManager.
 //
-//   SaveSlotItem (GameObject con este script)
+//    SaveSlotItem
 //   ├── SlotNameText        (TextMeshProUGUI)
 //   ├── PlayerNameText      (TextMeshProUGUI)
 //   ├── LastSavedText       (TextMeshProUGUI)
 //   ├── PlayTimeText        (TextMeshProUGUI)
-//   ├── LoadButton          (Button)
-//   └── DeleteButton        (Button)
+//   └── ButtonsPanel
+//       ├── LoadButton      (Button)
+//       ├── OverwriteButton (Button)
+//       └── DeleteButton    (Button)
 // ============================================================
 
 using UnityEngine;
@@ -29,7 +31,8 @@ public class SaveSlotUI : MonoBehaviour
 
     [Header("Buttons")]
     [SerializeField] private Button loadButton;               
-    [SerializeField] private Button deleteButton;           
+    [SerializeField] private Button deleteButton;       
+    [SerializeField] private Button overwriteButton;         
 
     // ── Datos internos ────────────────────────────────────────────────────────
 
@@ -67,8 +70,20 @@ public class SaveSlotUI : MonoBehaviour
 
         // Usamos lambda para capturar el slot específico de esta fila
         // Si usáramos OnClick directamente sin lambda, todas las filas  llamarían con el mismo valor por cierre de variable
+        
+        //carga
         loadButton.onClick.AddListener(() => _menuManager.OnLoadSlotClicked(_slotData.Id));
+        //Borrar
         deleteButton.onClick.AddListener(() => _menuManager.OnDeleteSlotClicked(_slotData.Id, gameObject));
+
+        //Sobreescribir (guarda el estado actual del juego en este slot)
+         overwriteButton.onClick.AddListener(() => _menuManager.OnOverwriteSlotClicked(_slotData.Id));
+
+         // ── Sobrescribir solo visible si hay partida activa ───────────────────
+        // Si venimos del menú principal sin haber jugado, CurrentSlotId es -1
+        // y no tiene sentido mostrar el botón de sobrescribir
+        bool hayPartidaActiva = SaveGameManager.Instance.CurrentSlotId != -1;
+        overwriteButton.gameObject.SetActive(hayPartidaActiva);
     }
 
     // ── Métodos auxiliares ────────────────────────────────────────────────────
@@ -77,8 +92,9 @@ public class SaveSlotUI : MonoBehaviour
     /// Ejemplo 7320s → "2h 2m" 
     private string FormatPlayTime(float totalSeconds)
     {
-        // TimeSpan facilita la conversión de segundos a horas/minutos
         TimeSpan time = TimeSpan.FromSeconds(totalSeconds);
         return $"Tiempo: {(int)time.TotalHours}h {time.Minutes}m";
     }
+
+    
 }

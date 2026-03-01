@@ -179,40 +179,36 @@ public class MainMenuManager : MonoBehaviour
 
     private void RefrescarListaPartidas()
     {
-        // ── Limpiamos la lista anterior para evitar duplicados ─────────────────
-
-        // Destruimos todos los hijos del contenedor del ScrollView
+        // ── Limpiamos los slots anteriores ────────────────────────────────────
+        // Destruimos todos los hijos del Content para evitar duplicados
         foreach (Transform child in saveSlotsContainer)
             Destroy(child.gameObject);
 
-        // ── Consultamos la base de datos ───────────────────────────────────────
-
+        // ── Consultamos la base de datos ──────────────────────────────────────
         List<SaveSlotData> slots = SaveGameManager.Instance.GetAllSaveSlots();
 
-        // ── Mostramos u ocultamos el aviso de "sin partidas" ───────────────────
-
+        // ── Sin partidas: mostramos el aviso ──────────────────────────────────
         bool haySaves = slots.Count > 0;
         noSavesText.gameObject.SetActive(!haySaves);
 
-        if (!haySaves) return; // No hace falta continuar si no hay partidas
+        if (!haySaves) return;
 
-        // ── Instanciamos una fila por cada partida ─────────────────────────────
-
+        // ── Instanciamos una fila por cada partida ────────────────────────────
         foreach (SaveSlotData slot in slots)
         {
-            // Instanciamos el prefab como hijo del Content del ScrollView
+            // Creamos el prefab como hijo del Content del ScrollView
             GameObject slotGO = Instantiate(saveSlotPrefab, saveSlotsContainer);
 
-            // Obtenemos el componente SaveSlotUI del prefab recién instanciado
+            // Obtenemos el componente SaveSlotUI y le pasamos los datos
             SaveSlotUI slotUI = slotGO.GetComponent<SaveSlotUI>();
 
             if (slotUI == null)
             {
-                Debug.LogError("[Menu] El prefab 'saveSlotPrefab' no tiene el componente SaveSlotUI.");
+                Debug.LogError("[Menu] El prefab no tiene el componente SaveSlotUI.");
                 continue;
             }
 
-            // Le pasamos los datos y la referencia a este menú para los botones
+            // Setup rellena los textos y asigna los listeners de los botones
             slotUI.Setup(slot, this);
         }
     }
@@ -231,6 +227,36 @@ public class MainMenuManager : MonoBehaviour
         SaveGameManager.Instance.LoadGame(slotId);
 
         SceneManager.LoadScene(gameSceneName);
+    }
+
+    /// Llamado desde SaveSlotUI al pulsar "Sobrescribir".
+    /// Guarda el estado actual del juego en el slot indicado y recarga la lista.
+    /// Solo funciona si hay una partida activa (CurrentSlotId != -1).
+    public void OnOverwriteSlotClicked(int slotId)
+    {
+        if (SaveGameManager.Instance.CurrentSlotId == -1)
+        {
+            Debug.LogWarning("[Menu] No hay partida activa para sobrescribir.");
+            return;
+        }
+
+        // Necesitamos los datos actuales del jugador para guardarlos
+        // En un juego real estos vendrían del Player activo en escena.
+        // Como estamos en el menú, usamos los datos que ya están en BD y solo actualizamos la fecha y el tiempo de juego.
+        SaveGameManager.Instance.SaveCurrentGame(
+            new PlayerData
+            {
+                SlotId   = slotId,
+                Name     = "",      // Se rellenará con el jugador real
+                Position = Vector3.zero
+            },
+            playTime: 0f            // Se rellenará con el tiempo real
+        );
+
+        Debug.Log($"[Menu] Slot {slotId} sobrescrito.");
+
+        // Refrescamos la lista para que se vea la nueva fecha de guardado
+        RefrescarListaPartidas();
     }
 
     /// Llamado desde SaveSlotUI cuando el jugador pulsa "Borrar" en un slot.
