@@ -4,6 +4,9 @@ using Unity.VisualScripting;
 using UnityEngine;
 using System.Data.SQLite; // SQLiteConnection  ← viene del paquete instalado con NuGetForUnity
 
+//Correccion conflicto con System.action porque detectaba otras versiones de system.dll
+public delegate void SqlParametrizer(IDbCommand cmd);
+
 // Gestiona la conexion y las operaciones con la db en sqllite
 //Singleton para que se pueda acceder desde todas las partes del juego 
 public class DatabaseManager : MonoBehaviour
@@ -151,7 +154,7 @@ public class DatabaseManager : MonoBehaviour
 
     //Ejecuta una sentencia sql que no devuelve datos (insert, update, delete...)
     //todo explicarla
-    public void ExecuteNonQuery(string sql, Action<IDbCommand> parameterize = null)
+    public void ExecuteNonQuery(string sql, SqlParametrizer parameterize = null)
     {
         using (IDbCommand cmd = _connection.CreateCommand())
         {
@@ -164,7 +167,7 @@ public class DatabaseManager : MonoBehaviour
     // Ejecuta sentencia sql que devuelve datos como select
     // Devuelve IdataReader para leer fila a fila los datos
     //todo explicar
-    public IDataReader ExecuteReader(string sql, Action<IDbCommand> parameterize = null)
+    public IDataReader ExecuteReader(string sql, SqlParametrizer parameterize = null)
     {
         IDbCommand cmd = _connection.CreateCommand();
         cmd.CommandText = sql;
