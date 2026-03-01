@@ -3076,6 +3076,22 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6004530151064136961, guid: 1ac6adbbe1164fb45af9e207500b5b4f, type: 3}
+      propertyPath: m_text
+      value: Nombre de la partida
+      objectReference: {fileID: 0}
+    - target: {fileID: 6004530151064136961, guid: 1ac6adbbe1164fb45af9e207500b5b4f, type: 3}
+      propertyPath: m_fontSize
+      value: 24.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6004530151064136961, guid: 1ac6adbbe1164fb45af9e207500b5b4f, type: 3}
+      propertyPath: m_VerticalAlignment
+      value: 512
+      objectReference: {fileID: 0}
+    - target: {fileID: 6004530151064136961, guid: 1ac6adbbe1164fb45af9e207500b5b4f, type: 3}
+      propertyPath: m_HorizontalAlignment
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 8328281583948988390, guid: 1ac6adbbe1164fb45af9e207500b5b4f, type: 3}
       propertyPath: m_Name
       value: GameName
@@ -3172,6 +3188,22 @@ PrefabInstance:
     - target: {fileID: 2132009862331154751, guid: 1ac6adbbe1164fb45af9e207500b5b4f, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6004530151064136961, guid: 1ac6adbbe1164fb45af9e207500b5b4f, type: 3}
+      propertyPath: m_text
+      value: Nombre del jugador
+      objectReference: {fileID: 0}
+    - target: {fileID: 6004530151064136961, guid: 1ac6adbbe1164fb45af9e207500b5b4f, type: 3}
+      propertyPath: m_fontSize
+      value: 26.35
+      objectReference: {fileID: 0}
+    - target: {fileID: 6004530151064136961, guid: 1ac6adbbe1164fb45af9e207500b5b4f, type: 3}
+      propertyPath: m_VerticalAlignment
+      value: 512
+      objectReference: {fileID: 0}
+    - target: {fileID: 6004530151064136961, guid: 1ac6adbbe1164fb45af9e207500b5b4f, type: 3}
+      propertyPath: m_HorizontalAlignment
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 8328281583948988390, guid: 1ac6adbbe1164fb45af9e207500b5b4f, type: 3}
       propertyPath: m_Name
