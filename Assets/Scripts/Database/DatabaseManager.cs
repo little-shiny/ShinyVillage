@@ -96,11 +96,6 @@ public class DatabaseManager : MonoBehaviour
                 id          INTEGER PRIMARY KEY AUTOINCREMENT,
                 slot_id     INTEGER NOT NULL,        -- FK → SaveSlots.id
                 name        TEXT NOT NULL,
-                level       INTEGER DEFAULT 1,
-                gold        INTEGER DEFAULT 0,
-                exp         INTEGER DEFAULT 0,
-                health      REAL DEFAULT 100,
-                max_health  REAL DEFAULT 100,
                 pos_x       REAL DEFAULT 0,          -- Posición en el mundo
                 pos_y       REAL DEFAULT 0,
                 pos_z       REAL DEFAULT 0,
