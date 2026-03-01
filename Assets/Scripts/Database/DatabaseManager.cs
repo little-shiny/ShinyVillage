@@ -175,11 +175,22 @@ public class DatabaseManager : MonoBehaviour
         return cmd.ExecuteReader();
     }
 
+    /// Ejecuta una sentencia SQL y devuelve el primer valor de la primera fila.
+    /// Útil para COUNT, MAX, etc.
+    public object ExecuteScalar(string sql, SqlParametrizer parameterize = null)
+    {
+        using (IDbCommand cmd = _connection.CreateCommand())
+        {
+            cmd.CommandText = sql;
+            parameterize?.Invoke(cmd);
+            return cmd.ExecuteScalar();
+        }
+    }
     /// Crea y añade un parámetro a un comando SQL de forma segura.
 
     /// Ejemplo:
-    ///   DatabaseManager.AddParameter(cmd, "@player_name", "O'Brien"); // funciona ✅
-    ///   cmd.CommandText = "... WHERE name = 'O'Brien'";               // falla ❌
+    ///   DatabaseManager.AddParameter(cmd, "@player_name", "O'Brien"); funciona
+    ///   cmd.CommandText = "... WHERE name = 'O'Brien'";             falla
 
     public static IDbDataParameter AddParameter(IDbCommand cmd, string name, object value)
     {
