@@ -13,9 +13,22 @@ public class JSONManager : MonoBehaviour
 
     void Start()
     {
-        filePath = Application.dataPath + "/Save/UserData.json";
+        // Sustitución por persistent data para que cuando se construya de nuevo el juego no se elimine
+        filePath = Path.Combine(Application.persistentDataPath, "UserData.json");
     }
 
+    //Update que guarda los datos cada vez que se pulsa la letra "S" para probar la función y carga los datos con la tecla "L"
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.S))
+        {
+            SaveData();
+        }
+        else if (Input.GetKeyDown(KeyCode.L))
+        {
+            LoadData();
+        }
+    }
     //Método que guarda los datos del objeto PlayerData en un archivo JSON con la librería propia de Unity. 
     //Almacena en un string los datos del archivo JSON
     public void SaveData()
@@ -48,4 +61,18 @@ public class JSONManager : MonoBehaviour
         }
     }
 
+    //Método que elimina el archivo de datos de guardado existente y crea uno por defecto
+    public void ResetData()
+    {
+        PlayerData resetData = new PlayerData();
+        resetData.playerName = "Default";
+
+        if (File.Exists(filePath))
+        {
+            File.Delete(filePath);
+            
+            //debug
+            Debug.Log("File Deleted");
+        }
+    }
 }
