@@ -2,7 +2,8 @@ using System.Data;
 using System.IO;
 using Unity.VisualScripting;
 using UnityEngine;
-using Mono.dat
+using System.Data.SQLite; // SQLiteConnection  ← viene del paquete instalado con NuGetForUnity
+
 // Gestiona la conexion y las operaciones con la db en sqllite
 //Singleton para que se pueda acceder desde todas las partes del juego 
 public class DatabaseManager : MonoBehaviour
@@ -15,7 +16,7 @@ public class DatabaseManager : MonoBehaviour
     }
 
     //Conexión con la db
-    private IDbConnection _connection; 
+    private IDbConnection _connection;
 
     //Nombre de la db
     private const string DB_NAME = "savegame.db";
@@ -38,8 +39,8 @@ public class DatabaseManager : MonoBehaviour
 
         InitializeDatabase(); // Creamos/abrimos la base de datos al iniciar
     }
-    
-     private void OnDestroy()
+
+    private void OnDestroy()
     {
         // Siempre cerrar la conexión al destruir el objeto para evitar corrupción
         CloseConnection();
@@ -58,11 +59,11 @@ public class DatabaseManager : MonoBehaviour
     private void InitializeDatabase()
     {
         // Formato de connection string que entiende Mono.Data.Sqlite
-        string connectionString = $"URI=file:{DbPath}";
+        string connectionString = $"Data Source={DbPath};Version=3;";
 
         Debug.Log($"[DB] Base de datos en: {DbPath}");
 
-        _connection = new SqliteConnection(connectionString);
+        _connection = new SQLiteConnection(connectionString);
         _connection.Open();
 
         // Creamos todas las tablas 
@@ -172,12 +173,23 @@ public class DatabaseManager : MonoBehaviour
     }
 
     /// Crea y añade un parámetro a un comando SQL de forma segura.
-    /// Usar SIEMPRE parámetros en lugar de concatenar strings 
+
+    /// Ejemplo:
+    ///   DatabaseManager.AddParameter(cmd, "@player_name", "O'Brien"); // funciona ✅
+    ///   cmd.CommandText = "... WHERE name = 'O'Brien'";               // falla ❌
+
     public static IDbDataParameter AddParameter(IDbCommand cmd, string name, object value)
     {
         var param = cmd.CreateParameter();
-        param.ParameterName = name; // Ej: "@player_name"
-        param.Value = value ?? DBNull.Value; // Si es null, guardamos NULL en la BD
+        param.ParameterName = name;
+
+        // En lugar de DBNull.Value usamos la comprobación directa
+        // que System.Data.SQLite siempre entiende bien
+        if (value == null)
+            param.Value = System.DBNull.Value;  // namespace completo para evitar ambigüedad
+        else
+            param.Value = value;
+
         cmd.Parameters.Add(param);
         return param;
     }
