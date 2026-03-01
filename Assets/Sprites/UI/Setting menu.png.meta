@@ -119,13 +119,13 @@ TextureImporter:
       name: Setting menu_0
       rect:
         serializedVersion: 2
-        x: 10
-        y: 9
-        width: 108
-        height: 124
+        x: 0
+        y: 0
+        width: 128
+        height: 144
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
+      border: {x: 28, y: 39, z: 31, w: 44}
       customData: 
       outline: []
       physicsShape: []
@@ -141,13 +141,13 @@ TextureImporter:
       name: Setting menu_1
       rect:
         serializedVersion: 2
-        x: 138
-        y: 9
-        width: 108
-        height: 124
+        x: 128
+        y: 0
+        width: 128
+        height: 144
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
-      border: {x: 26, y: 36, z: 29, w: 37}
+      border: {x: 29, y: 26, z: 27, w: 29}
       customData: 
       outline: []
       physicsShape: []
@@ -171,7 +171,9 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     spriteCustomMetadata:
-      entries: []
+      entries:
+      - key: SpriteEditor.SliceSettings
+        value: '{"sliceOnImport":false,"gridCellCount":{"x":2.0,"y":1.0},"gridSpriteSize":{"x":128.0,"y":144.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":2,"keepEmptyRects":false,"isAlternate":false}'
     nameFileIdTable:
       Setting menu_0: 7267828462667370698
       Setting menu_1: -7390560224966502635
