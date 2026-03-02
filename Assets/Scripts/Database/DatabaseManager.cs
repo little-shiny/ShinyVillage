@@ -24,6 +24,9 @@ public class DatabaseManager : MonoBehaviour
     //Nombre de la db
     private const string DB_NAME = "savegame.db";
 
+    //Flag para saber si la conexión está cerrada para evitar el eror que se cierra dos veces
+    private bool _connectionClosed = false;
+
     //Ruta completa donde se guarda el archivo
     // Application.persistentdatapath es la carpeta de datos del juegpo
     private string DbPath => Path.Combine(Application.persistentDataPath, DB_NAME);
@@ -61,6 +64,8 @@ public class DatabaseManager : MonoBehaviour
     /// Abre la conexión y crea las tablas si no existen todavía.
     private void InitializeDatabase()
     {
+        // Reset del flag al inicializar por si se reinicial la db
+        _connectionClosed = false;
         // Formato de connection string que entiende Mono.Data.Sqlite
         string connectionString = $"Data Source={DbPath};Version=3;";
 
@@ -205,10 +210,21 @@ public class DatabaseManager : MonoBehaviour
 
     private void CloseConnection()
     {
+        // Si ya cerramos la conexión, no hacemos nadaEsto evita el ObjectDisposedException cuando se llama tanto OnDestroy como OnApplicationQuit
+        if (_connectionClosed)
+        {
+            Debug.Log("[DB] Conexión ya estaba cerrada, ignorando");
+            return;
+        }
+
+        // Comprobació adicional
         if (_connection != null && _connection.State == ConnectionState.Open)
         {
             _connection.Close();
             _connection.Dispose();
+            _connection = null;
+            _connectionClosed = true;
+
             Debug.Log("[DB] Conexión cerrada.");
         }
     }

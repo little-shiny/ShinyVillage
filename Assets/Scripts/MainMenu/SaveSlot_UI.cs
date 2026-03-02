@@ -52,6 +52,20 @@ public class SaveSlotUI : MonoBehaviour
     ///manager>Referencia al menú para delegar botones
     public void Setup(SaveSlotData data, MainMenuManager manager)
     {
+        if(data == null)
+        {
+            Debug.LogError("[SaveSlotUI] Setup recibió un SaveSlotData NULO. " + "Revisar que la BD devuelva datos válidos.");
+            return; // Salimos para evitar el NullReferenceException
+        }
+
+        // También validar las referencias UI por si el prefab 
+        // no tiene los componentes asignados en el Inspector
+        if (slotNameText == null || playerNameText == null || lastSavedText == null || playTimeText == null || loadButton == null)
+        {
+            Debug.LogError("[SaveSlotUI] Faltan referencias UI en el prefab en el Inspector.");
+            return;
+        }
+
         _slotData    = data;
         _menuManager = manager;
 
