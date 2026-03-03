@@ -164,15 +164,15 @@ public class DatabaseManager : MonoBehaviour
         }
     }
 
-    // Ejecuta sentencia sql que devuelve datos como select
-    // Devuelve IdataReader para leer fila a fila los datos
-    //todo explicar
+    // Cambio a commandBehaviour para que cuando el reader se cierre el comando se libere y no se bloquee la bd
     public IDataReader ExecuteReader(string sql, SqlParametrizer parameterize = null)
     {
         IDbCommand cmd = _connection.CreateCommand();
         cmd.CommandText = sql;
         parameterize?.Invoke(cmd);
-        return cmd.ExecuteReader();
+
+        //close connection para que se cierre 
+        return cmd.ExecuteReader(CommandBehavior.CloseConnection);
     }
 
     /// Ejecuta una sentencia SQL y devuelve el primer valor de la primera fila.
