@@ -816,6 +816,14 @@ PrefabInstance:
       propertyPath: m_characterHorizontalScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 5835656259070938533, guid: 2f3479e827d06b945958d791febe35e3, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5835656259070938533, guid: 2f3479e827d06b945958d791febe35e3, type: 3}
+      propertyPath: m_MinHeight
+      value: 90
+      objectReference: {fileID: 0}
     - target: {fileID: 7377985600173278969, guid: 2f3479e827d06b945958d791febe35e3, type: 3}
       propertyPath: m_Name
       value: SaveSlotItem
@@ -878,7 +886,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8303636751470154053, guid: 2f3479e827d06b945958d791febe35e3, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 0
+      value: 120
       objectReference: {fileID: 0}
     - target: {fileID: 8303636751470154053, guid: 2f3479e827d06b945958d791febe35e3, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1186,7 +1194,7 @@ MonoBehaviour:
   m_ChildForceExpandWidth: 1
   m_ChildForceExpandHeight: 0
   m_ChildControlWidth: 1
-  m_ChildControlHeight: 1
+  m_ChildControlHeight: 0
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
@@ -1584,7 +1592,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_Sprite: {fileID: 0}
-  m_Type: 1
+  m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -3281,7 +3289,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1476186753}
   m_HandleRect: {fileID: 1476186752}
   m_Direction: 0
-  m_Value: 0
+  m_Value: 1
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
