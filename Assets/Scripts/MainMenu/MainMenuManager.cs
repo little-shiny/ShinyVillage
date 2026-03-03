@@ -87,8 +87,7 @@ public class MainMenuManager : MonoBehaviour
     private void Start()
     {
         // Estado inicial: solo el panel principal es visible
-        MostrarPanel(mainPanel
-);
+        MostrarPanel(mainPanel);
 
         // Limpiamos el texto de error al iniciar
         if (errorNuevoText != null)
@@ -98,7 +97,6 @@ public class MainMenuManager : MonoBehaviour
     // =========================================================================
     // BOTONES DEL PANEL PRINCIPAL
     // =========================================================================
-
 
     /// Se llama al pulsar el botón "Nueva Partida".
     /// Muestra el formulario para introducir el nombre del jugador.
@@ -118,7 +116,6 @@ public class MainMenuManager : MonoBehaviour
     /// Se llama al pulsar el botón "Cargar Partida".
     /// Carga las partidas de la BD y las muestra en el ScrollView.
     /// Asignar este método al onClick del botón CargarPartidaButton.
-
     public void OnCargarPartidaClicked()
     {
         MostrarPanel(loadGamePanel);
@@ -129,10 +126,8 @@ public class MainMenuManager : MonoBehaviour
     // PANEL NUEVA PARTIDA
     // =========================================================================
 
-
     /// Se llama al pulsar "Confirmar" en el panel de nueva partida.
     /// Valida los campos, crea la partida en BD y carga la escena del juego.
-
     public void OnConfirmarNuevaPartidaClicked()
     {
         // ── Validación: los campos no pueden estar vacíos ──────────────────────
@@ -160,130 +155,108 @@ public class MainMenuManager : MonoBehaviour
         SceneManager.LoadScene(gameSceneName);
     }
 
-
     /// Botón "Cancelar" en el panel de nueva partida.
     /// Vuelve al panel principal sin hacer nada.
     public void OnCancelarNuevaPartidaClicked()
     {
-        MostrarPanel(mainPanel
-);
+        MostrarPanel(mainPanel);
     }
 
     // =========================================================================
     // PANEL CARGAR PARTIDA
     // =========================================================================
 
-
     /// Consulta la BD y genera dinámicamente una fila (SaveSlotUI) por cada
     /// partida encontrada. Si no hay ninguna, muestra el texto "noSavesText".
-
     private void RefrescarListaPartidas()
-{
-    // ══ DIAGNÓSTICO COMPLETO ══════════════════════════════════════════════════
-    // Cada log te dice exactamente dónde falla. Busca en la Console cuál es
-    // el último mensaje que aparece → eso indica dónde se rompe el flujo.
-
-    Debug.Log("=== RefrescarListaPartidas INICIO ===");
-
-    // 1. ¿El contenedor existe y apunta al objeto correcto?
-    if (saveSlotsContainer == null)
     {
-        Debug.LogError("[DIAG] saveSlotsContainer es NULL → asigna el objeto 'Content' en el Inspector");
-        return;
-    }
-    Debug.Log($"[DIAG] saveSlotsContainer OK → '{saveSlotsContainer.name}' " +
-              $"| worldPos: {saveSlotsContainer.position} " +
-              $"| size: {((RectTransform)saveSlotsContainer).rect}");
-
-    // 2. ¿El prefab existe?
-    if (saveSlotPrefab == null)
-    {
-        Debug.LogError("[DIAG] saveSlotPrefab es NULL → asigna el prefab SaveSlotItem en el Inspector");
-        return;
-    }
-    Debug.Log($"[DIAG] saveSlotPrefab OK → '{saveSlotPrefab.name}'");
-
-    // 3. Limpiamos hijos anteriores
-    int hijosAnteriores = saveSlotsContainer.childCount;
-    foreach (Transform child in saveSlotsContainer)
-        Destroy(child.gameObject);
-    Debug.Log($"[DIAG] Limpiados {hijosAnteriores} hijos anteriores");
-
-    // 4. Consultamos la BD
-    List<SaveSlotData> slots = SaveGameManager.Instance.GetAllSaveSlots();
-    Debug.Log($"[DIAG] Slots de BD: {slots.Count}");
-
-    if (slots.Count == 0)
-    {
-        noSavesText?.gameObject.SetActive(true);
-        Debug.Log("[DIAG] Sin partidas → mostrando noSavesText");
-        return;
-    }
-
-    noSavesText?.gameObject.SetActive(false);
-
-    // 5. Instanciamos cada slot y forzamos tamaño visible
-    for (int i = 0; i < slots.Count; i++)
-    {
-        SaveSlotData slot = slots[i];
-
-        // Instanciamos el prefab como hijo del Content
-        GameObject slotGO = Instantiate(saveSlotPrefab, saveSlotsContainer);
-        slotGO.name = $"SaveSlotItem_{i}_{slot.SlotName}";
-
-        // ── FORZAMOS tamaño por código para eliminar dudas del layout ─────
-        // Si con esto se ven los items → el problema es de configuración del prefab
-        // Si sigue sin verse → el problema es de posición del Content o del Canvas
-        RectTransform rt = slotGO.GetComponent<RectTransform>();
-        rt.sizeDelta = new Vector2(0, 120); // ancho controlado por el padre, alto fijo 120px
-
-        // ── Comprobamos si tiene SaveSlotUI ───────────────────────────────
-        SaveSlotUI slotUI = slotGO.GetComponent<SaveSlotUI>();
-
-        Debug.Log($"[DIAG] Slot {i} '{slot.SlotName}' → " +
-                  $"instanciado: {slotGO != null} | " +
-                  $"SaveSlotUI: {slotUI != null} | " +
-                  $"active: {slotGO.activeInHierarchy} | " +
-                  $"pos: {rt.anchoredPosition} | " +
-                  $"size: {rt.sizeDelta} | " +
-                  $"padre: {slotGO.transform.parent?.name}");
-
-        if (slotUI == null)
+        // ── Guardas: comprobamos que las referencias están asignadas ──────────
+        if (saveSlotsContainer == null)
         {
-            // El prefab asignado NO tiene SaveSlotUI → prefab incorrecto
-            Debug.LogError($"[DIAG] ¡PREFAB INCORRECTO! '{saveSlotPrefab.name}' no tiene SaveSlotUI. " +
-                           "Asigna 'SaveSlotItem' (no 'Slot') en el Inspector del MainMenuManager.");
-            continue;
+            Debug.LogError("[Menu] saveSlotsContainer es NULL → asigna 'Content' en el Inspector.");
+            return;
+        }
+        if (saveSlotPrefab == null)
+        {
+            Debug.LogError("[Menu] saveSlotPrefab es NULL → asigna 'SaveSlotItem' en el Inspector.");
+            return;
         }
 
-        slotUI.Setup(slot, this);
-        Debug.Log($"[DIAG] Slot {i} Setup completado");
+        // ── Configuramos el VerticalLayoutGroup por código ────────────────────
+        // Esto garantiza que Control Child Size Height esté activado, que es lo
+        // que permite al ContentSizeFitter calcular correctamente la altura total.
+        // Sin childControlHeight = true, el Content se queda con height 0 aunque
+        // los items tengan altura definida.
+        VerticalLayoutGroup vlg = saveSlotsContainer.GetComponent<VerticalLayoutGroup>();
+        if (vlg != null)
+        {
+            vlg.childControlWidth      = true;   // el layout controla el ancho de los hijos
+            vlg.childControlHeight     = true;   // ← CLAVE: el layout lee la altura preferida de cada hijo
+            vlg.childForceExpandWidth  = true;   // los hijos se estiran al ancho del Content
+            vlg.childForceExpandHeight = false;  // los hijos NO se estiran en altura (usan su altura propia)
+            vlg.spacing    = 8f;
+            vlg.padding    = new RectOffset(10, 10, 10, 10);
+        }
+
+        // ── Limpiamos los slots anteriores ────────────────────────────────────
+        // Destruimos todos los hijos del Content para evitar duplicados al
+        // volver a abrir el panel de carga
+        foreach (Transform child in saveSlotsContainer)
+            Destroy(child.gameObject);
+
+        // ── Consultamos la base de datos ──────────────────────────────────────
+        List<SaveSlotData> slots = SaveGameManager.Instance.GetAllSaveSlots();
+
+        // ── Sin partidas: mostramos el aviso ──────────────────────────────────
+        bool haySaves = slots.Count > 0;
+        noSavesText?.gameObject.SetActive(!haySaves);
+
+        if (!haySaves) return;
+
+        // ── Instanciamos una fila por cada partida ────────────────────────────
+        foreach (SaveSlotData slot in slots)
+        {
+            // Creamos el prefab como hijo del Content del ScrollView
+            GameObject slotGO = Instantiate(saveSlotPrefab, saveSlotsContainer);
+
+            // Comprobamos que el prefab tiene el componente correcto
+            SaveSlotUI slotUI = slotGO.GetComponent<SaveSlotUI>();
+            if (slotUI == null)
+            {
+                // Si ves este error: el prefab asignado es incorrecto (p.ej. Slot.prefab del inventario)
+                Debug.LogError($"[Menu] El prefab '{saveSlotPrefab.name}' no tiene SaveSlotUI. " +
+                               "Asigna el prefab correcto en el Inspector.");
+                continue;
+            }
+
+            // Pasamos los datos al componente de UI del prefab
+            slotUI.Setup(slot, this);
+        }
+
+        // ── Forzamos recalculo del layout ─────────────────────────────────────
+        // Unity no siempre recalcula el layout en el mismo frame en que se
+        // instancian los hijos. ForceRebuildLayoutImmediate lo fuerza ahora mismo,
+        // haciendo que el ContentSizeFitter ajuste la altura del Content
+        // y el ScrollRect pueda calcular el scroll correctamente.
+        RectTransform contentRT = (RectTransform)saveSlotsContainer;
+        Canvas.ForceUpdateCanvases();
+        LayoutRebuilder.ForceRebuildLayoutImmediate(contentRT);
     }
 
-    // 6. Estado final del Content después de instanciar
-    RectTransform contentRT = (RectTransform)saveSlotsContainer;
-    Debug.Log($"[DIAG] Content después: hijos={saveSlotsContainer.childCount} | " +
-              $"size={contentRT.rect} | anchoredPos={contentRT.anchoredPosition}");
-
-    // 7. Forzamos recalculo del layout manualmente
-    // A veces Unity no recalcula el layout automáticamente en el mismo frame
-    Canvas.ForceUpdateCanvases();
-    UnityEngine.UI.LayoutRebuilder.ForceRebuildLayoutImmediate(contentRT);
-
-    Debug.Log("=== RefrescarListaPartidas FIN ===");
-}
-
+    // =========================================================================
+    // ACCIONES DE LOS SLOTS (llamadas desde SaveSlotUI)
+    // =========================================================================
 
     /// Llamado desde SaveSlotUI cuando el jugador pulsa "Cargar" en un slot.
     /// Carga la partida en SaveGameManager y cambia a la escena del juego.
-    /// slotId>ID del slot a cargar (viene de SaveSlotData.Id)
+    /// slotId > ID del slot a cargar (viene de SaveSlotData.Id)
     public void OnLoadSlotClicked(int slotId)
     {
         Debug.Log($"[Menu] Cargando partida con slot ID: {slotId}");
 
-        // LoadGame carga los datos del jugador (posición, etc.) y devuelve PlayerData
+        // LoadGame carga los datos del jugador (posición, etc.) y devuelve PlayerData.
         // La escena del juego usará SaveGameManager.Instance.CurrentSlotId para saber
-        // qué partida está activa
+        // qué partida está activa.
         SaveGameManager.Instance.LoadGame(slotId);
 
         SceneManager.LoadScene(gameSceneName);
@@ -300,17 +273,16 @@ public class MainMenuManager : MonoBehaviour
             return;
         }
 
-        // Necesitamos los datos actuales del jugador para guardarlos
-        // En un juego real estos vendrían del Player activo en escena.
-        // Como estamos en el menú, usamos los datos que ya están en BD y solo actualizamos la fecha y el tiempo de juego.
+        // En un juego real los datos vendrían del Player activo en escena.
+        // Como estamos en el menú, solo actualizamos la fecha y tiempo de juego.
         SaveGameManager.Instance.SaveCurrentGame(
             new PlayerData
             {
                 SlotId   = slotId,
-                Name     = "",      // Se rellenará con el jugador real
+                Name     = "",           // Se rellenará con el jugador real
                 Position = Vector3.zero
             },
-            playTime: 0f            // Se rellenará con el tiempo real
+            playTime: 0f                 // Se rellenará con el tiempo real
         );
 
         Debug.Log($"[Menu] Slot {slotId} sobrescrito.");
@@ -322,9 +294,8 @@ public class MainMenuManager : MonoBehaviour
     /// Llamado desde SaveSlotUI cuando el jugador pulsa "Borrar" en un slot.
     /// Guarda el ID y el GameObject pendientes y muestra el diálogo de confirmación.
     /// NO borra inmediatamente: esperamos confirmación del jugador.
-
-    /// slotId>ID del slot a borrar
-    /// slotGameObject>El GameObject de la fila en la UI (para eliminarlo visualmente)
+    /// slotId > ID del slot a borrar
+    /// slotGameObject > El GameObject de la fila en la UI (para eliminarlo visualmente)
     public void OnDeleteSlotClicked(int slotId, GameObject slotGameObject)
     {
         // Guardamos temporalmente qué slot queremos borrar
@@ -333,24 +304,22 @@ public class MainMenuManager : MonoBehaviour
 
         // Actualizamos el texto del diálogo de confirmación
         if (confirmDeleteText != null)
-            confirmDeleteText.text = $"¿Seguro que quieres borrar esta partida?\nEsta acción no se puede deshacer.";
+            confirmDeleteText.text = "¿Seguro que quieres borrar esta partida?\nEsta acción no se puede deshacer.";
 
         // Mostramos el panel de confirmación encima del panel de carga
         confirmationPanel.SetActive(true);
     }
 
-    /// /// Botón "Cancelar" en el panel de cargar partida.
+    /// Botón "Cancelar" en el panel de cargar partida.
     /// Vuelve al panel principal.
     public void OnCancelarCargarClicked()
     {
-        MostrarPanel(mainPanel
-);
+        MostrarPanel(mainPanel);
     }
 
     // =========================================================================
     // PANEL CONFIRMACIÓN BORRAR
     // =========================================================================
-
 
     /// Confirma el borrado: elimina el slot de la BD y lo quita de la lista visible.
     /// Asignar al botón "Confirmar" del diálogo de confirmación.
@@ -376,8 +345,9 @@ public class MainMenuManager : MonoBehaviour
         confirmationPanel.SetActive(false);
 
         // Si ya no quedan partidas, mostramos el aviso "Sin partidas guardadas"
-        if (saveSlotsContainer.childCount == 0)
-            noSavesText.gameObject.SetActive(true);
+        // childCount puede ser 1 en lugar de 0 porque Destroy es diferido un frame,
+        // así que refrescamos la lista directamente para estar seguros
+        RefrescarListaPartidas();
     }
 
     /// Cancela el borrado: cierra el diálogo sin tocar la base de datos.
@@ -396,8 +366,9 @@ public class MainMenuManager : MonoBehaviour
     // =========================================================================
 
     /// Oculta todos los paneles y muestra solo el indicado.
-    /// Centraliza la navegación entre paneles para evitar errores al olvidar desactivar algún panel manualmente.
-    /// panelToShow  >El panel que debe quedar visible
+    /// Centraliza la navegación entre paneles para evitar errores al olvidar
+    /// desactivar algún panel manualmente.
+    /// panelToShow > El panel que debe quedar visible
     private void MostrarPanel(GameObject panelToShow)
     {
         // Desactivamos todos los paneles
