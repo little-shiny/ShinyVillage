@@ -1,9 +1,9 @@
 # Memoria del Proyecto: ShinyVillage
 
-**Asignatura:** Desarrollo de Videojuegos  
-**Alumno:** [Tu nombre]  
+**Asignatura:** Proyecto Intermodular DAM
+**Alumno:** Cristina García Quintero
 **Fecha:** Marzo 2026  
-**Repositorio:** [URL del repositorio GitHub]
+**Repositorio:** [URL del repositorio GitHub](https://github.com/little-shiny/ShinyVillage)
 
 ---
 
