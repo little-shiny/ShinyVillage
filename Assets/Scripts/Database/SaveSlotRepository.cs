@@ -68,23 +68,25 @@ public class SaveSlotRepository
     {
         var slots = new List<SaveSlotData>();
 
-        using (IDataReader reader = _db.ExecuteReader(
-            "SELECT id, slot_name, player_name, created_at, last_saved, play_time FROM SaveSlots ORDER BY last_saved DESC"))
+        // Usamos ahora executeQuery
+        var rows = _db.ExecuteQuery(
+            "SELECT id, slot_name, player_name, created_at, last_saved, play_time " + "FROM SaveSlots ORDER BY last_saved DESC"
+        );
+
+        // Para cada resultado de la query anterior
+        foreach(var row in rows)
         {
-            while (reader.Read()) // Iteramos fila a fila
+            slots.Add(new SaveSlotData // Creamos un slot de guardado
             {
-                slots.Add(new SaveSlotData
-                {
-                    Id         = reader.GetInt32(0),
-                    SlotName   = reader.GetString(1),
-                    PlayerName = reader.GetString(2),
-                    CreatedAt  = DateTime.Parse(reader.GetString(3)),
-                    LastSaved  = DateTime.Parse(reader.GetString(4)),
-                    PlayTime   = (float)reader.GetDouble(5)
-                });
-            }
+                Id = Convert.ToInt32(row["id"]),
+                SlotName = row["slot_name"].ToString(),
+                CreatedAt = DateTime.Parse(row["created_at"].ToString()),
+                LastSaved  = DateTime.Parse(row["last_saved"].ToString()),
+                PlayTime   = Convert.ToSingle(row["play_time"])
+            });
         }
 
+        Debug.Log($"[DB] Se encontraron {slots.Count} partidas guardadas.");
         return slots;
     }
 
