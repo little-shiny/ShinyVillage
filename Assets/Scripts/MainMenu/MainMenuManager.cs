@@ -178,40 +178,100 @@ public class MainMenuManager : MonoBehaviour
     /// partida encontrada. Si no hay ninguna, muestra el texto "noSavesText".
 
     private void RefrescarListaPartidas()
+{
+    // ══ DIAGNÓSTICO COMPLETO ══════════════════════════════════════════════════
+    // Cada log te dice exactamente dónde falla. Busca en la Console cuál es
+    // el último mensaje que aparece → eso indica dónde se rompe el flujo.
+
+    Debug.Log("=== RefrescarListaPartidas INICIO ===");
+
+    // 1. ¿El contenedor existe y apunta al objeto correcto?
+    if (saveSlotsContainer == null)
     {
-        // ── Limpiamos los slots anteriores ────────────────────────────────────
-        // Destruimos todos los hijos del Content para evitar duplicados
-        foreach (Transform child in saveSlotsContainer)
-            Destroy(child.gameObject);
-
-        // ── Consultamos la base de datos ──────────────────────────────────────
-        List<SaveSlotData> slots = SaveGameManager.Instance.GetAllSaveSlots();
-
-        // ── Sin partidas: mostramos el aviso ──────────────────────────────────
-        bool haySaves = slots.Count > 0;
-        noSavesText.gameObject.SetActive(!haySaves);
-
-        if (!haySaves) return;
-
-        // ── Instanciamos una fila por cada partida ────────────────────────────
-        foreach (SaveSlotData slot in slots)
-        {
-            // Creamos el prefab como hijo del Content del ScrollView
-            GameObject slotGO = Instantiate(saveSlotPrefab, saveSlotsContainer);
-
-            // Obtenemos el componente SaveSlotUI y le pasamos los datos
-            SaveSlotUI slotUI = slotGO.GetComponent<SaveSlotUI>();
-
-            if (slotUI == null)
-            {
-                Debug.LogError("[Menu] El prefab no tiene el componente SaveSlotUI.");
-                continue;
-            }
-
-            // Setup rellena los textos y asigna los listeners de los botones
-            slotUI.Setup(slot, this);
-        }
+        Debug.LogError("[DIAG] saveSlotsContainer es NULL → asigna el objeto 'Content' en el Inspector");
+        return;
     }
+    Debug.Log($"[DIAG] saveSlotsContainer OK → '{saveSlotsContainer.name}' " +
+              $"| worldPos: {saveSlotsContainer.position} " +
+              $"| size: {((RectTransform)saveSlotsContainer).rect}");
+
+    // 2. ¿El prefab existe?
+    if (saveSlotPrefab == null)
+    {
+        Debug.LogError("[DIAG] saveSlotPrefab es NULL → asigna el prefab SaveSlotItem en el Inspector");
+        return;
+    }
+    Debug.Log($"[DIAG] saveSlotPrefab OK → '{saveSlotPrefab.name}'");
+
+    // 3. Limpiamos hijos anteriores
+    int hijosAnteriores = saveSlotsContainer.childCount;
+    foreach (Transform child in saveSlotsContainer)
+        Destroy(child.gameObject);
+    Debug.Log($"[DIAG] Limpiados {hijosAnteriores} hijos anteriores");
+
+    // 4. Consultamos la BD
+    List<SaveSlotData> slots = SaveGameManager.Instance.GetAllSaveSlots();
+    Debug.Log($"[DIAG] Slots de BD: {slots.Count}");
+
+    if (slots.Count == 0)
+    {
+        noSavesText?.gameObject.SetActive(true);
+        Debug.Log("[DIAG] Sin partidas → mostrando noSavesText");
+        return;
+    }
+
+    noSavesText?.gameObject.SetActive(false);
+
+    // 5. Instanciamos cada slot y forzamos tamaño visible
+    for (int i = 0; i < slots.Count; i++)
+    {
+        SaveSlotData slot = slots[i];
+
+        // Instanciamos el prefab como hijo del Content
+        GameObject slotGO = Instantiate(saveSlotPrefab, saveSlotsContainer);
+        slotGO.name = $"SaveSlotItem_{i}_{slot.SlotName}";
+
+        // ── FORZAMOS tamaño por código para eliminar dudas del layout ─────
+        // Si con esto se ven los items → el problema es de configuración del prefab
+        // Si sigue sin verse → el problema es de posición del Content o del Canvas
+        RectTransform rt = slotGO.GetComponent<RectTransform>();
+        rt.sizeDelta = new Vector2(0, 120); // ancho controlado por el padre, alto fijo 120px
+
+        // ── Comprobamos si tiene SaveSlotUI ───────────────────────────────
+        SaveSlotUI slotUI = slotGO.GetComponent<SaveSlotUI>();
+
+        Debug.Log($"[DIAG] Slot {i} '{slot.SlotName}' → " +
+                  $"instanciado: {slotGO != null} | " +
+                  $"SaveSlotUI: {slotUI != null} | " +
+                  $"active: {slotGO.activeInHierarchy} | " +
+                  $"pos: {rt.anchoredPosition} | " +
+                  $"size: {rt.sizeDelta} | " +
+                  $"padre: {slotGO.transform.parent?.name}");
+
+        if (slotUI == null)
+        {
+            // El prefab asignado NO tiene SaveSlotUI → prefab incorrecto
+            Debug.LogError($"[DIAG] ¡PREFAB INCORRECTO! '{saveSlotPrefab.name}' no tiene SaveSlotUI. " +
+                           "Asigna 'SaveSlotItem' (no 'Slot') en el Inspector del MainMenuManager.");
+            continue;
+        }
+
+        slotUI.Setup(slot, this);
+        Debug.Log($"[DIAG] Slot {i} Setup completado");
+    }
+
+    // 6. Estado final del Content después de instanciar
+    RectTransform contentRT = (RectTransform)saveSlotsContainer;
+    Debug.Log($"[DIAG] Content después: hijos={saveSlotsContainer.childCount} | " +
+              $"size={contentRT.rect} | anchoredPos={contentRT.anchoredPosition}");
+
+    // 7. Forzamos recalculo del layout manualmente
+    // A veces Unity no recalcula el layout automáticamente en el mismo frame
+    Canvas.ForceUpdateCanvases();
+    UnityEngine.UI.LayoutRebuilder.ForceRebuildLayoutImmediate(contentRT);
+
+    Debug.Log("=== RefrescarListaPartidas FIN ===");
+}
 
 
     /// Llamado desde SaveSlotUI cuando el jugador pulsa "Cargar" en un slot.
