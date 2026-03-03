@@ -2,7 +2,8 @@ using System.Data;
 using System.IO;
 using Unity.VisualScripting;
 using UnityEngine;
-using System.Data.SQLite; // SQLiteConnection  ← viene del paquete instalado con NuGetForUnity
+using System.Data.SQLite;
+using System.Collections.Generic; // SQLiteConnection  ← viene del paquete instalado con NuGetForUnity
 
 //Correccion conflicto con System.action porque detectaba otras versiones de system.dll
 public delegate void SqlParametrizer(IDbCommand cmd);
@@ -164,15 +165,30 @@ public class DatabaseManager : MonoBehaviour
         }
     }
 
-    // Cambio a commandBehaviour para que cuando el reader se cierre el comando se libere y no se bloquee la bd
-    public IDataReader ExecuteReader(string sql, SqlParametrizer parameterize = null)
+    // Devuelve los datos ya leídos en una lista, en lugar de devolver un reader "vivo".
+    // Así el comando se cierra inmediatamente y la conexión queda libre.
+    public List<Dictionary<string, object>> ExecuteQuery(string sql, SqlParametrizer parameterize = null)
     {
-        IDbCommand cmd = _connection.CreateCommand();
-        cmd.CommandText = sql;
-        parameterize?.Invoke(cmd);
+        var results = new List<Dictionary<string, object>>();
 
-        //close connection para que se cierre 
-        return cmd.ExecuteReader(CommandBehavior.CloseConnection);
+        using (IDbCommand cmd = _connection.CreateCommand()) // using → se libera siempre
+        {
+            cmd.CommandText = sql;
+            parameterize?.Invoke(cmd);
+
+            using (IDataReader reader = cmd.ExecuteReader()) // using → reader se cierra siempre
+            {
+                while (reader.Read())
+                {
+                    var row = new Dictionary<string, object>();
+                    for (int i = 0; i < reader.FieldCount; i++)
+                        row[reader.GetName(i)] = reader.GetValue(i); // guardamos columna por nombre
+                    results.Add(row);
+                }
+            } // reader se cierra aquí
+        } // comando se libera aquí
+
+        return results; // devolvemos datos ya extraídos
     }
 
     /// Ejecuta una sentencia SQL y devuelve el primer valor de la primera fila.
