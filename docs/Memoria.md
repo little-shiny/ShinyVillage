@@ -12,7 +12,7 @@ aqui el resumen en español y en inglés
 
 # 1. Descripción del proyecto
 
-## 1.1 Descripción del proyecto
+## 1.1 Introducción
 
 **ShinyVillage** es un videojuego de rol en dos dimensiones (RPG 2D) que fue creado con el motor Unity y cuya programación se realizó en C#. La propuesta principal es poner al jugador en la dirección de una aldea, donde tiene que administrar los recursos, cultivar su granja y examinar el ambiente desde un punto de vista cenital típico del género.
 
@@ -167,6 +167,11 @@ El acuerdo de desarrollo queda recogido en los terminos de entregas del centro f
 | Deuda técnica por crecimiento no planificado del código | Media | Medio | Arquitectura en capas con patrón Repository desde el inicio |
 | Pérdida de progreso en el repositorio Git | Baja | Alto | Ramas por funcionalidad y commits frecuentes |
 | Falta de tiempo para completar el sistema de granja | Media | Medio | El núcleo del juego es funcional sin él; se plantea como fase ampliable |
+
+# 3. Análisis y diseño
+
+## 3.1 Modelado de datos
+### 3.1.1 Modelo E/R del sistema de guardado
 
 # 7. Referencias
 
