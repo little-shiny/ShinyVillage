@@ -6,477 +6,75 @@
 **Repositorio:** [URL del repositorio GitHub](https://github.com/little-shiny/ShinyVillage)
 
 ---
-
-## Índice
-
-1. [Introducción](#1-introducción)
-2. [Planificación](#2-planificación)
-3. [Análisis y Diseño](#3-análisis-y-diseño)
-4. [Implementación](#4-implementación)
-5. [Pruebas](#5-pruebas)
-6. [Conclusiones](#6-conclusiones)
-7. [Referencias](#7-referencias)
+aqui el resumen en español y en inglés
 
 ---
 
-## 1. Introducción
+# 1. Planificación
 
-### 1.1 Descripción del proyecto
+## 1.1 Descripción del proyecto
 
-**ShinyVillage** es un videojuego RPG 2D de vista cenital desarrollado con **Unity** y **C#**. El jugador controla un personaje que puede moverse por un mapa basado en *tilemaps*, interactuar con el entorno, recoger objetos y gestionarlos mediante un sistema de inventario.
+**ShinyVillage** es un videojuego de rol en dos dimensiones (RPG 2D) que fue creado con el motor Unity y cuya programación se realizó en C#. La propuesta principal es poner al jugador en la dirección de una aldea, donde tiene que administrar los recursos, cultivar su granja y examinar el ambiente desde un punto de vista cenital típico del género.
 
-El proyecto se ha desarrollado como práctica de programación orientada a objetos aplicada al desarrollo de videojuegos, explorando patrones de diseño habituales en la industria como el **Singleton**, el uso de **ScriptableObjects** para datos de items y la separación entre lógica y presentación (UI).
+El jugador maneja a un personaje que se mueve sin restricciones por el mapa, recoge objetos del entorno, los guarda en un inventario y realiza acciones con aquellos elementos del terreno que son interactivos, como las celdas agrícolas. El personaje es seguido de manera constante por la cámara. Como el progreso se almacena en una base de datos local (SQLite), el jugador tiene la posibilidad de crear múltiples partidas independientes, reanudarlas cuando quiera o eliminarlas desde el menú.
 
-### 1.2 Objetivos
+El ciclo de juego proyectado incorpora procedimientos relacionados con la agricultura (cultivar, regar y recoger productos en tiles), manejo del inventario (recoger, amontonar y soltar artículos) e interacción con el mapa a través de un sistema de tiles clasificados según su condición.
 
-- Implementar un sistema de movimiento 2D con animaciones direccionales.
-- Crear un sistema de inventario con slots apilables.
-- Desarrollar la interacción con tiles del mapa mediante *Tilemaps* de Unity.
-- Construir una interfaz de usuario funcional para el inventario.
-- Aplicar el patrón Singleton para el gestor global del juego.
+## 1.2 Contexto del proyecto
+| **Aspecto** | Implementación |
+|---|---|
+| **Ámbito y entorno** | El proyecto se desarrolla en un contexto académico, sin un cliente externo, donde el propio equipo actúa como desarrollador y receptor técnico del producto. El entorno de desarrollo se basa en **Unity** con **C#**, utilizando **SQLite** integrado mediante **NuGetForUnity** para la persistencia de datos, mientras que el control de versiones se gestiona con **Git** mediante ramas de desarrollo. El proyecto parte desde cero con el objetivo de aprender desarrollo de videojuegos y aplicar una arquitectura sólida. Para ello se plantean como elementos clave un sistema de guardado seguro del estado de la partida, un inventario con gestión visual de espacios, movimiento del personaje con animaciones fluidas, un sistema de losetas interactivas basado en **Tilemap** y una estructura escalable que permita añadir nuevas mecánicas sin modificar el núcleo del sistema. |
+| **Solución y justificación** | La solución elegida estructura el juego en sistemas independientes conectados mediante patrones de diseño. Se utiliza el patrón **Singleton** en gestores como `GameManager`, `DatabaseManager` y `SaveGameManager` para garantizar una única instancia global en **Unity**. La persistencia se gestiona con **SQLite**, lo que permite organizar los datos de forma relacional y facilitar consultas y ampliaciones del sistema. Además, el patrón **Repository** separa el acceso a la base de datos de la lógica del juego.Por otro lado, el inventario se implementa con una clase independiente del motor y una interfaz de usuario separada para la visualización. Finalmente, el sistema de tiles utiliza el componente **Tilemap**, gestionado por un `TileManager`. Todo ello sigue una arquitectura en capas que separa presentación, lógica y datos para mejorar la mantenibilidad y escalabilidad del proyecto. |
+| **Destinatarios** | El juego contempla como único tipo de usuario el jugador. Su rol dentro del sistema le permite crear y modificar partidas desde el menú, así como el movimiento de un personaje y sus decisiones sobre la interacción con el mapa. Tmbién puede gestionar su inventario decidiendo qué objetos soltar y cuáles soltar. No se contempla ningún rol de administrador ni perfil técnico dentro de la experiencia de juego. Toda la gestión interna (base de datos, repositorios, gestores) es transparente para el jugador y opera de forma automática en segundo plano. |
 
-### 1.3 Tecnologías utilizadas
 
-| Tecnología | Versión | Uso |
-|---|---|---|
-| Unity | 6 (URP) | Motor de juego principal |
-| C# | — | Lenguaje de programación |
-| Universal Render Pipeline (URP) | 17.3.0 | Renderizado 2D con iluminación |
-| Unity Input System | 1.18.0 | Gestión de entradas del jugador |
-| TextMeshPro | — | Textos en la UI del inventario |
-| Git / GitHub | — | Control de versiones |
 
----
+## 1.3 Objetivo del proyecto
 
-## 2. Planificación
+ShinyVillage tiene la finalidad de ofrecer al jugador una experiencia de ocio digital tranquilo, de estilo casual basado en una siple gestión de recursos y un entorno de fantasía. 
+La aplicación no tiene una vocación comercial en este momento porque está enmarcada en un contecto de aprendizaje y desarrollo en técnicas de programación de videojuegos.
 
-### 2.1 Metodología
+## 1.4 Marco legal
+Al tratarse de un videojuego de entretenimiento en fase de desarrollo académico, sin distribución comercial ni recogida de datos personales identificativos, el marco legal aplicable es reducido.
 
-El desarrollo se ha organizado en **fases iterativas**, añadiendo funcionalidad de forma incremental y probando cada sistema antes de pasar al siguiente. Las fases han sido:
+### Protección de datos (RGPD / LOPDGDD)
+La aplicación almacena únicamente datos de juego —nombre de personaje, progreso, posición— de forma local en el dispositivo del usuario, sin transmisión a servidores externos. El nombre del personaje es un alias libremente elegido, no vinculado a ninguna identidad real, por lo que en su estado actual no se tratan datos personales en el sentido del RGPD (Reglamento UE 2016/679) ni de la LOPDGDD (LO 3/2018). Si en el futuro se incorporasen cuentas de usuario o cualquier dato identificativo, la aplicación quedaría sujeta a dichas normas.
 
-1. Movimiento del jugador y animaciones
-2. Cámara de seguimiento
-3. Sistema de items y recolección
-4. Sistema de inventario (lógica)
-5. UI del inventario
-6. Interacción con el Tilemap
-7. GameManager y gestión global
+### Propiedad intelectual
 
-### 2.2 Control de versiones
+El proyecto ShinyVillage se distribuye bajo una **licencia personalizada basada en Apache License 2.0**, a la que se añade una cláusula de restricción de uso comercial. Esto significa que cualquier persona puede usar, estudiar, modificar y redistribuir el software y sus versiones derivadas, pero **no puede hacerlo con fines comerciales** sin autorización expresa.
 
-El proyecto está alojado en **GitHub**. Se ha trabajado en la rama principal (`main`), con commits frecuentes que documentan el progreso de cada funcionalidad.
+Esta licencia no está aprobada por la OSI (*Open Source Initiative*) al incluir dicha restricción, pero es plenamente válida desde el punto de vista legal.
 
----
+Si en algún momento se desea autorizar un uso comercial concreto a un tercero, bastaría con un acuerdo escrito adicional entre las partes, sin necesidad de cambiar esta licencia.
 
-## 3. Análisis y Diseño
+### Clasificación por edades
+En caso de distribución pública, el sistema PEGI clasificaría previsiblemente el juego como **PEGI 3**, dado su contenido de fantasía sin elementos violentos ni adultos.
 
-### 3.1 Requisitos funcionales
 
-- **RF01** — El jugador puede moverse en 8 direcciones con animaciones acordes.
-- **RF02** — El jugador puede recoger items al colisionar con ellos en el mapa.
-- **RF03** — Los items recogidos se almacenan en un inventario de 21 slots.
-- **RF04** — Los items del mismo tipo se apilan en el mismo slot (hasta 99 por slot).
-- **RF05** — El jugador puede abrir y cerrar el inventario con la tecla `Tab`.
-- **RF06** — El jugador puede soltar items del inventario al mapa.
-- **RF07** — El jugador puede interactuar con tiles marcados como interactuables pulsando `Espacio`.
-- **RF08** — La cámara sigue al jugador en todo momento.
+## 1.5 Requisitos funcionales y no funcionales
 
-### 3.2 Arquitectura del proyecto
 
-El proyecto sigue una arquitectura de **componentes** propia de Unity, donde cada `MonoBehaviour` tiene una responsabilidad clara:
 
-```
-GameManager (Singleton)
-├── ItemManager      → Diccionario de items disponibles
-└── TileManager      → Gestión del Tilemap interactuable
+# 7. Referencias
 
-Player
-├── Movement         → Movimiento físico y animaciones
-├── Inventory        → Lógica del inventario (slots)
-└── Collectable      → Detección de items en el mapa
+**Protección de datos y privacidad**
+- [Reglamento (UE) 2016/679 — Reglamento General de Protección de Datos (RGPD)](https://eur-lex.europa.eu/legal-content/ES/TXT/?uri=CELEX%3A32016R0679)
+- [Ley Orgánica 3/2018, de Protección de Datos Personales y garantía de los derechos digitales (LOPDGDD)](https://www.boe.es/buscar/act.php?id=BOE-A-2018-16673)
+- [Agencia Española de Protección de Datos — Guía para el cumplimiento del RGPD](https://www.aepd.es/guias/guia-rgpd-para-responsables-de-tratamiento.pdf)
 
-UI
-├── Inventory_UI     → Control del panel de inventario
-└── Slot_UI          → Representación visual de cada slot
-```
+**Propiedad intelectual**
+- [Real Decreto Legislativo 1/1996 — Ley de Propiedad Intelectual](https://www.boe.es/buscar/act.php?id=BOE-A-1996-8930)
 
-### 3.3 Diagrama de clases (simplificado)
+**Clasificación por edades**
+- [Sistema de clasificación PEGI — Pan European Game Information](https://pegi.info/es)
 
-```
-Inventory
-  └── List<Slot>
-        └── itemName: string
-        └── count: int
-        └── icon: Sprite
-
-Item ──────────── ItemData (ScriptableObject)
-  └── rb2d            └── itemName: string
-  └── data            └── icon: Sprite
-
-GameManager ──── ItemManager
-  (Singleton)  └── Dictionary<string, Item>
-             ──── TileManager
-                └── Tilemap interactableMap
-```
+**Licencias de software**
+- [Apache License, Version 2.0 — texto oficial](https://www.apache.org/licenses/LICENSE-2.0)
+- [Open Source Initiative — definición de licencia de código abierto](https://opensource.org/osd)
 
----
-
-## 4. Implementación
-
-### 4.1 GameManager — Patrón Singleton
-
-El `GameManager` centraliza el acceso a los sistemas principales del juego. Usa el patrón **Singleton** para garantizar que sólo existe una instancia y que es accesible desde cualquier script.
-
-```csharp
-public class GameManager : MonoBehaviour
-{
-    // Instancia estática: garantiza una única existencia global
-    public static GameManager instance;
-
-    public ItemManager itemManager;
-    public TileManager tileManager;
-
-    private void Awake()
-    {
-        // Si ya existe otra instancia, destruimos este duplicado
-        if (instance != null && instance != this)
-        {
-            Destroy(this.gameObject);
-        }
-        else
-        {
-            instance = this; // Nos convertimos en la instancia única
-        }
-
-        // El GameManager persiste entre escenas
-        DontDestroyOnLoad(this.gameObject);
-
-        // Obtenemos los managers desde los componentes del mismo GameObject
-        itemManager = GetComponent<ItemManager>();
-        tileManager = GetComponent<TileManager>();
-    }
-}
-```
-
-**¿Por qué Singleton aquí?** Porque el GameManager necesita ser accedido por muchos sistemas (Player, UI, Collectable...) sin necesidad de referencias directas en el Inspector.
-
----
-
-### 4.2 Movimiento del jugador
-
-El script `Movement` captura la entrada del usuario y mueve al jugador. Se separa `Update` (lectura de input) de `FixedUpdate` (física) para evitar el efecto de "rebote" con los colliders.
-
-```csharp
-public class Movement : MonoBehaviour
-{
-    public float speed;          // Velocidad configurable desde el Inspector
-    public Animator animator;    // Referencia al Animator del sprite
-
-    private Vector3 direction;   // Dirección actual del movimiento
-
-    private void Update()
-    {
-        // Leemos los ejes de entrada (valores -1, 0 o 1)
-        float horizontal = Input.GetAxisRaw("Horizontal");
-        float vertical   = Input.GetAxisRaw("Vertical");
-
-        // Combinamos en un vector y normalizamos para que la diagonal
-        // no sea más rápida que los movimientos cardinales
-        direction = new Vector3(horizontal, vertical).normalized;
-
-        animateMovement(direction);
-    }
-
-    private void FixedUpdate()
-    {
-        // Movemos el transform en FixedUpdate para sincronizarlo
-        // con el motor de física y evitar el efecto rebote
-        transform.position += direction * speed * Time.deltaTime;
-    }
-
-    void animateMovement(Vector3 direction)
-    {
-        if (animator != null)
-        {
-            if (direction.magnitude > 0) // Si hay movimiento
-            {
-                animator.SetBool("isMoving", true);
-                // Pasamos la dirección al Animator para elegir la animación correcta
-                animator.SetFloat("horizontal", direction.x);
-                animator.SetFloat("vertical",   direction.y);
-            }
-            else // Sin movimiento → animación idle
-            {
-                animator.SetBool("isMoving", false);
-            }
-        }
-    }
-}
-```
-
----
-
-### 4.3 Sistema de Inventario
-
-El inventario se compone de dos clases: `Inventory` (lógica) y `Slot` (clase interna que representa cada hueco).
-
-```csharp
-[System.Serializable] // Permite ver los datos en el Inspector de Unity
-public class Inventory
-{
-    [System.Serializable]
-    public class Slot
-    {
-        public string itemName; // Nombre del item en este slot
-        public int count;       // Cantidad de items apilados
-        public int maxAllowed;  // Máximo apilable (por defecto 99)
-        public Sprite icon;     // Icono para mostrar en la UI
-
-        public Slot()
-        {
-            itemName   = "";
-            count      = 0;
-            maxAllowed = 99;
-        }
-
-        // ¿Cabe un item más en este slot?
-        public bool CanAddItem() => count < maxAllowed;
-
-        // Añade un item: actualiza nombre, icono y contador
-        public void AddItem(Item item)
-        {
-            this.itemName = item.data.itemName;
-            this.icon     = item.data.icon;
-            count++;
-        }
-
-        // Elimina un item y limpia el slot si queda vacío
-        public void RemoveItem()
-        {
-            if (count > 0)
-            {
-                count--;
-                if (count == 0)
-                {
-                    icon     = null;
-                    itemName = "";
-                }
-            }
-        }
-    }
-
-    public List<Slot> slots = new List<Slot>();
-
-    // El constructor crea todos los slots vacíos de una vez
-    public Inventory(int numSlots)
-    {
-        for (int i = 0; i < numSlots; i++)
-            slots.Add(new Slot());
-    }
-}
-```
-
-**Decisiones de diseño relevantes:**
-- El inventario **no es un MonoBehaviour**, ya que es pura lógica de datos, sin presencia en la escena.
-- Se usa `[System.Serializable]` para poder visualizarlo en el Inspector y depurar fácilmente.
-- Los items del mismo tipo se apilan en el mismo slot buscando un slot existente con ese `itemName`.
-
----
-
-### 4.4 Interacción con el Tilemap
-
-`TileManager` gestiona el mapa de tiles interactuables. Al iniciar la escena, todas las tiles del mapa interactuable se sustituyen por una tile invisible, de forma que el jugador no ve las marcas de interacción hasta que actúa sobre ellas.
-
-```csharp
-public class TileManager : MonoBehaviour
-{
-    [SerializeField] private Tilemap interactableMap;       // Mapa con tiles interactuables
-    [SerializeField] private Tile hiddenInteractableTile;   // Tile invisible que sustituye a las originales
-    [SerializeField] private Tile InteractedTile;           // Tile que muestra que ya fue interactuada
-
-    public void Start()
-    {
-        // Recorremos todas las posiciones del mapa y las "ocultamos"
-        foreach (var position in interactableMap.cellBounds.allPositionsWithin)
-        {
-            interactableMap.SetTile(position, hiddenInteractableTile);
-        }
-    }
-
-    // Comprueba si la tile en esa posición es interactuable
-    public bool IsInteractable(Vector3Int position)
-    {
-        TileBase tile = interactableMap.GetTile(position);
-        // Solo consideramos interactuable la tile invisible ("invisible_int")
-        return tile != null && tile.name == "invisible_int";
-    }
-
-    // Marca una tile como "ya interactuada" cambiando su sprite
-    public void SetInteracted(Vector3Int position)
-    {
-        interactableMap.SetTile(position, InteractedTile);
-    }
-
-    // Convierte coordenadas de mundo a coordenadas de celda del tilemap
-    public Vector3Int GetCellPosition(Vector3 worldPosition)
-    {
-        return interactableMap.WorldToCell(worldPosition);
-    }
-}
-```
-
-La interacción se activa desde `Player.cs` al pulsar `Espacio`: se calcula la celda frente al jugador según su dirección actual y se comprueba si es interactuable.
-
----
-
-### 4.5 UI del Inventario
-
-La UI se divide en `Inventory_UI` (lógica del panel) y `Slot_UI` (representación de cada slot individual).
-
-```csharp
-public class Inventory_UI : MonoBehaviour
-{
-    public GameObject inventoryPanel; // Panel visual del inventario
-    public Player player;
-    public List<Slot_UI> slots = new List<Slot_UI>(); // Lista de slots visuales
-
-    void Update()
-    {
-        // Tab abre y cierra el inventario
-        if (Input.GetKeyDown(KeyCode.Tab))
-            ToggleInventory();
-    }
-
-    public void ToggleInventory()
-    {
-        if (!inventoryPanel.activeSelf)
-        {
-            inventoryPanel.SetActive(true);
-            Refresh(); // Actualizamos la vista al abrir
-        }
-        else
-        {
-            inventoryPanel.SetActive(false);
-        }
-    }
-
-    // Sincroniza los slots visuales con los datos del inventario del jugador
-    public void Refresh()
-    {
-        for (int i = 0; i < slots.Count; i++)
-        {
-            // Un slot se considera ocupado si tiene nombre Y cantidad > 0
-            if (i < player.inventory.slots.Count
-                && player.inventory.slots[i].itemName != ""
-                && player.inventory.slots[i].count > 0)
-            {
-                slots[i].SetItem(player.inventory.slots[i]);
-            }
-            else
-            {
-                slots[i].SetEmpty(); // Slot vacío → icono transparente
-            }
-        }
-    }
-
-    // Suelta un item al mapa y lo elimina del inventario
-    public void Remove(int slotID)
-    {
-        Item itemToDrop = GameManager.instance.itemManager.GetItemByName(
-            player.inventory.slots[slotID].itemName
-        );
-
-        if (itemToDrop != null)
-        {
-            player.DropItem(itemToDrop); // Spawn del item en el mapa
-            player.inventory.Remove(slotID);
-            Refresh(); // Actualiza la vista
-        }
-    }
-}
-```
-
----
-
-### 4.6 Cámara
-
-La cámara sigue al jugador manteniendo un *offset* fijo calculado en el `Start`.
-
-```csharp
-public class CameraFollow : MonoBehaviour
-{
-    [SerializeField] private Transform target; // Transform del jugador
-    Vector3 camOffset; // Desplazamiento inicial entre cámara y jugador
-
-    void Start()
-    {
-        // Calculamos el offset una sola vez al inicio
-        camOffset = transform.position - target.position;
-    }
-
-    private void FixedUpdate()
-    {
-        // Actualizamos en FixedUpdate para suavizar el movimiento
-        // junto con la física del jugador
-        transform.position = target.position + camOffset;
-    }
-}
-```
-
----
-
-## 5. Pruebas
-
-### 5.1 Pruebas realizadas
-
-| Funcionalidad | Prueba | Resultado |
-|---|---|---|
-| Movimiento | Mover en 8 direcciones | ✅ Correcto |
-| Animaciones | Animación idle y en movimiento | ✅ Correcto |
-| Recoger item | Colisionar con item en el mapa | ✅ Correcto |
-| Inventario lleno | Intentar recoger con 21 slots llenos | ⬜ Pendiente |
-| Abrir inventario | Pulsar Tab | ✅ Correcto |
-| Soltar item | Botón de soltar en slot con item | ✅ Correcto |
-| Interacción tile | Pulsar Espacio frente a tile interactuable | ✅ Correcto |
-| Persistencia GameManager | Cambio de escena | ⬜ Pendiente |
-
-### 5.2 Bugs encontrados y soluciones
-
-**Bug 1 — Slots mostrando cuadrado blanco vacío**  
-Los slots vacíos mostraban un cuadrado blanco porque Unity asigna un sprite por defecto blanco a los componentes `Image`. La solución fue poner el color alfa a 0 (`new Color(1,1,1,0)`) cuando el slot está vacío en `Slot_UI.SetEmpty()`.
-
-**Bug 2 — Efecto rebote al caminar junto a paredes**  
-El movimiento en `Update` provocaba que la física y el movimiento se calcularan en órdenes distintos. La solución fue mover `transform.position` a `FixedUpdate`, que se sincroniza con el motor de física.
-
-**Bug 3 — Items recogidos automáticamente al soltarlos**  
-Al soltar un item, el collider del jugador lo detectaba inmediatamente. La solución fue añadir un *offset* aleatorio (`Random.insideUnitCircle * 2f`) al punto de spawn para alejarlo del collider del jugador.
-
----
-
-## 6. Conclusiones
-
-### 6.1 Objetivos cumplidos
-
-Se han implementado con éxito todos los sistemas principales del juego: movimiento con animaciones, recolección de items, inventario con stacking, UI funcional e interacción con el tilemap. El uso de patrones como **Singleton** (GameManager) y la separación entre lógica y presentación han facilitado la mantenibilidad del código.
-
-### 6.2 Dificultades encontradas
-
-La principal dificultad fue la coordinación entre el sistema de física de Unity y el movimiento del jugador, así como la gestión del estado visual del inventario (sincronización entre datos e UI). También supuso un reto entender el ciclo de vida de los `MonoBehaviour` (`Awake`, `Start`, `Update`, `FixedUpdate`) y usarlo correctamente.
-
-### 6.3 Posibles mejoras futuras
-
-- Implementar un sistema de guardado y cargado del estado del juego.
-- Añadir más tipos de items con efectos (consumibles, equipables).
-- Ampliar el sistema de interacción con diálogos o eventos de historia.
-- Añadir enemigos con IA básica.
-- Implementar múltiples escenas/zonas del mapa.
-
----
-
-## 7. Referencias
-
-- [Documentación oficial de Unity](https://docs.unity.com)
-- [Unity Learn — 2D Game Development](https://learn.unity.com)
+**Tecnologías utilizadas**
+- [Unity — documentación oficial](https://docs.unity3d.com/Manual/index.html)
+- [SQLite — documentación oficial](https://www.sqlite.org/docs.html)
+- [System.Data.SQLite — documentación del paquete](https://system.data.sqlite.org/index.html/doc/trunk/www/index.wiki)
 - [Patrón Singleton en Unity — Game Programming Patterns](https://gameprogrammingpatterns.com/singleton.html)
-- [Universal Render Pipeline — Unity Docs](https://docs.unity3d.com/Packages/com.unity.render-pipelines.universal@latest)
-- [Unity Input System](https://docs.unity3d.com/Packages/com.unity.inputsystem@latest)
