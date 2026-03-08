@@ -1,29 +1,42 @@
 # .github/workflows/main.yml
-# Se activa desde CUALQUIER rama cuando se edita el archivo de memoria
+# Sincroniza docs/ con la Wiki usando git directamente
+# Se activa desde cualquier rama cuando cambia algún .md en docs/
 
 on:
   push:
     paths:
-      - 'docs/Home.md'   # Solo se dispara cuando cambia este archivo concreto
-                        
+      - 'docs/**.md'    # Se dispara solo cuando cambia cualquier .md dentro de docs/
 
 name: Wiki Sync
 
 jobs:
   update-wiki:
     runs-on: ubuntu-latest
+
     steps:
-
       # Paso 1: Descarga el código de la rama que hizo el push
-      - uses: actions/checkout@main
+      - name: Checkout repositorio
+        uses: actions/checkout@v3
 
-      # Paso 2: coge los archivos .md de docs/ y los sube a la Wiki
-      - name: Sync Wiki
-        uses: joeizzard/action-wiki-sync@master
-        with:
-          username: little-shiny                     # Usuario de GitHub del repositorio
-          access_token: ${{ secrets.GITHUB_TOKEN }}  # Token automático, no hace falta tocarlo
-          wiki_folder: docs                          # Carpeta donde está el .md
-          commit_username: 'little-shiny'
-          commit_email: 'little-shiny@users.noreply.github.com'
-          commit_message: 'action: wiki sync'        # Mensaje que aparece en el historial de la Wiki
+      # Paso 2: Clona el repositorio de la Wiki
+      # La Wiki de GitHub es en realidad un repo git separado
+      # con la URL del repositorio principal + ".wiki.git"
+      - name: Clonar Wiki
+        run: |
+          git clone https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.wiki.git wiki
+
+      # Paso 3: Copia los archivos .md de docs/ a la raíz de la Wiki
+      - name: Copiar archivos .md
+        run: |
+          cp docs/*.md wiki/
+
+      # Paso 4: Hace commit y push de los cambios a la Wiki
+      - name: Commit y push a la Wiki
+        run: |
+          cd wiki
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          git add .
+          # Solo hace commit si hay cambios reales, evita commits vacíos
+          git diff --staged --quiet || git commit -m "docs: sync wiki desde docs/"
+          git push
