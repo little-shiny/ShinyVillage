@@ -267,7 +267,8 @@ CREATE TABLE IF NOT EXISTS Inventory (
 ### 3.4.1 Tecnologías usadas y herramientas
 ### 3.4.2 Arquitectura de los componentes
 Explicar la estructura logica y fisica del sistema: carpetas, mvc ....
-
+ 
+ prueba para workflow
 # 7. Referencias
 
 **Protección de datos y privacidad**
