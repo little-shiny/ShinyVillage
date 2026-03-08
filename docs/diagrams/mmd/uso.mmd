@@ -1,0 +1,57 @@
+---
+config : 
+    layout: elk
+---
+flowchart LR
+    %% Actores
+    J(["Jugador"])
+    SYS(["Sistema Unity"])
+
+    %% Sistema boundary
+    subgraph SV["🎮 ShinyVillage"]
+        direction TB
+
+        subgraph MU["Menú Principal"]
+            UC1("Crear nueva partida")
+            UC2("Cargar partida guardada")
+            UC3("Borrar partida guardada")
+        end
+
+        subgraph JU["Juego"]
+            UC4("Mover al personaje")
+            UC5("Interactuar con tile")
+            UC6("Recoger ítem del mundo")
+            UC7("Abrir / cerrar inventario")
+            UC8("Soltar ítem del inventario")
+            UC9("Guardar partida")
+        end
+
+        subgraph BD["Persistencia"]
+            UC10("Leer partidas de BD")
+            UC11("Escribir partida en BD")
+            UC12("Eliminar partida de BD")
+        end
+    end
+
+    %% Relaciones Jugador → Casos de uso
+    J --> UC1
+    J --> UC2
+    J --> UC3
+    J --> UC4
+    J --> UC5
+    J --> UC6
+    J --> UC7
+    J --> UC8
+    J --> UC9
+
+    %% Relaciones include / extend
+    UC1 -->|include| UC11
+    UC2 -->|include| UC10
+    UC3 -->|include| UC12
+    UC6 -->|include| UC7
+    UC9 -->|include| UC11
+
+    %% Sistema interno
+    SYS -->|gestiona| UC10
+    SYS -->|gestiona| UC11
+    SYS -->|gestiona| UC12

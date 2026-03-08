@@ -1,0 +1,54 @@
+---
+config : 
+    layout: elk
+---
+flowchart TD
+    ROOT["🎮 ShinyVillage"]
+
+    ROOT --> MOD_CORE["📦 Core"]
+    ROOT --> MOD_PLAYER["📦 Player"]
+    ROOT --> MOD_ITEMS["📦 Items"]
+    ROOT --> MOD_INV["📦 Inventario"]
+    ROOT --> MOD_MENU["📦 Menú Principal"]
+    ROOT --> MOD_SAVE["📦 Save System"]
+
+    %% CORE
+    MOD_CORE --> GameManager["GameManager\n«Singleton»"]
+    MOD_CORE --> ItemManager["ItemManager"]
+    MOD_CORE --> TileManager["TileManager"]
+
+    %% PLAYER
+    MOD_PLAYER --> Player["Player"]
+    MOD_PLAYER --> Movement["Movement"]
+    MOD_PLAYER --> CameraFollow["CameraFollow"]
+
+    %% ITEMS
+    MOD_ITEMS --> Item["Item"]
+    MOD_ITEMS --> ItemData["ItemData\n«ScriptableObject»"]
+    MOD_ITEMS --> Collectable["Collectable"]
+
+    %% INVENTARIO
+    MOD_INV --> Inventory["Inventory"]
+    MOD_INV --> Slot["Inventory.Slot"]
+    MOD_INV --> InventoryUI["Inventory_UI"]
+    MOD_INV --> SlotUI["Slot_UI"]
+
+    %% MENÚ
+    MOD_MENU --> MainMenuManager["MainMenuManager"]
+    MOD_MENU --> SaveSlotUI["SaveSlotUI"]
+
+    %% SAVE SYSTEM
+    MOD_SAVE --> SaveGameManager["SaveGameManager\n«Singleton»"]
+    MOD_SAVE --> DatabaseManager["DatabaseManager\n«Singleton»"]
+    MOD_SAVE --> SSR["SaveSlotRepository"]
+    MOD_SAVE --> PR["PlayerRepository"]
+    MOD_SAVE --> SSD["SaveSlotData\n«Model»"]
+    MOD_SAVE --> PD["PlayerData\n«Model»"]
+
+    %% DEPENDENCIAS entre módulos
+    MOD_PLAYER -.->|usa| MOD_CORE
+    MOD_ITEMS -.->|usa| MOD_CORE
+    MOD_INV -.->|usa| MOD_PLAYER
+    MOD_INV -.->|usa| MOD_ITEMS
+    MOD_MENU -.->|usa| MOD_SAVE
+    MOD_PLAYER -.->|usa| MOD_SAVE

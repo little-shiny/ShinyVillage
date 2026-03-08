@@ -1,0 +1,54 @@
+---
+config : 
+    layout: elk
+---
+stateDiagram-v2
+    [*] --> Arranque
+
+    Arranque --> MenuPrincipal : Singletons inicializados\nDB abierta
+
+    state MenuPrincipal {
+        [*] --> PanelInicio
+        PanelInicio --> PanelNuevaPartida : Pulsa Nueva Partida
+        PanelNuevaPartida --> PanelInicio : Pulsa Cancelar
+        PanelNuevaPartida --> PanelNuevaPartida : Campos vacíos → error
+        PanelInicio --> PanelCargarPartida : Pulsa Cargar Partida
+        PanelCargarPartida --> PanelInicio : Pulsa Cancelar
+        PanelCargarPartida --> PanelConfirmacionBorrar : Pulsa Borrar slot
+        PanelConfirmacionBorrar --> PanelCargarPartida : Confirmar / Cancelar
+    }
+
+    MenuPrincipal --> Juego : Confirmar nueva partida\no Cargar slot existente
+
+    state Juego {
+        [*] --> Explorando
+
+        Explorando --> Interactuando : SPACE sobre tile válido
+        Interactuando --> Explorando : Tile procesado
+
+        Explorando --> Recogiendo : Item en rango del jugador
+        Recogiendo --> Explorando : Item añadido al inventario
+
+        Explorando --> InventarioAbierto : Pulsa TAB
+        InventarioAbierto --> Explorando : Pulsa TAB de nuevo
+
+        InventarioAbierto --> SoltandoItem : Pulsa botón soltar
+        SoltandoItem --> InventarioAbierto : Item spawneado en escena
+    }
+
+    state TileStates {
+        [*] --> Oculta
+        Oculta --> Interactuable : Start · hiddenInteractableTile
+        Interactuable --> Interactuada : SetInteracted
+    }
+
+    state InventarioSlot {
+        [*] --> Vacio
+        Vacio --> Ocupado : AddItem
+        Ocupado --> Vacio : RemoveItem · count 0
+        Ocupado --> Ocupado : AddItem · count aumenta
+    }
+
+    Juego --> CerrandoApp : Salir / Alt+F4
+    MenuPrincipal --> CerrandoApp : Salir / Alt+F4
+    CerrandoApp --> [*] : OnApplicationQuit\nCierra conexión BD

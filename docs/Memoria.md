@@ -169,13 +169,12 @@ El acuerdo de desarrollo queda recogido en los terminos de entregas del centro f
 | Falta de tiempo para completar el sistema de granja | Media | Medio | El núcleo del juego es funcional sin él; se plantea como fase ampliable |
 
 # 3. Análisis y diseño
-
 ## 3.1 Modelado de datos
-### 3.1.1 Modelo E/R del sistema de guardado
-![alt text](diagrams/er.png)
+### 3.1.1 Modelo E/R 
+![alt text](diagrams/png/er.png)
 
 ### 3.1.2 Modelo relacional del sistema de guardado
-![alt text](diagrams/relation.png)
+![alt text](diagrams/png/relation.png)
 
 ### 3.1.3 Script de la creación de la BBDD (SQLite)
 ```sql
@@ -238,10 +237,37 @@ CREATE TABLE IF NOT EXISTS Inventory (
 ```
 
 ## 3.2 Análisis y diseño funcional 
-### 3.2.1
-### 3.2.2
-### 3.2.3
-### 3.2.4
+### 3.2.1 UML (Clases, secuencia y casos de uso)
+#### **Diagramas de clases**
+**Diagrama general**
+![alt text](diagrams/png/clases_summary.png)
+**Diagrama desglosado: Gameplay**
+![alt text](diagrams/png/clases_gameplay.png)
+**Diagrama desglosado: Saving System (Guardado)**
+![alt text](diagrams/png/clases_save.png)
+**Diagrama desglosado: Main Menu**
+![alt text](diagrams/png/clases_main_menu.png)
+#### **Diagramas de secuencia**
+![alt text](diagrams/png/nueva_partida_sequence.png)
+![alt text](diagrams/png/cargar_partida_sequence.png)
+#### Diagrama de casos de uso
+![alt text](diagrams/png/uso.png)
+### 3.2.2 Diagrama de flujo
+![alt text](diagrams/png/flujo.png)
+### 3.2.3 Diagrama de estados
+![alt text](diagrams/png/estados.png)
+### 3.2.4 Descomposición en módulos
+![alt text](diagrams/png/modulos.png)
+
+## 3.3 Análisis y diseño de la interfaz
+### 3.3.1 Mockups
+### 3.3.2 Diseño visual
+
+## 3.4 Análisis y diseño de la arquitectura
+### 3.4.1 Tecnologías usadas y herramientas
+### 3.4.2 Arquitectura de los componentes
+Explicar la estructura logica y fisica del sistema: carpetas, mvc ....
+
 # 7. Referencias
 
 **Protección de datos y privacidad**
