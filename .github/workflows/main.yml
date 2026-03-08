@@ -1,0 +1,29 @@
+# .github/workflows/main.yml
+# Wiki Sync — se activa desde CUALQUIER rama cuando cambia el archivo de memoria
+
+on:
+  push:
+    # Al omitir 'branches', el trigger escucha todos los pushes
+    # independientemente de la rama desde la que se haga
+    paths:
+      - 'docs/Memoria.md'   # ← Solo se dispara si ese archivo concreto cambia
+                            #   
+
+jobs:
+  update-wiki:
+    runs-on: ubuntu-latest
+    steps:
+
+      # Paso 1: Descarga el código de la rama que hizo el push
+      - uses: actions/checkout@main
+
+      # Paso 2: Sincroniza docs/ con la Wiki de GitHub
+      - name: Sync Wiki
+        uses: joeizzard/action-wiki-sync@master
+        with:
+          username: little-shiny
+          access_token: ${{ secrets.GITHUB_TOKEN }}
+          wiki_folder: docs                          # Carpeta que se sincroniza
+          commit_username: 'little-shiny'
+          commit_email: 'little-shiny@users.noreply.github.com'
+          commit_message: 'action: wiki sync'
