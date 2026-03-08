@@ -10,7 +10,7 @@ aqui el resumen en español y en inglés
 
 ---
 
-# 1. Planificación
+# 1. Descripción del proyecto
 
 ## 1.1 Descripción del proyecto
 
@@ -51,8 +51,9 @@ Si en algún momento se desea autorizar un uso comercial concreto a un tercero, 
 ### Clasificación por edades
 En caso de distribución pública, el sistema PEGI clasificaría previsiblemente el juego como **PEGI 3**, dado su contenido de fantasía sin elementos violentos ni adultos.
 
+# 2. Acuerdo del proyecto
 
-## 1.5 Requisitos funcionales y no funcionales
+## 2.1 Requisitos funcionales y no funcionales
 
 ### Requisitos funcionales
 
@@ -83,7 +84,7 @@ Este tipo de requisitos definen las condiciones ye stándares de rendimiento y l
 | RNF-04 | No funcional | El tiempo de carga de una partida guardada no debe ser perceptible para el usuario |
 | RNF-05 | No funcional | El juego debe ejecutarse en PC con un rendimiento estable bajo Unity |
 
-## 1.6 Planificación de tareas y temporalización
+## 2.2 Planificación de tareas y temporalización
 El desarrollo se organiza en fases en las que se incorpora un bloque completo y verificable antes de pasar a la siguiente.
 
 ```
@@ -114,14 +115,14 @@ Fase 5 · Sistema de granja (en desarrollo)
   └── Persistencia del estado de cada tile por partida
 ```
 
-## 1.7 Metodología a seguir
+## 2.3 Metodología a seguir
 El proyecto adopta una metodología **iterativa e incremental** inspirada en Scrum, que se adapta a un equipo de desarrollo pequeño y a un contexto académico. 
 
 Cada fase de la planificación equivale a un sprint con un entregable funcional al final (tareas). 
 
 El desarrollo se gestiona mediante Git con ramas independientes por funcionalidad, integrando los cambios a la rama principal una vez verificados. Esta aproximación permite detectar errores de integración de forma temprana y mantener en todo momento una versión jugable del proyecto.
 
-## 1.8 Temporalización
+## 2.4 Temporalización
 
 El diagrama de Gantt siguiente refleja la distribución temporal estimada del proyecto a lo largo del ciclo de desarrollo:
 
@@ -138,7 +139,7 @@ Documentación/Memoria │░░░░░░░░░░░░░░░░░░
 
 Cada fase tiene una duración aproximada de dos a tres semanas, con solapamiento en la etapa de documentación, que se mantiene activa durante todo el desarrollo.
 
-## 1.9 Presupuesto 
+## 2.5 Presupuesto 
 El proyecto no tiene coste económico directo, al desarrollarse en un contexto formativo con herramientas de acceso libre o gratuito para uso académico.
 
 | Concepto | Coste |
@@ -151,128 +152,13 @@ El proyecto no tiene coste económico directo, al desarrollarse en un contexto f
 
 El coste real del proyecto se mide en horas de desarrollo. Estimando una dedicación media de 10 horas semanales durante 5 meses, el esfuerzo total asciende a aproximadamente **200 horas**.
 
-## 1.10 Contrato y pliego de condiciones/licencia
+## 2.6 Contrato y pliego de condiciones/licencia
 El proyecto se distribuye con una licencia **Apache 2.0 con una cláusula no comercial** que se describe en el [apartado correspondiente de esta memoria](#propiedad-intelectual).
 
 Como se trata de de un proyecto sin un cliente externo, no hay contrato de prestación de servicios.
 El acuerdo de desarrollo queda recogido en los terminos de entregas del centro formativo.
 
-## 1.11 Análisis de riesgos
-
-Aquí está el documento completo de planificación:
-
----
-
-## Tarea 2: Acuerdo del Proyecto
-
----
-
-### 2.1 Requisitos Funcionales (RF) y No Funcionales (RNF)
-
-Los **requisitos funcionales** definen las capacidades que el sistema debe ofrecer al jugador. Los **requisitos no funcionales** establecen las condiciones de calidad, rendimiento y restricciones técnicas bajo las que el sistema debe operar.
-
-| ID | Tipo | Requisito |
-|----|------|-----------|
-| RF-01 | Funcional | El jugador puede crear una nueva partida introduciendo un nombre de personaje y un nombre de slot |
-| RF-02 | Funcional | El jugador puede cargar una partida guardada previamente desde el menú principal |
-| RF-03 | Funcional | El jugador puede borrar una partida existente, con confirmación previa |
-| RF-04 | Funcional | El jugador puede sobrescribir una partida con el estado actual de la sesión en curso |
-| RF-05 | Funcional | El personaje se desplaza por el mapa en las cuatro direcciones con animación asociada |
-| RF-06 | Funcional | El jugador puede recoger objetos del mundo e incorporarlos al inventario |
-| RF-07 | Funcional | El jugador puede consultar su inventario y eliminar objetos, que reaparecen en el mapa |
-| RF-08 | Funcional | El jugador puede interactuar con tiles del mapa pulsando la tecla de acción |
-| RF-09 | Funcional | El estado de la granja (tiles, cultivos, fases de crecimiento) se guarda y recupera por partida |
-| RNF-01 | No funcional | Los datos de partida se almacenan localmente en el dispositivo del usuario mediante SQLite |
-| RNF-02 | No funcional | El sistema de guardado persiste entre escenas sin pérdida de datos |
-| RNF-03 | No funcional | La arquitectura debe permitir añadir nuevos sistemas (cultivos, NPCs) sin modificar el núcleo |
-| RNF-04 | No funcional | El tiempo de carga de una partida guardada no debe ser perceptible para el usuario |
-| RNF-05 | No funcional | El juego debe ejecutarse en PC con un rendimiento estable bajo Unity |
-
----
-
-### 2.2 Planificación de Tareas
-
-El desarrollo se organiza en fases incrementales, cada una de las cuales incorpora un bloque funcional completo y verificable antes de pasar a la siguiente.
-
-```
-Fase 1 · Fundamentos del proyecto
-  ├── Configuración del entorno Unity y estructura de carpetas
-  ├── Sistema de movimiento del personaje y seguimiento de cámara
-  └── Implementación del Tilemap e interacciones básicas
-
-Fase 2 · Sistema de inventario
-  ├── Clase Inventory y lógica de slots (añadir, apilar, eliminar)
-  ├── UI del inventario (Inventory_UI, Slot_UI)
-  └── Mecánica de soltar objetos al mundo
-
-Fase 3 · Persistencia y base de datos
-  ├── Integración de SQLite mediante NuGetForUnity
-  ├── DatabaseManager: conexión, tablas y operaciones CRUD
-  ├── Repositorios: SaveSlotRepository, PlayerRepository
-  └── SaveGameManager como punto de entrada único al guardado
-
-Fase 4 · Menú principal y gestión de partidas
-  ├── MainMenuManager: nueva partida, carga y borrado
-  ├── SaveSlotUI: prefab de fila con botones dinámicos
-  └── Integración completa del flujo menú → juego → guardado
-
-Fase 5 · Sistema de granja (en desarrollo)
-  ├── FarmRepository y FarmTileRepository
-  ├── Lógica de cultivo: plantar, regar, cosechar
-  └── Persistencia del estado de cada tile por partida
-```
-
----
-
-### 2.3 Metodología a Seguir
-
-El proyecto adopta una metodología **iterativa e incremental** inspirada en Scrum, adaptada a un equipo de desarrollo reducido y a un contexto académico. Cada fase de la planificación equivale a un sprint con un entregable funcional al final. El desarrollo se gestiona mediante Git con ramas independientes por funcionalidad, integrando los cambios a la rama principal una vez verificados. Esta aproximación permite detectar errores de integración de forma temprana y mantener en todo momento una versión jugable del proyecto.
-
----
-
-### 2.4 Temporalización
-
-El diagrama de Gantt siguiente refleja la distribución temporal estimada del proyecto a lo largo del ciclo de desarrollo:
-
-```
-                     ENE   FEB   MAR   ABR   MAY
-                      │     │     │     │     │
-Fase 1 · Fundamentos  ████░░│     │     │     │
-Fase 2 · Inventario   │  ████████░│     │     │
-Fase 3 · Base datos   │     │  ████████░│     │
-Fase 4 · Menú/Guardado│     │     │  ████████░│
-Fase 5 · Granja       │     │     │     │  ████
-Documentación/Memoria │░░░░░░░░░░░░░░░░░░░░░░░│
-```
-
-Cada fase tiene una duración aproximada de tres a cuatro semanas, con solapamiento en la etapa de documentación, que se mantiene activa durante todo el desarrollo.
-
----
-
-### 2.5 Presupuesto
-
-El proyecto no tiene coste económico directo, al desarrollarse en un contexto formativo con herramientas de acceso libre o gratuito para uso académico.
-
-| Concepto | Coste |
-|----------|-------|
-| Unity (licencia Student / Personal) | 0 € |
-| Rider / Visual Studio Community | 0 € |
-| SQLite + NuGetForUnity | 0 € |
-| Assets gráficos (libres de uso) | 0 € |
-| Control de versiones (GitHub) | 0 € |
-| **Total** | **0 €** |
-
-El coste real del proyecto se mide en horas de desarrollo. Estimando una dedicación media de 10 horas semanales durante 5 meses, el esfuerzo total asciende a aproximadamente **200 horas**.
-
----
-
-### 2.6 Contrato y Pliego de Condiciones / Licencia
-
-El proyecto se distribuye bajo licencia **Apache 2.0 con cláusula no comercial**, descrita en el apartado correspondiente de esta memoria. Al tratarse de un proyecto académico sin cliente externo, no existe contrato de prestación de servicios. El acuerdo de desarrollo queda recogido en los términos de entrega establecidos por el centro formativo.
-
----
-
-### 2.7 Análisis de Riesgos
+## 2.7 Análisis de riesgos
 
 | Riesgo | Probabilidad | Impacto | Mitigación |
 |--------|-------------|---------|------------|
@@ -281,6 +167,7 @@ El proyecto se distribuye bajo licencia **Apache 2.0 con cláusula no comercial*
 | Deuda técnica por crecimiento no planificado del código | Media | Medio | Arquitectura en capas con patrón Repository desde el inicio |
 | Pérdida de progreso en el repositorio Git | Baja | Alto | Ramas por funcionalidad y commits frecuentes |
 | Falta de tiempo para completar el sistema de granja | Media | Medio | El núcleo del juego es funcional sin él; se plantea como fase ampliable |
+
 # 7. Referencias
 
 **Protección de datos y privacidad**
