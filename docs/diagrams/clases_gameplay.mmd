@@ -1,0 +1,108 @@
+---
+config:
+  theme: redux-color
+---
+classDiagram
+    direction LR
+
+    class GameManager["GameManager"] {
+        <<Singleton>>
+        +instance : GameManager$
+        +itemManager : ItemManager
+        +tileManager : TileManager
+        -Awake()
+    }
+    class ItemManager["ItemManager"] {
+        +items : Item[]
+        -nameToItemDict : Dictionary~string,Item~
+        -Awake()
+        +GetItemByName(key : string) Item
+    }
+    class TileManager["TileManager"] {
+        -interactableMap : Tilemap
+        -hiddenInteractableTile : Tile
+        -InteractedTile : Tile
+        +Start()
+        +IsInteractable(pos : Vector3Int) bool
+        +SetInteracted(pos : Vector3Int)
+        +GetCellPosition(worldPos : Vector3) Vector3Int
+        +GetCellCenter(cellPos : Vector3Int) Vector3
+    }
+    class Player["Player"] {
+        +inventory : Inventory
+        -Awake()
+        -Update()
+        +DropItem(item : Item)
+    }
+    class Movement["Movement"] {
+        +speed : float
+        +animator : Animator
+        -direction : Vector3
+        -Update()
+        -FixedUpdate()
+        -animateMovement(dir : Vector3)
+    }
+    class CameraFollow["CameraFollow"] {
+        -target : Transform
+        -camOffset : Vector3
+        -Start()
+        -FixedUpdate()
+    }
+    class Item["Item"] {
+        +data : ItemData
+        +rb2d : Rigidbody2D
+        -Awake()
+    }
+    class ItemData["ItemData"] {
+        <<ScriptableObject>>
+        +itemName : string
+        +icon : Sprite
+    }
+    class Collectable["Collectable"] {
+        -OnTriggerEnter2D(col : Collider2D)
+    }
+    class Inventory["Inventory"] {
+        +slots : List~Slot~
+        +Inventory(numSlots : int)
+        +Add(item : Item)
+        +Remove(index : int)
+    }
+    class Inventory_Slot["Inventory.Slot"] {
+        +itemName : string
+        +count : int
+        +maxAllowed : int
+        +icon : Sprite
+        +CanAddItem() bool
+        +AddItem(item : Item)
+        +RemoveItem()
+    }
+    class Inventory_UI["Inventory_UI"] {
+        +inventoryPanel : GameObject
+        +player : Player
+        -Update()
+        +ToggleInventory()
+        +Refresh()
+        +Remove(slotID : int)
+    }
+    class Slot_UI["Slot_UI"] {
+        +itemIcon : Image
+        +quantityText : TextMeshProUGUI
+        +SetItem(slot : Inventory.Slot)
+        +SetEmpty()
+    }
+
+    GameManager "1" *-- "1" ItemManager
+    GameManager "1" *-- "1" TileManager
+    Player "1" *-- "1" Inventory
+    Player ..> GameManager : usa
+    Player ..> Movement : GetComponent
+    Item "1" *-- "1" ItemData
+    Collectable --> Item : RequireComponent
+    Collectable ..> Player : detecta colisión
+    Collectable ..> Inventory_UI : Refresh
+    ItemManager "1" o-- "n" Item
+    Inventory "1" *-- "n" Inventory_Slot
+    Inventory_UI o-- Player
+    Inventory_UI "1" *-- "n" Slot_UI
+    Slot_UI ..> Inventory_Slot : muestra
+    CameraFollow ..> Player : sigue

@@ -1,0 +1,67 @@
+---
+config:
+  theme: redux-color
+---
+classDiagram
+    direction TB
+
+    class SaveGameManager["SaveGameManager"] {
+        <<Singleton>>
+        +Instance : SaveGameManager$
+        +CurrentSlotId : int
+        -slotRepo : SaveSlotRepository
+        -playerRepo : PlayerRepository
+        -Awake()
+        +NewGame(slotName : string, playerName : string)
+        +LoadGame(slotId : int) PlayerData
+        +SaveCurrentGame(player : PlayerData, playTime : float)
+        +GetAllSaveSlots() List~SaveSlotData~
+        +DeleteSave(slotId : int)
+    }
+    class DatabaseManager["DatabaseManager"] {
+        <<Singleton>>
+        +Instance : DatabaseManager$
+        -connection : IDbConnection
+        -Awake()
+        -InitializeDatabase()
+        -CreateTables()
+        +ExecuteNonQuery(sql : string)
+        +ExecuteReader(sql : string) IDataReader
+        +ExecuteScalar(sql : string) object
+        +AddParameter(cmd, name, value)$
+    }
+    class SaveSlotRepository["SaveSlotRepository"] {
+        -db : DatabaseManager
+        +SaveSlotRepository(db : DatabaseManager)
+        +CreateSlot(slotName : string, playerName : string) int
+        +GetAllSlots() List~SaveSlotData~
+        +UpdateLastSaved(slotId : int, playTime : float)
+        +DeleteSlot(slotId : int)
+    }
+    class PlayerRepository["PlayerRepository"] {
+        -db : DatabaseManager
+        +PlayerRepository(db : DatabaseManager)
+        +SavePlayer(data : PlayerData)
+        +LoadPlayer(slotId : int) PlayerData
+    }
+    class SaveSlotData["SaveSlotData"] {
+        +Id : int
+        +SlotName : string
+        +PlayerName : string
+        +CreatedAt : DateTime
+        +LastSaved : DateTime
+        +PlayTime : float
+    }
+    class PlayerData["PlayerData"] {
+        +Id : int
+        +SlotId : int
+        +Name : string
+        +Position : Vector3
+    }
+
+    SaveGameManager *-- SaveSlotRepository
+    SaveGameManager *-- PlayerRepository
+    SaveSlotRepository ..> DatabaseManager : ExecuteNonQuery / Reader
+    PlayerRepository ..> DatabaseManager : ExecuteNonQuery / Reader
+    SaveSlotRepository ..> SaveSlotData : devuelve
+    PlayerRepository ..> PlayerData : devuelve

@@ -1,0 +1,84 @@
+---
+config:
+  theme: redux-color
+---
+classDiagram
+    direction TB
+
+    %% ── UNITY BASE ────────────────────────────────────
+    class MonoBehaviour { <<Unity>> }
+    class ScriptableObject { <<Unity>> }
+
+    %% ── CORE ──────────────────────────────────────────
+    class GameManager { <<Singleton>> }
+    class ItemManager
+    class TileManager
+
+    %% ── PLAYER ────────────────────────────────────────
+    class Player
+    class Movement
+    class CameraFollow
+
+    %% ── ITEMS ─────────────────────────────────────────
+    class Item
+    class ItemData { <<ScriptableObject>> }
+    class Collectable
+
+    %% ── INVENTARIO ────────────────────────────────────
+    class Inventory
+    class Inventory_Slot ["Inventory.Slot"]
+    class Inventory_UI
+    class Slot_UI
+
+    %% ── MENÚ PRINCIPAL ────────────────────────────────
+    class MainMenuManager
+    class SaveSlotUI
+
+    %% ── SAVE SYSTEM ───────────────────────────────────
+    class SaveGameManager { <<Singleton>> }
+    class DatabaseManager { <<Singleton>> }
+    class SaveSlotRepository
+    class PlayerRepository
+
+    %% ── MODELOS DE DATOS ──────────────────────────────
+    class SaveSlotData { <<Model>> }
+    class PlayerData { <<Model>> }
+
+    %% ── HERENCIA ──────────────────────────────────────
+    MonoBehaviour <|-- GameManager
+    MonoBehaviour <|-- ItemManager
+    MonoBehaviour <|-- TileManager
+    MonoBehaviour <|-- Player
+    MonoBehaviour <|-- Movement
+    MonoBehaviour <|-- CameraFollow
+    MonoBehaviour <|-- Item
+    MonoBehaviour <|-- Collectable
+    MonoBehaviour <|-- Inventory_UI
+    MonoBehaviour <|-- Slot_UI
+    MonoBehaviour <|-- DatabaseManager
+    MonoBehaviour <|-- SaveGameManager
+    MonoBehaviour <|-- MainMenuManager
+    MonoBehaviour <|-- SaveSlotUI
+    ScriptableObject <|-- ItemData
+
+    %% ── RELACIONES ────────────────────────────────────
+    GameManager *-- ItemManager
+    GameManager *-- TileManager
+    Player *-- Inventory
+    Inventory *-- Inventory_Slot
+    Inventory_UI *-- Slot_UI
+    Item *-- ItemData
+    Collectable --> Item
+    SaveGameManager *-- SaveSlotRepository
+    SaveGameManager *-- PlayerRepository
+    SaveSlotRepository ..> DatabaseManager
+    PlayerRepository ..> DatabaseManager
+    SaveSlotRepository ..> SaveSlotData
+    PlayerRepository ..> PlayerData
+    MainMenuManager *-- SaveSlotUI
+    MainMenuManager ..> SaveGameManager
+    SaveSlotUI ..> SaveSlotData
+    Inventory_UI ..> Player
+    Player ..> GameManager
+    CameraFollow ..> Player
+    Collectable ..> Inventory_UI

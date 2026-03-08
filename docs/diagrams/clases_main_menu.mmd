@@ -1,0 +1,56 @@
+---
+config:
+  theme: redux-color
+---
+classDiagram
+    direction LR
+
+    class MainMenuManager["MainMenuManager"] {
+        -mainPanel : GameObject
+        -newGamePanel : GameObject
+        -loadGamePanel : GameObject
+        -confirmationPanel : GameObject
+        -slotNameInput : TMP_InputField
+        -playerNameInput : TMP_InputField
+        -saveSlotsContainer : Transform
+        -saveSlotPrefab : GameObject
+        -noSavesText : TextMeshProUGUI
+        +OnNuevaPartidaClicked()
+        +OnConfirmarNuevaPartidaClicked()
+        +OnCargarPartidaClicked()
+        +OnCargarSlot(slotId : int)
+        +OnBorrarSlot(slotId : int)
+        -RefrescarListaPartidas()
+    }
+    class SaveSlotUI["SaveSlotUI"] {
+        -slotNameText : TextMeshProUGUI
+        -playerNameText : TextMeshProUGUI
+        -lastSavedText : TextMeshProUGUI
+        -playTimeText : TextMeshProUGUI
+        -loadButton : Button
+        -deleteButton : Button
+        -overwriteButton : Button
+        -slotData : SaveSlotData
+        -menuManager : MainMenuManager
+        +Setup(data : SaveSlotData, manager : MainMenuManager)
+    }
+    class SaveSlotData["SaveSlotData"] {
+        +Id : int
+        +SlotName : string
+        +PlayerName : string
+        +CreatedAt : DateTime
+        +LastSaved : DateTime
+        +PlayTime : float
+    }
+    class SaveGameManager["SaveGameManager"] {
+        <<Singleton>>
+        +NewGame(slotName : string, playerName : string)
+        +LoadGame(slotId : int) PlayerData
+        +GetAllSaveSlots() List~SaveSlotData~
+        +DeleteSave(slotId : int)
+    }
+
+    MainMenuManager "1" *-- "n" SaveSlotUI : instancia prefab
+    MainMenuManager ..> SaveGameManager : llama API
+    SaveSlotUI ..> SaveSlotData : muestra datos
+    SaveSlotUI ..> MainMenuManager : delega acciones
