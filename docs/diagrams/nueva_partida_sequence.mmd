@@ -1,0 +1,29 @@
+---
+config:
+  theme: redux-color
+---
+sequenceDiagram
+    actor Jugador
+    participant MMM as MainMenuManager
+    participant SGM as SaveGameManager
+    participant SSR as SaveSlotRepository
+    participant PR as PlayerRepository
+    participant DB as DatabaseManager
+
+    Jugador->>MMM: Pulsa "Nueva Partida"
+    MMM->>MMM: MostrarPanel(newGamePanel)
+    Jugador->>MMM: Introduce nombre slot + jugador
+    Jugador->>MMM: Pulsa "Confirmar"
+    MMM->>SGM: NewGame(slotName, playerName)
+    SGM->>SSR: CreateSlot(slotName, playerName)
+    SSR->>DB: ExecuteNonQuery INSERT SaveSlots
+    DB-->>SSR: OK
+    SSR->>DB: ExecuteScalar last_insert_rowid
+    DB-->>SSR: slotId
+    SSR-->>SGM: slotId
+    SGM->>PR: SavePlayer(defaultPlayerData)
+    PR->>DB: ExecuteNonQuery INSERT Players
+    DB-->>PR: OK
+    PR-->>SGM: OK
+    SGM-->>MMM: OK
+    MMM->>MMM: SceneManager.LoadScene(gameScene)

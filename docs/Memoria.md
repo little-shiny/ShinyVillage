@@ -172,7 +172,76 @@ El acuerdo de desarrollo queda recogido en los terminos de entregas del centro f
 
 ## 3.1 Modelado de datos
 ### 3.1.1 Modelo E/R del sistema de guardado
+![alt text](diagrams/er.png)
 
+### 3.1.2 Modelo relacional del sistema de guardado
+![alt text](diagrams/relation.png)
+
+### 3.1.3 Script de la creación de la BBDD (SQLite)
+```sql
+-- ══════════════════════════════════════════════
+-- SCRIPT DE CREACIÓN DE TABLAS — savegame.db
+-- ══════════════════════════════════════════════
+
+-- Tabla raíz: cada fila representa una partida guardada
+CREATE TABLE IF NOT EXISTS SaveSlots (
+    id          INTEGER PRIMARY KEY AUTOINCREMENT,
+    slot_name   TEXT    NOT NULL,
+    player_name TEXT    NOT NULL,
+    created_at  TEXT    NOT NULL,
+    last_saved  TEXT    NOT NULL,
+    play_time   REAL    DEFAULT 0
+);
+
+-- Datos de posición del jugador, ligados a un slot
+CREATE TABLE IF NOT EXISTS Players (
+    id       INTEGER PRIMARY KEY AUTOINCREMENT,
+    slot_id  INTEGER NOT NULL REFERENCES SaveSlots(id) ON DELETE CASCADE,
+    name     TEXT    NOT NULL,
+    pos_x    REAL    DEFAULT 0,
+    pos_y    REAL    DEFAULT 0,
+    pos_z    REAL    DEFAULT 0
+);
+
+-- Granjas que pertenecen a un slot
+CREATE TABLE IF NOT EXISTS Farms (
+    id        INTEGER PRIMARY KEY AUTOINCREMENT,
+    slot_id   INTEGER NOT NULL REFERENCES SaveSlots(id) ON DELETE CASCADE,
+    farm_name TEXT    NOT NULL,
+    size_x    INTEGER DEFAULT 10,
+    size_y    INTEGER DEFAULT 10,
+    unlocked  INTEGER DEFAULT 1   -- 1 = desbloqueada, 0 = bloqueada
+);
+
+-- Estado de cada celda/tile dentro de una granja
+CREATE TABLE IF NOT EXISTS FarmTiles (
+    id           INTEGER PRIMARY KEY AUTOINCREMENT,
+    farm_id      INTEGER NOT NULL REFERENCES Farms(id) ON DELETE CASCADE,
+    tile_x       INTEGER NOT NULL,
+    tile_y       INTEGER NOT NULL,
+    soil_state   TEXT    DEFAULT 'dry',  -- dry | watered | fertilized
+    crop_id      TEXT    DEFAULT '',
+    growth_stage INTEGER DEFAULT 0,
+    days_planted INTEGER DEFAULT 0
+);
+
+-- Inventario del jugador (un ítem por fila)
+CREATE TABLE IF NOT EXISTS Inventory (
+    id         INTEGER PRIMARY KEY AUTOINCREMENT,
+    slot_id    INTEGER NOT NULL REFERENCES SaveSlots(id) ON DELETE CASCADE,
+    item_id    TEXT    NOT NULL,
+    item_name  TEXT    NOT NULL,
+    quantity   INTEGER DEFAULT 1,
+    slot_index INTEGER DEFAULT -1,
+    item_data  TEXT    DEFAULT '{}'  -- JSON para datos extra
+);
+```
+
+## 3.2 Análisis y diseño funcional 
+### 3.2.1
+### 3.2.2
+### 3.2.3
+### 3.2.4
 # 7. Referencias
 
 **Protección de datos y privacidad**

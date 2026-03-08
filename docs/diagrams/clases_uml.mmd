@@ -1,0 +1,248 @@
+classDiagram
+    direction TB
+
+    class MonoBehaviour["MonoBehaviour"] {
+        <<Unity>>
+    }
+    class ScriptableObject["ScriptableObject"] {
+        <<Unity>>
+    }
+
+    %% ── CORE ──────────────────────────────────────────
+    class GameManager["GameManager"] {
+        <<Singleton>>
+        +static instance : GameManager
+        +itemManager : ItemManager
+        +tileManager : TileManager
+        -Awake()
+    }
+
+    class ItemManager["ItemManager"] {
+        +items : Item[]
+        -nameToItemDict : Dictionary~string, Item~
+        -Awake()
+        -AddItem(item : Item)
+        +GetItemByName(key : string) Item
+    }
+
+    class TileManager["TileManager"] {
+        -interactableMap : Tilemap
+        -hiddenInteractableTile : Tile
+        -InteractedTile : Tile
+        +Start()
+        +IsInteractable(pos : Vector3Int) bool
+        +SetInteracted(pos : Vector3Int)
+        +GetCellPosition(worldPos : Vector3) Vector3Int
+        +GetCellCenter(cellPos : Vector3Int) Vector3
+    }
+
+    %% ── PLAYER ────────────────────────────────────────
+    class Player["Player"] {
+        +inventory : Inventory
+        -Awake()
+        -Update()
+        +DropItem(item : Item)
+    }
+
+    class Movement["Movement"] {
+        +speed : float
+        +animator : Animator
+        -direction : Vector3
+        -Update()
+        -FixedUpdate()
+        -animateMovement(direction : Vector3)
+    }
+
+    class CameraFollow["CameraFollow"] {
+        -target : Transform
+        -camOffset : Vector3
+        -Start()
+        -FixedUpdate()
+    }
+
+    %% ── ITEMS ─────────────────────────────────────────
+    class Item["Item"] {
+        +data : ItemData
+        +rb2d : Rigidbody2D
+        -Awake()
+    }
+
+    class ItemData["ItemData"] {
+        <<ScriptableObject>>
+        +itemName : string
+        +icon : Sprite
+    }
+
+    class Collectable["Collectable"] {
+        -OnTriggerEnter2D(collision : Collider2D)
+    }
+
+    %% ── INVENTARIO ────────────────────────────────────
+    class Inventory["Inventory"] {
+        +slots : List~Slot~
+        +Inventory(numSlots : int)
+        +Add(item : Item)
+        +Remove(index : int)
+    }
+
+    class Inventory_Slot["Inventory.Slot"] {
+        +itemName : string
+        +count : int
+        +maxAllowed : int
+        +icon : Sprite
+        +Slot()
+        +CanAddItem() bool
+        +AddItem(item : Item)
+        +RemoveItem()
+    }
+
+    class Inventory_UI["Inventory_UI"] {
+        +inventoryPanel : GameObject
+        +player : Player
+        +slots : List~Slot_UI~
+        -Update()
+        +ToggleInventory()
+        +Refresh()
+        +Remove(slotID : int)
+    }
+
+    class Slot_UI["Slot_UI"] {
+        +itemIcon : Image
+        +quantityText : TextMeshProUGUI
+        +SetItem(slot : Inventory.Slot)
+        +SetEmpty()
+    }
+
+    %% ── SAVE SYSTEM ───────────────────────────────────
+    class DatabaseManager["DatabaseManager"] {
+        <<Singleton>>
+        +static Instance : DatabaseManager
+        -connection : IDbConnection
+        -DB_NAME : string
+        -DbPath : string
+        -Awake()
+        -InitializeDatabase()
+        -CreateTables()
+        +ExecuteNonQuery(sql : string)
+        +ExecuteReader(sql : string) IDataReader
+        +ExecuteScalar(sql : string) object
+        +AddParameter(cmd, name, value)
+    }
+
+    class SaveGameManager["SaveGameManager"] {
+        <<Singleton>>
+        +static Instance : SaveGameManager
+        +CurrentSlotId : int
+        -slotRepo : SaveSlotRepository
+        -playerRepo : PlayerRepository
+        -Awake()
+        +NewGame(slotName : string, playerName : string)
+        +LoadGame(slotId : int) PlayerData
+        +SaveCurrentGame(player : PlayerData, playTime : float)
+        +GetAllSaveSlots() List~SaveSlotData~
+        +DeleteSave(slotId : int)
+    }
+
+    class SaveSlotRepository["SaveSlotRepository"] {
+        -db : DatabaseManager
+        +SaveSlotRepository(db : DatabaseManager)
+        +CreateSlot(slotName : string, playerName : string) int
+        +GetAllSlots() List~SaveSlotData~
+        +UpdateLastSaved(slotId : int, playTime : float)
+        +DeleteSlot(slotId : int)
+    }
+
+    class PlayerRepository["PlayerRepository"] {
+        -db : DatabaseManager
+        +PlayerRepository(db : DatabaseManager)
+        +SavePlayer(data : PlayerData)
+        +LoadPlayer(slotId : int) PlayerData
+    }
+
+    class SaveSlotData["SaveSlotData"] {
+        +Id : int
+        +SlotName : string
+        +PlayerName : string
+        +CreatedAt : DateTime
+        +LastSaved : DateTime
+        +PlayTime : float
+    }
+
+    class PlayerData["PlayerData"] {
+        +Id : int
+        +SlotId : int
+        +Name : string
+        +Position : Vector3
+    }
+
+    %% ── MAIN MENU ─────────────────────────────────────
+    class MainMenuManager["MainMenuManager"] {
+        -mainPanel : GameObject
+        -newGamePanel : GameObject
+        -loadGamePanel : GameObject
+        -saveSlotPrefab : GameObject
+        -slotNameInput : TMP_InputField
+        -playerNameInput : TMP_InputField
+        +OnNuevaPartidaClicked()
+        +OnConfirmarNuevaPartidaClicked()
+        +OnCargarPartidaClicked()
+        -RefrescarListaPartidas()
+        +OnCargarSlot(slotId : int)
+        +OnBorrarSlot(slotId : int)
+    }
+
+    class SaveSlotUI["SaveSlotUI"] {
+        -slotNameText : TextMeshProUGUI
+        -playerNameText : TextMeshProUGUI
+        -lastSavedText : TextMeshProUGUI
+        -playTimeText : TextMeshProUGUI
+        -loadButton : Button
+        -deleteButton : Button
+        -overwriteButton : Button
+        -slotData : SaveSlotData
+        -menuManager : MainMenuManager
+        +Setup(data : SaveSlotData, manager : MainMenuManager)
+    }
+
+    %% ── HERENCIA Unity ────────────────────────────────
+    MonoBehaviour <|-- GameManager
+    MonoBehaviour <|-- ItemManager
+    MonoBehaviour <|-- TileManager
+    MonoBehaviour <|-- Player
+    MonoBehaviour <|-- Movement
+    MonoBehaviour <|-- CameraFollow
+    MonoBehaviour <|-- Item
+    MonoBehaviour <|-- Collectable
+    MonoBehaviour <|-- Inventory_UI
+    MonoBehaviour <|-- Slot_UI
+    MonoBehaviour <|-- DatabaseManager
+    MonoBehaviour <|-- SaveGameManager
+    MonoBehaviour <|-- MainMenuManager
+    MonoBehaviour <|-- SaveSlotUI
+    ScriptableObject <|-- ItemData
+
+    %% ── RELACIONES ────────────────────────────────────
+    GameManager "1" *-- "1" ItemManager : contiene
+    GameManager "1" *-- "1" TileManager : contiene
+    Player "1" *-- "1" Inventory : posee
+    Player ..> GameManager : usa Singleton
+    Player ..> Movement : GetComponent
+    Item "1" *-- "1" ItemData : datos
+    Collectable "1" --> "1" Item : RequireComponent
+    Collectable ..> Player : detecta colisión
+    Collectable ..> Inventory_UI : refresca UI
+    ItemManager "1" o-- "n" Item : registra
+    Inventory "1" *-- "n" Inventory_Slot : contiene
+    Inventory_UI "1" o-- "1" Player : referencia
+    Inventory_UI "1" *-- "n" Slot_UI : contiene
+    Slot_UI ..> Inventory_Slot : muestra datos
+    CameraFollow ..> Player : sigue Transform
+    SaveGameManager "1" *-- "1" SaveSlotRepository : usa
+    SaveGameManager "1" *-- "1" PlayerRepository : usa
+    SaveSlotRepository ..> DatabaseManager : ejecuta SQL
+    PlayerRepository ..> DatabaseManager : ejecuta SQL
+    SaveSlotRepository ..> SaveSlotData : devuelve
+    PlayerRepository ..> PlayerData : devuelve
+    MainMenuManager ..> SaveGameManager : llama API
+    MainMenuManager "1" *-- "n" SaveSlotUI : instancia
+    SaveSlotUI ..> SaveSlotData : muestra datos

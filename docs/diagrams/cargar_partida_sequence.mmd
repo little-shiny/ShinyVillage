@@ -1,0 +1,26 @@
+sequenceDiagram
+    actor Jugador
+    participant MMM as MainMenuManager
+    participant SSUI as SaveSlotUI
+    participant SGM as SaveGameManager
+    participant SSR as SaveSlotRepository
+    participant PR as PlayerRepository
+    participant DB as DatabaseManager
+
+    Jugador->>MMM: Pulsa "Cargar Partida"
+    MMM->>SGM: GetAllSaveSlots()
+    SGM->>SSR: GetAllSlots()
+    SSR->>DB: ExecuteReader SELECT SaveSlots
+    DB-->>SSR: IDataReader
+    SSR-->>SGM: List~SaveSlotData~
+    SGM-->>MMM: List~SaveSlotData~
+    MMM->>SSUI: Instantiate + Setup(slotData)
+    Jugador->>SSUI: Pulsa "Cargar" en un slot
+    SSUI->>MMM: OnCargarSlot(slotId)
+    MMM->>SGM: LoadGame(slotId)
+    SGM->>PR: LoadPlayer(slotId)
+    PR->>DB: ExecuteReader SELECT Players
+    DB-->>PR: IDataReader
+    PR-->>SGM: PlayerData
+    SGM-->>MMM: PlayerData
+    MMM->>MMM: SceneManager.LoadScene(gameScene)
