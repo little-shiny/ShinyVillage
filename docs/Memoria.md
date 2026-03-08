@@ -281,7 +281,6 @@ El proyecto se distribuye bajo licencia **Apache 2.0 con cláusula no comercial*
 | Deuda técnica por crecimiento no planificado del código | Media | Medio | Arquitectura en capas con patrón Repository desde el inicio |
 | Pérdida de progreso en el repositorio Git | Baja | Alto | Ramas por funcionalidad y commits frecuentes |
 | Falta de tiempo para completar el sistema de granja | Media | Medio | El núcleo del juego es funcional sin él; se plantea como fase ampliable |
-
 # 7. Referencias
 
 **Protección de datos y privacidad**
