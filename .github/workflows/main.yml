@@ -1,13 +1,13 @@
 # .github/workflows/main.yml
-# Wiki Sync — se activa desde CUALQUIER rama cuando cambia el archivo de memoria
+# Se activa desde CUALQUIER rama cuando se edita el archivo de memoria
 
 on:
   push:
-    # Al omitir 'branches', el trigger escucha todos los pushes
-    # independientemente de la rama desde la que se haga
     paths:
-      - 'docs/Memoria.md'   # ← Solo se dispara si ese archivo concreto cambia
-                            #   
+      - 'docs/Home.md'   # Solo se dispara cuando cambia este archivo concreto
+                        
+
+name: Wiki Sync
 
 jobs:
   update-wiki:
@@ -17,13 +17,13 @@ jobs:
       # Paso 1: Descarga el código de la rama que hizo el push
       - uses: actions/checkout@main
 
-      # Paso 2: Sincroniza docs/ con la Wiki de GitHub
+      # Paso 2: coge los archivos .md de docs/ y los sube a la Wiki
       - name: Sync Wiki
         uses: joeizzard/action-wiki-sync@master
         with:
-          username: little-shiny
-          access_token: ${{ secrets.GITHUB_TOKEN }}
-          wiki_folder: docs                          # Carpeta que se sincroniza
+          username: little-shiny                     # Usuario de GitHub del repositorio
+          access_token: ${{ secrets.GITHUB_TOKEN }}  # Token automático, no hace falta tocarlo
+          wiki_folder: docs                          # Carpeta donde está el .md
           commit_username: 'little-shiny'
           commit_email: 'little-shiny@users.noreply.github.com'
-          commit_message: 'action: wiki sync'
+          commit_message: 'action: wiki sync'        # Mensaje que aparece en el historial de la Wiki
