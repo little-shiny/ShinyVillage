@@ -816,6 +816,14 @@ PrefabInstance:
       propertyPath: m_characterHorizontalScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 5835656259070938533, guid: 2f3479e827d06b945958d791febe35e3, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5835656259070938533, guid: 2f3479e827d06b945958d791febe35e3, type: 3}
+      propertyPath: m_MinHeight
+      value: 90
+      objectReference: {fileID: 0}
     - target: {fileID: 7377985600173278969, guid: 2f3479e827d06b945958d791febe35e3, type: 3}
       propertyPath: m_Name
       value: SaveSlotItem
@@ -1182,7 +1190,7 @@ MonoBehaviour:
     m_Top: 5
     m_Bottom: 5
   m_ChildAlignment: 1
-  m_Spacing: 5
+  m_Spacing: 8
   m_ChildForceExpandWidth: 1
   m_ChildForceExpandHeight: 0
   m_ChildControlWidth: 1
@@ -1584,7 +1592,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_Sprite: {fileID: 0}
-  m_Type: 1
+  m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -3281,7 +3289,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1476186753}
   m_HandleRect: {fileID: 1476186752}
   m_Direction: 0
-  m_Value: 0
+  m_Value: 1
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
