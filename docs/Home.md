@@ -37,14 +37,14 @@ El ciclo de juego proyectado incorpora procedimientos relacionados con la agricu
 
 ## 1.3 Objetivo del proyecto
 
-ShinyVillage tiene la finalidad de ofrecer al jugador una experiencia de ocio digital tranquilo, de estilo casual basado en una siple gestión de recursos y un entorno de fantasía. 
+ShinyVillage tiene la finalidad de ofrecer al jugador una experiencia de ocio digital tranquilo, de estilo casual basado en una simple gestión de recursos y un entorno de fantasía. 
 La aplicación no tiene una vocación comercial en este momento porque está enmarcada en un contecto de aprendizaje y desarrollo en técnicas de programación de videojuegos.
 
 ## 1.4 Marco legal
 Al tratarse de un videojuego de entretenimiento en fase de desarrollo académico, sin distribución comercial ni recogida de datos personales identificativos, el marco legal aplicable es reducido.
 
 ### Protección de datos (RGPD / LOPDGDD)
-La aplicación almacena únicamente datos de juego —nombre de personaje, progreso, posición— de forma local en el dispositivo del usuario, sin transmisión a servidores externos. El nombre del personaje es un alias libremente elegido, no vinculado a ninguna identidad real, por lo que en su estado actual no se tratan datos personales en el sentido del RGPD (Reglamento UE 2016/679) ni de la LOPDGDD (LO 3/2018). Si en el futuro se incorporasen cuentas de usuario o cualquier dato identificativo, la aplicación quedaría sujeta a dichas normas.
+La aplicación almacena únicamente datos de juego —nombre de personaje, progreso o  posición de forma local en el dispositivo del usuario, sin transmisión a servidores externos. El nombre del personaje es un alias libremente elegido, no vinculado a ninguna identidad real, por lo que en su estado actual no se tratan datos personales en el sentido del RGPD (Reglamento UE 2016/679) ni de la LOPDGDD (LO 3/2018). Si en el futuro se incorporasen cuentas de usuario o cualquier dato identificativo, la aplicación quedaría sujeta a dichas normas.
 
 ### Propiedad intelectual
 
@@ -279,9 +279,11 @@ Los Sprites que se eligen para el jugador y para conformar el mapa del tilemap s
 ![alt text](img/tiles.png)
 
 De igual manera el Asset Pack trae algunos sprites para los items como por ejemplo los cultivos:
+
 ![alt text](img/crops.png)
 
 **Interfaz actual(WIP)**
+
 Estas capturas de pantalla son las implementadas hasta ahora, aunque están en modificación constante conforme avanza el desarrollo.
 - Inventario:
   ![alt text](img/Inventory.png)
@@ -316,13 +318,13 @@ C# es el único lenguaje de scripting que soporta Unity. Se ha decidido esta opc
 De igual manera, C# es uno de los lenguajes estándar en la industria del videojuego junto a C++.
 
 #### **Entorno de desarrollo**
-Se ha eliegido VS Code frente a JetBrains Rider principalmente porque es gratuito y tiene una integración fluida con Git y Github. Además posee extensiones específicas para las necesidades de este proyecto como GitLens, MarkdownAllInONe y la extensión oficial de Unity.
+Se ha eliegido VS Code frente a JetBrains Rider principalmente porque es gratuito y tiene una integración fluida con Git y Github. Además posee extensiones específicas para las necesidades de este proyecto como GitLens, MarkdownAllInOne y la extensión oficial de Unity.
 
 Debido a la naturaleza del proyecto como proyecto formativo y académico Git y GitHub son herramientas estándar y se adaptan perfectamente con el IDE.
-La trazabilidad de cada cambio, las ramas de trabajo y el historial de commits y decisiones lo hacen una de las herramientas más importantes en el proyecto.
+La muestra de cada cambio, las ramas de trabajo y el historial de commits y decisiones elegidas lo hacen una de las herramientas más importantes en el proyecto.
 
 La estrategia que se ha usado en las ramas es la siguiente:
-- main: Rama estable que recibe merges de las funcionalidades completadas y probadas
+- main: Rama estable que recibe merges de las funcionalidades completas y probadas
 - feature-X: Rama por funcionalidad en desarrollo
   
 #### **Tecnologías para la documentación**
@@ -334,7 +336,6 @@ NuGetForUnity es un gestor de paquetes NuGet integrado en el Editor de Unity. Se
 
 La alternativa habitual (descargar las DLLs manualmente y añadirlas a Assets/Plugins) es propensa a errores de versión y difícil de mantener.
 
-Aquí está la versión redactada en prosa, en tercera persona:
 
 **SQLite**
 
@@ -349,7 +350,6 @@ El nuevo Input System de Unity se emplea en lugar del sistema legacy (`Input.Get
 
 ### 3.4.2 Arquitectura de los componentes
 #### **Estructura física: carpetas del proyecto**
-Con todo el código real del proyecto analizado, aquí está la explicación completa de la estructura lógica y física:
 
 La estructura de carpetas sigue las convenciones estándar de Unity, donde todo el código fuente reside bajo `Assets/Scripts/` organizado por responsabilidad:
 
@@ -381,7 +381,7 @@ Assets/
 └── InputSystem_Actions.inputactions
 ```
 
-La separación en subcarpetas refleja directamente la separación de responsabilidades: `Database/` agrupa todo lo relacionado con persistencia, `UI/` agrupa las vistas, y `ScriptableObject/` contiene los activos de datos. Los scripts que no encajan en una subcarpeta específica —`Player`, `Movement`, `GameManager`— son componentes de juego de uso general y permanecen en la raíz de `Scripts/`.
+La separación en subcarpetas refleja directamente la separación de responsabilidades: `Database/` agrupa todo lo relacionado con persistencia, `UI/` agrupa las vistas, y `ScriptableObject/` contiene los activos de datos. Los scripts que no encajan en una subcarpeta específica`Player`, `Movement`, `GameManager` son componentes de juego de uso general y permanecen en la raíz de `Scripts/`.
 
 #### **Estructura lógica: capas y patrones**
 
@@ -425,17 +425,17 @@ El proyecto no implementa MVC de forma estricta, pero sí una arquitectura en ca
 
 - **Capa de presentación (Vista)**
 
-La capa de vista es responsable exclusivamente de mostrar el estado del modelo en pantalla, sin contener lógica de juego.
+  La capa de vista es responsable exclusivamente de mostrar el estado del modelo en pantalla, sin contener lógica de juego.
 
   `Inventory_UI` controla la visibilidad del panel de inventario y coordina la actualización de los `Slot_UI` que lo componen. Escucha la tecla Tab para abrir y cerrar el inventario, y su método `Refresh()` recorre los slots del inventario del jugador para sincronizarlos con la representación visual.
 
   `Slot_UI` es el componente más pequeño de la vista: recibe un `Inventory.Slot` y actualiza la imagen del icono y el texto de cantidad. Cuando el slot está vacío, pone el alfa del color a cero para evitar que Unity muestre el cuadrado blanco por defecto.
 
 
-## Diagrama de capas
-![alt text](diagrams/png/LayerDiag.png)
+  **Diagrama de capas**
+  ![alt text](diagrams/png/LayerDiag.png)
 
-La regla de dependencia fluye siempre hacia abajo: la vista conoce la lógica, la lógica conoce la persistencia y la persistencia conoce los datos. Ninguna capa inferior conoce a las capas superiores, lo que hace que el sistema sea extensible y fácil de mantener.
+  La regla de dependencia fluye siempre hacia abajo: la vista conoce la lógica, la lógica conoce la persistencia y la persistencia conoce los datos. Ninguna capa inferior conoce a las capas superiores, lo que hace que el sistema sea extensible y fácil de mantener.
 
 # 7. Referencias
 
@@ -463,3 +463,13 @@ La regla de dependencia fluye siempre hacia abajo: la vista conoce la lógica, l
 
 **Sprite pack**
 - [Sprout Lands Asset Pack](https://cupnooble.itch.io/sprout-lands-asset-pack)
+
+**Tutoriales en vídeo**
+
+- [Awesome Tuts. (2021). *Learn Unity - Beginner's Game Development Tutorial*](https://www.youtube.com/watch?v=gB1F9G0JXOo)
+
+- [Digestible (2021). *Using SQLite in Unity*](https://www.youtube.com/watch?v=8bpYHCKdZno)
+
+- [JacquelynneHei. (2022). *How to Make a 2D RPG in Unity*](https://www.youtube.com/watch?v=ZPYrdKMDsGI&list=PL4PNgDjMajPN51E5WzEi7cXzJ16BCHZXl)
+
+- [Sunny Valley Studio (2022). Using Tools - Farm Game In Unity Devlog 2](https://www.youtube.com/watch?v=1qyE-mw-qAo)
