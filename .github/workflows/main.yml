@@ -1,11 +1,14 @@
 # .github/workflows/main.yml
-# Sincroniza docs/ con la Wiki usando git directamente
+# Sincroniza docs/ con la Wiki usando git directamente.
 # Se activa desde cualquier rama cuando cambia algún .md en docs/
+# o cuando cambian imágenes en docs/diagrams o docs/img.
 
 on:
   push:
     paths:
-      - 'docs/**.md'    # Se dispara solo cuando cambia cualquier .md dentro de docs/
+      - 'docs/**.md'        # Se dispara cuando cambia cualquier .md dentro de docs/
+      - 'docs/diagrams/**'  # También cuando cambian imágenes en diagrams/
+      - 'docs/img/**'       # También cuando cambian imágenes en img/
 
 name: Wiki Sync
 
@@ -14,23 +17,36 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # Paso 1: Descarga el código de la rama que hizo el push
+      # Paso 1: Descarga el código completo del repositorio principal
       - name: Checkout repositorio
         uses: actions/checkout@v3
 
       # Paso 2: Clona el repositorio de la Wiki
-      # La Wiki de GitHub es en realidad un repo git separado
-      # con la URL del repositorio principal + ".wiki.git"
+      # La Wiki de GitHub es un repo git separado cuya URL
+      # se forma añadiendo ".wiki.git" al repo principal
       - name: Clonar Wiki
         run: |
           git clone https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.wiki.git wiki
 
       # Paso 3: Copia los archivos .md de docs/ a la raíz de la Wiki
-      - name: Copiar archivos .md
+      - name: Copiar archivos Markdown
         run: |
           cp docs/*.md wiki/
 
-      # Paso 4: Hace commit y push de los cambios a la Wiki
+      # Paso 4: Copia las carpetas de imágenes a la raíz de la Wiki.
+      # De esta forma, las rutas relativas en home.md se deben actualizar a la nueva url
+      
+      - name: Copiar carpeta diagrams
+        run: |
+          mkdir -p wiki/diagrams
+          cp -r docs/diagrams/. wiki/diagrams/
+
+      - name: Copiar carpeta img
+        run: |
+          mkdir -p wiki/img
+          cp -r docs/img/. wiki/img/
+
+      # Paso 5: Hace commit y push de los cambios a la Wiki
       - name: Commit y push a la Wiki
         run: |
           cd wiki
