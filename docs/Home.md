@@ -265,10 +265,149 @@ CREATE TABLE IF NOT EXISTS Inventory (
 
 ## 3.4 Análisis y diseño de la arquitectura
 ### 3.4.1 Tecnologías usadas y herramientas
+Para el proyecto, se han tomado una serie de decisiones orientadas a la productividad y mantenibilidad del código, y también la calidad del producto final.
+
+**Tabla resumen de las herramientas y tecnologías usadas**
+| Herramienta | Rol |
+|---|---|
+| Unity | Motor de juego principal |
+| C# | Lenguaje para los scripts |
+| Visual Studio Code | IDE |
+| Git/Github | Control de versiones y ramas de trabajo |
+| Mermaid/Markdown | Documentación técnica del repositorio y diagramas |
+| SQLite | Base de datos |
+
+#### **Motor de Juego**
+Unity se ha seleccionado como motor de juego por ser un entorno completo para desarrollar RPGs 2D. Posee sistemas integrados para el control de Tilemap, física 2D y UI Canvas, por lo que no se necesitan implementaciones externas.
+También la cantidad dde documentación y la comunidad son extremadamente extensas, lo que reduce el tiempo en la resolución de problemas.
+La alternativa inicial fué Godot 4 aunque el sistema de assets y la lógica 2D no están tan integradas y resultó complicado aprender a manejarlas al inicio.
+
+#### **Lenguaje: C# / .NET Standard**
+C# es el único lenguaje de scripting que soporta Unity. Se ha decidido esta opción frente al Visual Scripting (Instalado en el entorno) porque puede ser versionado con git de morma muy limpia, además de que permite utilizar patrones como Singleton o Repository de manera explícita.
+De igual manera, C# es uno de los lenguajes estándar en la industria del videojuego junto a C++.
+
+#### **Entorno de desarrollo**
+Se ha eliegido VS Code frente a JetBrains Rider principalmente porque es gratuito y tiene una integración fluida con Git y Github. Además posee extensiones específicas para las necesidades de este proyecto como GitLens, MarkdownAllInONe y la extensión oficial de Unity.
+
+Debido a la naturaleza del proyecto como proyecto formativo y académico Git y GitHub son herramientas estándar y se adaptan perfectamente con el IDE.
+La trazabilidad de cada cambio, las ramas de trabajo y el historial de commits y decisiones lo hacen una de las herramientas más importantes en el proyecto.
+
+La estrategia que se ha usado en las ramas es la siguiente:
+- main: Rama estable que recibe merges de las funcionalidades completadas y probadas
+- feature-X: Rama por funcionalidad en desarrollo
+  
+#### **Tecnologías para la documentación**
+Toda la documentación técnica del proyecto se escribe en Markdown por su formato de texto plano, versionable con Git y por su renderizado nativo en GitHub, de manera que la propia memoria del proyecto se expone en la [Wiki](https://github.com/little-shiny/ShinyVillage/wiki) del mismo mediante un [Workflow](https://github.com/little-shiny/ShinyVillage/actions/runs/22823347448/workflow) que tras cada commit que modifique ese archivo concreto, realiza una actualización de la wiki de forma automatizada.
+
+#### **Paquetes y dependencias**
+**NuGetForUnity**
+NuGetForUnity es un gestor de paquetes NuGet integrado en el Editor de Unity. Se usa para instalar System.Data.SQLite, la librería de acceso a bases de datos SQLite para .NET.
+
+La alternativa habitual (descargar las DLLs manualmente y añadirlas a Assets/Plugins) es propensa a errores de versión y difícil de mantener.
+
+Aquí está la versión redactada en prosa, en tercera persona:
+
+**SQLite**
+
+SQLite se emplea como motor de base de datos para el sistema de partidas guardadas. Al tratarse de una solución embebida, no requiere servidor externo ni configuración de red: la base de datos es un único archivo `.db` almacenado en el dispositivo del jugador. Esto la convierte en una opción mucho más robusta que `PlayerPrefs`, que solo admite tipos primitivos y no sobrevive a reinstalaciones. Al ser SQL estándar, permite ejecutar consultas complejas para cargar partidas, listar slots y gestionar el inventario de forma eficiente, y lo hace de manera multiplataforma sin cambios en el código, tanto en Windows como en macOS y Linux.
+
+La arquitectura de acceso sigue el patrón Repository (`SaveSlotRepository`, `PlayerRepository`), que separa la lógica de negocio del acceso a datos. Esta decisión facilita sustituir el motor de base de datos en el futuro sin necesidad de modificar el resto del código.
+
+**New Input System**
+
+El nuevo Input System de Unity se emplea en lugar del sistema legacy (`Input.GetKey`) por ser el único que recibirá mantenimiento a largo plazo. A diferencia del sistema anterior, permite mapear controles de forma flexible desde un asset centralizado (`InputActions`), de modo que teclado y ratón se gestionan desde un único punto de configuración.
+
+
 ### 3.4.2 Arquitectura de los componentes
-Explicar la estructura logica y fisica del sistema: carpetas, mvc ....
- 
-2 prueba para workflow
+#### **Estructura física: carpetas del proyecto**
+Con todo el código real del proyecto analizado, aquí está la explicación completa de la estructura lógica y física:
+
+La estructura de carpetas sigue las convenciones estándar de Unity, donde todo el código fuente reside bajo `Assets/Scripts/` organizado por responsabilidad:
+
+```
+Assets/
+├── Scripts/
+│   ├── Database/
+│   │   ├── DatabaseManager.cs
+│   │   ├── SaveGameManager.cs
+│   │   ├── SaveSlotRepository.cs
+│   │   └── PlayerRepository.cs
+│   ├── UI/
+│   │   ├── Inventory_UI.cs
+│   │   └── Slot_UI.cs
+│   ├── ScriptableObject/
+│   │   └── ItemData.cs
+│   ├── Player.cs
+│   ├── Movement.cs
+│   ├── CameraFollow.cs
+│   ├── Item.cs
+│   ├── Collectable.cs
+│   ├── Inventory.cs
+│   ├── ItemManager.cs
+│   ├── TileManager.cs
+│   └── GameManager.cs
+├── Scenes/
+│   └── SampleScene.unity
+├── Packages/          ← DLLs de NuGet (SQLite)
+└── InputSystem_Actions.inputactions
+```
+
+La separación en subcarpetas refleja directamente la separación de responsabilidades: `Database/` agrupa todo lo relacionado con persistencia, `UI/` agrupa las vistas, y `ScriptableObject/` contiene los activos de datos. Los scripts que no encajan en una subcarpeta específica —`Player`, `Movement`, `GameManager`— son componentes de juego de uso general y permanecen en la raíz de `Scripts/`.
+
+#### **Estructura lógica: capas y patrones**
+
+El proyecto no implementa MVC de forma estricta, pero sí una arquitectura en capas equivalente:
+
+- **Capa de datos (Modelo)**
+
+  La capa más baja gestiona los datos puros, sin lógica de juego ni presentación. Se compone de tres elementos diferenciados:
+
+  **`ItemData` (ScriptableObject)** es el modelo de un ítem en su forma más pura: solo contiene `itemName` y `icon`. Al ser un ScriptableObject, existe como activo en el proyecto y puede asignarse en el Inspector, desacoplando completamente la definición del ítem de cualquier lógica de juego.
+
+  **`Inventory` y `Inventory.Slot`** son clases de datos puras (no heredan de `MonoBehaviour`) que representan el estado del inventario. `Slot` encapsula el nombre del ítem, su cantidad, el máximo permitido y el icono. Al estar marcadas con `[System.Serializable]`, Unity puede mostrarlas en el Inspector para facilitar la depuración.
+
+  **Los modelos de base de datos** (`SaveSlotData`, `PlayerData`) son clases serializables planas que representan filas de la base de datos. No contienen lógica: solo transportan datos entre la capa de persistencia y el resto del sistema.
+
+- **Capa de persistencia (Repository)**
+
+  Entre el modelo y la lógica de juego existe una capa intermedia dedicada exclusivamente al acceso a datos persistentes. Esta capa implementa el **patrón Repository**:
+
+  `DatabaseManager` actúa como la infraestructura de conexión: abre la base de datos SQLite, crea las tablas si no existen y expone tres métodos genéricos (`ExecuteNonQuery`, `ExecuteReader`, `ExecuteScalar`) que el resto de repositorios utilizan. Es un Singleton de `MonoBehaviour` para que persista entre escenas con `DontDestroyOnLoad`.
+
+  `SaveSlotRepository` y `PlayerRepository` son clases C# puras (sin herencia de `MonoBehaviour`) que implementan las operaciones CRUD sobre sus respectivas tablas. Reciben el `DatabaseManager` por constructor, lo que permite cambiar la implementación de la base de datos sin tocar la lógica de negocio.
+
+  `SaveGameManager` es el punto de entrada público que coordina los repositorios. El resto del juego solo habla con `SaveGameManager`; nunca accede directamente a los repositorios ni a `DatabaseManager`.
+
+- **Capa de lógica de juego (Controlador)**
+
+  Esta capa contiene los componentes de `MonoBehaviour` que implementan el comportamiento del juego:
+
+  `GameManager` es el Singleton central que da acceso global a `ItemManager` y `TileManager`. Actúa como localizador de servicios para los sistemas que necesitan ser accesibles desde cualquier punto de la escena.
+
+  `Player` gestiona el estado del jugador (su inventario) y la lógica de interacción con el entorno: detectar tiles interactuables en la dirección de movimiento y tirar ítems al mundo con un efecto físico. Delega el movimiento en el componente `Movement` y accede al mundo a través de `GameManager`.
+
+  `Movement` es un componente de un solo propósito: leer la entrada del jugador, mover el `Rigidbody2D` y actualizar el `Animator` con la dirección. Al estar separado de `Player`, puede reutilizarse o modificarse sin afectar la lógica de inventario.
+
+  `Collectable` detecta la colisión con el jugador mediante `OnTriggerEnter2D` y añade el ítem al inventario. Al finalizar, notifica a la UI para que se refresque y destruye el objeto de la escena. Este componente depende de `Item` mediante `[RequireComponent]`, lo que garantiza que nunca existe un `Collectable` sin su correspondiente `Item`.
+
+  `ItemManager` mantiene un diccionario de prefabs de ítems indexados por nombre, lo que permite recuperar el prefab correcto al soltar un ítem del inventario en el mundo.
+
+  `TileManager` encapsula toda la lógica de interacción con el `Tilemap`: determinar si una celda es interactuable, marcarla como interactuada y convertir entre coordenadas de mundo y coordenadas de celda.
+
+- **Capa de presentación (Vista)**
+
+La capa de vista es responsable exclusivamente de mostrar el estado del modelo en pantalla, sin contener lógica de juego.
+
+  `Inventory_UI` controla la visibilidad del panel de inventario y coordina la actualización de los `Slot_UI` que lo componen. Escucha la tecla Tab para abrir y cerrar el inventario, y su método `Refresh()` recorre los slots del inventario del jugador para sincronizarlos con la representación visual.
+
+  `Slot_UI` es el componente más pequeño de la vista: recibe un `Inventory.Slot` y actualiza la imagen del icono y el texto de cantidad. Cuando el slot está vacío, pone el alfa del color a cero para evitar que Unity muestre el cuadrado blanco por defecto.
+
+
+## Diagrama de capas
+[text](Home.md)
+
+La regla de dependencia fluye siempre hacia abajo: la vista conoce la lógica, la lógica conoce la persistencia y la persistencia conoce los datos. Ninguna capa inferior conoce a las capas superiores, lo que hace que el sistema sea extensible y fácil de mantener.
+
 # 7. Referencias
 
 **Protección de datos y privacidad**
