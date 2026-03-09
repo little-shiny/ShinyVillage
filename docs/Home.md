@@ -6,7 +6,13 @@
 **Repositorio:** [URL del repositorio GitHub](https://github.com/little-shiny/ShinyVillage)
 
 ---
-aqui el resumen en español y en inglés
+**Español**
+
+ShinyVillage es un videojuego de rol en dos dimensiones desarrollado con Unity y C#. El jugador dirige a un personaje desde una perspectiva cenital, gestiona su inventario, interactúa con el mapa a través de un sistema de tiles y administra múltiples partidas guardadas en una base de datos local SQLite. El proyecto aplica una arquitectura en capas con patrones Singleton y Repository, orientada al aprendizaje del desarrollo de videojuegos en un contexto académico.
+
+**English**
+
+ShinyVillage is a 2D role-playing game built with Unity and C#. The player controls a character from a top-down perspective, managing an inventory, interacting with a tile-based map, and handling multiple save files stored in a local SQLite database. The project follows a layered architecture using Singleton and Repository patterns, developed in an academic context as a practical exercise in video game programming.
 
 ---
 
@@ -261,8 +267,30 @@ CREATE TABLE IF NOT EXISTS Inventory (
 
 ## 3.3 Análisis y diseño de la interfaz
 ### 3.3.1 Mockups
+Para el diseño de los mockups se ha utilizado GoodNotes 6 en PadOS (IPad 10) debido a sus prestaciones como aplicacion de notas y esbozos de forma sencilla. En ella, se han realizado los mockups de las principales escenas y menús de la aplicación.
+![alt text](diagrams/Mockups.jpg)
 ### 3.3.2 Diseño visual
+El diseño visual se ha elegido en línea con el estilo 2D, utilizando sprites de estilo Pixel Art para una sensación retro y simplificada en los gráficos, haciendo el juego más ligero. El estilo con colores claros y en tonos pasteles le da un toque calmado y casual, orientado hacia el público objetivo.
 
+El Asset Pack elegido se obtiene desde [itch.io](https://cupnooble.itch.io/sprout-lands-asset-pack) del autor CupNooble, que ofrece una versión gratuita de los Assets muy completa. Además el mismo autor ha publicado posteriormente otro pack con componentes para la UI que se utilizará tambien debido a la continuidad en el estilo que aporta.
+
+Los Sprites que se eligen para el jugador y para conformar el mapa del tilemap son los siguientes:
+![alt text](img/player.png)
+![alt text](img/tiles.png)
+
+De igual manera el Asset Pack trae algunos sprites para los items como por ejemplo los cultivos:
+![alt text](img/crops.png)
+
+**Interfaz actual(WIP)**
+Estas capturas de pantalla son las implementadas hasta ahora, aunque están en modificación constante conforme avanza el desarrollo.
+- Inventario:
+  ![alt text](img/Inventory.png)
+- Menú principal:
+  ![alt text](img/mainmenu.png)
+- Cargar partida:
+  ![alt text](img/load.png)
+- Interfaz de juego:
+  ![alt text](img/tilemap.png)
 ## 3.4 Análisis y diseño de la arquitectura
 ### 3.4.1 Tecnologías usadas y herramientas
 Para el proyecto, se han tomado una serie de decisiones orientadas a la productividad y mantenibilidad del código, y también la calidad del producto final.
@@ -276,6 +304,7 @@ Para el proyecto, se han tomado una serie de decisiones orientadas a la producti
 | Git/Github | Control de versiones y ramas de trabajo |
 | Mermaid/Markdown | Documentación técnica del repositorio y diagramas |
 | SQLite | Base de datos |
+| IPad | Diagramas y Mockups, notas |
 
 #### **Motor de Juego**
 Unity se ha seleccionado como motor de juego por ser un entorno completo para desarrollar RPGs 2D. Posee sistemas integrados para el control de Tilemap, física 2D y UI Canvas, por lo que no se necesitan implementaciones externas.
@@ -404,7 +433,7 @@ La capa de vista es responsable exclusivamente de mostrar el estado del modelo e
 
 
 ## Diagrama de capas
-[text](Home.md)
+![alt text](diagrams/png/LayerDiag.png)
 
 La regla de dependencia fluye siempre hacia abajo: la vista conoce la lógica, la lógica conoce la persistencia y la persistencia conoce los datos. Ninguna capa inferior conoce a las capas superiores, lo que hace que el sistema sea extensible y fácil de mantener.
 
@@ -430,3 +459,7 @@ La regla de dependencia fluye siempre hacia abajo: la vista conoce la lógica, l
 - [SQLite — documentación oficial](https://www.sqlite.org/docs.html)
 - [System.Data.SQLite — documentación del paquete](https://system.data.sqlite.org/index.html/doc/trunk/www/index.wiki)
 - [Patrón Singleton en Unity — Game Programming Patterns](https://gameprogrammingpatterns.com/singleton.html)
+
+
+**Sprite pack**
+- [Sprout Lands Asset Pack](https://cupnooble.itch.io/sprout-lands-asset-pack)
