@@ -159,7 +159,7 @@ public class MainMenuManager : MonoBehaviour
         if (vlg != null)
         {
             vlg.childControlWidth      = true;
-            vlg.childControlHeight     = true;  // sin esto el Content mide solo 52px (padding)
+            vlg.childControlHeight     = false;  
             vlg.childForceExpandWidth  = true;
             vlg.childForceExpandHeight = false;
             vlg.spacing                = 8f;
@@ -192,7 +192,10 @@ public class MainMenuManager : MonoBehaviour
             // lo añadimos y configuramos aquí directamente para garantizarlo siempre.
             LayoutElement le = slotGO.GetComponent<LayoutElement>();
             if (le == null)
-                le = slotGO.AddComponent<LayoutElement>(); // lo añadimos si no existe
+            {
+                le = slotGO.AddComponent<LayoutElement>();
+            }
+            le.minHeight       = 120f;
             le.preferredHeight = 120f; // altura fija de cada fila de partida
             le.preferredWidth  = -1f;  // -1 = ignorado, el ancho lo gestiona el padre
 

@@ -45,22 +45,27 @@ public class SaveSlotUI : MonoBehaviour
     private MainMenuManager _menuManager;
 
     // ── Inicialización ────────────────────────────────────────────────────────
-     private void Awake()
+    private void Awake()
     {
-        // Recorre TODOS los Transform del prefab (raíz + hijos, activos e inactivos)
-        // y fuerza escala (1,1,1) en cualquiera que tenga escala 0.
-        // Esto corrige el bug del prefab donde Unity guardó LocalScale = (0,0,0)
-        // en varios hijos, haciéndolos invisibles aunque estén activos.
+        // Auto-asignamos referencias si no están asignadas en el Inspector
+        if (slotNameText    == null) slotNameText    = transform.Find("SlotNameText")   ?.GetComponent<TextMeshProUGUI>();
+        if (playerNameText  == null) playerNameText  = transform.Find("PlayerNameText") ?.GetComponent<TextMeshProUGUI>();
+        if (lastSavedText   == null) lastSavedText   = transform.Find("LastSavedText")  ?.GetComponent<TextMeshProUGUI>();
+        if (playTimeText    == null) playTimeText    = transform.Find("PlayTimeText")   ?.GetComponent<TextMeshProUGUI>();
+        if (loadButton      == null) loadButton      = transform.Find("LoadButton")     ?.GetComponent<Button>();
+        if (deleteButton    == null) deleteButton    = transform.Find("DeleteButton")   ?.GetComponent<Button>();
+        if (overwriteButton == null) overwriteButton = transform.Find("OverwriteButton")?.GetComponent<Button>();
+
+        // Corrige escala 0 en hijos (bug del prefab)
         foreach (Transform t in GetComponentsInChildren<Transform>(includeInactive: true))
         {
             if (t.localScale == Vector3.zero)
             {
-                t.localScale = Vector3.one; // restaura la escala normal
+                t.localScale = Vector3.one;
                 Debug.LogWarning($"[SaveSlotUI] Escala 0 corregida en '{t.name}'");
             }
         }
     }
-    // ── FIN NUEVO ─────────────────────────────────────────────────────────────
 
     public void Setup(SaveSlotData data, MainMenuManager manager)
     {
@@ -72,15 +77,17 @@ public class SaveSlotUI : MonoBehaviour
 
         // También validar las referencias UI por si el prefab 
         // no tiene los componentes asignados en el Inspector
-        if (slotNameText == null || playerNameText == null || lastSavedText == null || playTimeText == null || loadButton == null)
+        if (slotNameText == null || playerNameText == null || lastSavedText == null || 
+            playTimeText == null || loadButton == null || deleteButton == null || overwriteButton == null)
         {
-            Debug.LogError("[SaveSlotUI] Faltan referencias UI en el prefab. Revisa en el Inspector:\n" +
+            Debug.LogError("[SaveSlotUI] Faltan referencias UI en el prefab:\n" +
                 $"  slotNameText={slotNameText}\n" +
                 $"  playerNameText={playerNameText}\n" +
                 $"  lastSavedText={lastSavedText}\n" +
                 $"  playTimeText={playTimeText}\n" +
                 $"  loadButton={loadButton}\n" +
-                $"  deleteButton={deleteButton}");
+                $"  deleteButton={deleteButton}\n" +
+                $"  overwriteButton={overwriteButton}");
             return;
         }
 
