@@ -80,7 +80,7 @@ public class SaveSlotRepository
             {
                 Id         = Convert.ToInt32(row["id"]),
                 SlotName   = row["slot_name"].ToString(),
-                PlayerName = row["player_name"].ToString(),   // ← faltaba esta línea
+                PlayerName = row["player_name"].ToString(),   
                 CreatedAt  = DateTime.Parse(row["created_at"].ToString()),
                 LastSaved  = DateTime.Parse(row["last_saved"].ToString()),
                 PlayTime   = Convert.ToSingle(row["play_time"])

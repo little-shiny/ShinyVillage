@@ -68,62 +68,56 @@ public class SaveSlotUI : MonoBehaviour
     }
 
     public void Setup(SaveSlotData data, MainMenuManager manager)
+{
+    if (data == null)
     {
-        if(data == null)
-        {
-            Debug.LogError("[SaveSlotUI] Setup recibió un SaveSlotData NULO. " + "Revisar que la BD devuelva datos válidos.");
-            return; // Salimos para evitar el NullReferenceException
-        }
-
-        // También validar las referencias UI por si el prefab 
-        // no tiene los componentes asignados en el Inspector
-        if (slotNameText == null || playerNameText == null || lastSavedText == null || 
-            playTimeText == null || loadButton == null || deleteButton == null || overwriteButton == null)
-        {
-            Debug.LogError("[SaveSlotUI] Faltan referencias UI en el prefab:\n" +
-                $"  slotNameText={slotNameText}\n" +
-                $"  playerNameText={playerNameText}\n" +
-                $"  lastSavedText={lastSavedText}\n" +
-                $"  playTimeText={playTimeText}\n" +
-                $"  loadButton={loadButton}\n" +
-                $"  deleteButton={deleteButton}\n" +
-                $"  overwriteButton={overwriteButton}");
-            return;
-        }
-
-        _slotData    = data;
-        _menuManager = manager;
-
-        // ── Rellenamos los textos ──────────────────────────────────────────────
-
-        slotNameText.text   = data.SlotName;
-        playerNameText.text = $"Player: {data.PlayerName}";
-
-        // Formateamos la fecha en formato legible
-        lastSavedText.text  = $"Last saved: {data.LastSaved:dd/MM/yyyy HH:mm}";
-
-        // Convertimos segundos a horas y minutos
-        playTimeText.text   = FormatPlayTime(data.PlayTime);
-
-        // ── Asignamos los listeners a los botones ─────────────────────────────
-
-        // Usamos lambda para capturar el slot específico de esta fila
-        // Si usáramos OnClick directamente sin lambda, todas las filas  llamarían con el mismo valor por cierre de variable
-        
-        //carga
-        loadButton.onClick.AddListener(() => _menuManager.OnLoadSlotClicked(_slotData.Id));
-        //Borrar
-        deleteButton.onClick.AddListener(() => _menuManager.OnDeleteSlotClicked(_slotData.Id, gameObject));
-
-        //Sobreescribir (guarda el estado actual del juego en este slot)
-         overwriteButton.onClick.AddListener(() => _menuManager.OnOverwriteSlotClicked(_slotData.Id));
-
-         // ── Sobrescribir solo visible si hay partida activa ───────────────────
-        // Si venimos del menú principal sin haber jugado, CurrentSlotId es -1
-        // y no tiene sentido mostrar el botón de sobrescribir
-        bool hayPartidaActiva = SaveGameManager.Instance.CurrentSlotId != -1;
-        overwriteButton.gameObject.SetActive(hayPartidaActiva);
+        Debug.LogError("[SaveSlotUI] Setup recibió SaveSlotData NULL.");
+        return;
     }
+
+    _slotData = data;
+    _menuManager = manager;
+
+    // 1) Textos: deben renderizarse aunque falten botones
+    bool faltanTextos = slotNameText == null || playerNameText == null || lastSavedText == null || playTimeText == null;
+    if (faltanTextos)
+    {
+        Debug.LogError("[SaveSlotUI] Faltan referencias de texto:\n" +
+                       $"  slotNameText={slotNameText}\n" +
+                       $"  playerNameText={playerNameText}\n" +
+                       $"  lastSavedText={lastSavedText}\n" +
+                       $"  playTimeText={playTimeText}");
+        return; // sin textos no hay nada útil que mostrar
+    }
+
+    slotNameText.text   = string.IsNullOrWhiteSpace(data.SlotName) ? "(Sin nombre)" : data.SlotName;
+    playerNameText.text = $"Player: {(string.IsNullOrWhiteSpace(data.PlayerName) ? "(Sin jugador)" : data.PlayerName)}";
+    lastSavedText.text  = $"Last saved: {data.LastSaved:dd/MM/yyyy HH:mm}";
+    playTimeText.text   = FormatPlayTime(data.PlayTime);
+
+    // 2) Botones: si faltan, NO romper visualización de textos
+    bool faltanBotones = loadButton == null || deleteButton == null || overwriteButton == null;
+    if (faltanBotones)
+    {
+        Debug.LogWarning("[SaveSlotUI] Faltan botones; se muestran textos pero no habrá acciones:\n" +
+                         $"  loadButton={loadButton}\n" +
+                         $"  deleteButton={deleteButton}\n" +
+                         $"  overwriteButton={overwriteButton}");
+        return;
+    }
+
+    // Limpieza defensiva para evitar listeners duplicados al refrescar lista
+    loadButton.onClick.RemoveAllListeners();
+    deleteButton.onClick.RemoveAllListeners();
+    overwriteButton.onClick.RemoveAllListeners();
+
+    loadButton.onClick.AddListener(() => _menuManager.OnLoadSlotClicked(_slotData.Id));
+    deleteButton.onClick.AddListener(() => _menuManager.OnDeleteSlotClicked(_slotData.Id, gameObject));
+    overwriteButton.onClick.AddListener(() => _menuManager.OnOverwriteSlotClicked(_slotData.Id));
+
+    bool hayPartidaActiva = SaveGameManager.Instance != null && SaveGameManager.Instance.CurrentSlotId != -1;
+    overwriteButton.gameObject.SetActive(hayPartidaActiva);
+}
 
     // ── Métodos auxiliares ────────────────────────────────────────────────────
 
