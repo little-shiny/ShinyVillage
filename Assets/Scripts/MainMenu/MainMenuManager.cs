@@ -66,6 +66,7 @@ public class MainMenuManager : MonoBehaviour
 
     private void Start()
     {
+        NormalizarEscalasUI();
         MostrarPanel(mainPanel);
 
         if (errorNuevoText != null)
@@ -184,6 +185,7 @@ public class MainMenuManager : MonoBehaviour
         {
             // Creamos el prefab como hijo del Content
             GameObject slotGO = Instantiate(saveSlotPrefab, saveSlotsContainer);
+            CorregirEscalasCero(slotGO.transform, "SaveSlotItem");
 
             // ── FORZAMOS la altura por código ─────────────────────────────────
             // El VerticalLayoutGroup necesita que cada hijo tenga un LayoutElement
@@ -219,6 +221,30 @@ public class MainMenuManager : MonoBehaviour
         RectTransform contentRT = (RectTransform)saveSlotsContainer;
         Canvas.ForceUpdateCanvases();
         LayoutRebuilder.ForceRebuildLayoutImmediate(contentRT);
+    }
+
+    /// Revisa los paneles principales del menú y corrige escalas inválidas
+    /// (Vector3.zero), incluyendo hijos para evitar textos invisibles.
+    private void NormalizarEscalasUI()
+    {
+        CorregirEscalasCero(mainPanel?.transform, "MainPanel");
+        CorregirEscalasCero(newGamePanel?.transform, "NewGamePanel");
+        CorregirEscalasCero(loadGamePanel?.transform, "LoadGamePanel");
+        CorregirEscalasCero(confirmationPanel?.transform, "ConfirmationPanel");
+    }
+
+    private void CorregirEscalasCero(Transform root, string etiqueta)
+    {
+        if (root == null) return;
+
+        foreach (Transform t in root.GetComponentsInChildren<Transform>(includeInactive: true))
+        {
+            if (t.localScale == Vector3.zero)
+            {
+                t.localScale = Vector3.one;
+                Debug.LogWarning($"[Menu] Escala 0 corregida en '{etiqueta}/{t.name}'.");
+            }
+        }
     }
 
     // =========================================================================
