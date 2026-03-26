@@ -45,11 +45,23 @@ public class SaveSlotUI : MonoBehaviour
     private MainMenuManager _menuManager;
 
     // ── Inicialización ────────────────────────────────────────────────────────
+     private void Awake()
+    {
+        // Recorre TODOS los Transform del prefab (raíz + hijos, activos e inactivos)
+        // y fuerza escala (1,1,1) en cualquiera que tenga escala 0.
+        // Esto corrige el bug del prefab donde Unity guardó LocalScale = (0,0,0)
+        // en varios hijos, haciéndolos invisibles aunque estén activos.
+        foreach (Transform t in GetComponentsInChildren<Transform>(includeInactive: true))
+        {
+            if (t.localScale == Vector3.zero)
+            {
+                t.localScale = Vector3.one; // restaura la escala normal
+                Debug.LogWarning($"[SaveSlotUI] Escala 0 corregida en '{t.name}'");
+            }
+        }
+    }
+    // ── FIN NUEVO ─────────────────────────────────────────────────────────────
 
-    /// Rellena este slot de UI con los datos de una partida guardada.
-    /// Lo llama MainMenuManager al instanciar cada prefab.
-    /// data >Datos del slot leídos desde la base de datos
-    ///manager>Referencia al menú para delegar botones
     public void Setup(SaveSlotData data, MainMenuManager manager)
     {
         if(data == null)
@@ -62,7 +74,13 @@ public class SaveSlotUI : MonoBehaviour
         // no tiene los componentes asignados en el Inspector
         if (slotNameText == null || playerNameText == null || lastSavedText == null || playTimeText == null || loadButton == null)
         {
-            Debug.LogError("[SaveSlotUI] Faltan referencias UI en el prefab en el Inspector.");
+            Debug.LogError("[SaveSlotUI] Faltan referencias UI en el prefab. Revisa en el Inspector:\n" +
+                $"  slotNameText={slotNameText}\n" +
+                $"  playerNameText={playerNameText}\n" +
+                $"  lastSavedText={lastSavedText}\n" +
+                $"  playTimeText={playTimeText}\n" +
+                $"  loadButton={loadButton}\n" +
+                $"  deleteButton={deleteButton}");
             return;
         }
 
@@ -109,6 +127,4 @@ public class SaveSlotUI : MonoBehaviour
         TimeSpan time = TimeSpan.FromSeconds(totalSeconds);
         return $"Tiempo: {(int)time.TotalHours}h {time.Minutes}m";
     }
-
-    
 }
