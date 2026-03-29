@@ -17,14 +17,14 @@ public class IslandButton_UI : MonoBehaviour
     
     // dtos internos
     private SaveSlotData _slotData;
-    private IslandSelectorUI _selector;
+    private IslandSelector_UI _selector;
 
     /// <summary>
     /// Configura este botón con los datos de una isla.
     /// </summary>
     /// <param name="slotData">Datos del slot de guardado</param>
     /// <param name="selector">Referencia al selector padre para callbacks</param>
-    public void Setup(SaveSlotData slotData, IslandSelectorUI selector)
+    public void Setup(SaveSlotData slotData, IslandSelector_UI selector)
     {
         _slotData = slotData;
         _selector = selector;
