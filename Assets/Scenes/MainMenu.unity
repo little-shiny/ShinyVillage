@@ -992,6 +992,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 527443485}
     m_Modifications:
+    - target: {fileID: 2831426200049283243, guid: 2f3479e827d06b945958d791febe35e3, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -526.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2831426200049283243, guid: 2f3479e827d06b945958d791febe35e3, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -48.853
+      objectReference: {fileID: 0}
     - target: {fileID: 7377985600173278969, guid: 2f3479e827d06b945958d791febe35e3, type: 3}
       propertyPath: m_Name
       value: SaveSlotItem
@@ -3162,7 +3170,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1476186752}
   m_Direction: 0
   m_Value: 1
-  m_Size: 0.99999994
+  m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
