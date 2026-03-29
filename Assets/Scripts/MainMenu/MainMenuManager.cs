@@ -200,7 +200,7 @@ public class MainMenuManager : MonoBehaviour
             le.preferredWidth  = -1f;  // -1 = ignorado, el ancho lo gestiona el padre
 
             // ── Comprobamos que el prefab tiene SaveSlotUI ────────────────────
-            SaveSlotUI slotUI = slotGO.GetComponent<SaveSlotUI>();
+            SaveSlot_UI slotUI = slotGO.GetComponent<SaveSlot_UI>();
             if (slotUI == null)
             {
                 Debug.LogError($"[Menu] El prefab '{saveSlotPrefab.name}' no tiene SaveSlotUI. " +

@@ -18,7 +18,7 @@ using UnityEngine.UI;
 using TMPro;
 using System;
 
-public class SaveSlotUI : MonoBehaviour
+public class SaveSlot_UI : MonoBehaviour
 {
     // Asignaciones de los elementos del prefab
     // Se asignan desde el Inspector arrastrando cada objeto del prefab
