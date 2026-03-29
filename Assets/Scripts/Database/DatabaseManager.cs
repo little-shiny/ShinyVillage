@@ -94,7 +94,9 @@ public class DatabaseManager : MonoBehaviour
                 player_name TEXT NOT NULL,           -- Nombre del jugador
                 created_at  TEXT NOT NULL,           -- Fecha de creación
                 last_saved  TEXT NOT NULL,           -- Última vez guardado
-                play_time   REAL DEFAULT 0           -- Tiempo total jugado en segundos
+                play_time   REAL DEFAULT 0,           -- Tiempo total jugado en segundos
+                island_seed INTEGER DEFAULT 0,        -- columna con la semilla del color de la isla. con defualt se puede añadir columna sin romper la base de datos
+
             );
 
             -- Datos del jugador vinculados a un slot
