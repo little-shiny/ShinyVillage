@@ -177,6 +177,7 @@ public class IslandManager : MonoBehaviour
     /// Solo disponible en el Editor de Unity.
 
     [ContextMenu("Auto Find Tilemaps")]
+    [System.Obsolete]
     private void AutoFindTilemaps()
     {
         // Busca todos los Tilemaps en la escena
