@@ -1,0 +1,42 @@
+---
+config: 
+    layout: elk
+---
+graph TB
+    subgraph VISTA["VISTA"]
+        Inventory_UI
+        Slot_UI
+    end
+
+    subgraph LOGICA["LÓGICA DE JUEGO"]
+        GameManager["GameManager〔Singleton〕"]
+        Player
+        Movement
+        Collectable
+        ItemManager
+        TileManager
+        CameraFollow
+        Item
+    end
+
+    subgraph PERSISTENCIA["PERSISTENCIA"]
+        SaveGameManager["SaveGameManager〔API pública〕"]
+        DatabaseManager["DatabaseManager〔Singleton · SQLite〕"]
+        SaveSlotRepository
+        PlayerRepository
+    end
+
+    subgraph DATOS["DATOS"]
+        ItemData["ItemData〔ScriptableObject〕"]
+        InventorySlot["Inventory · Inventory.Slot"]
+        SaveSlotData["SaveSlotData · PlayerData"]
+    end
+
+    VISTA --> LOGICA
+    LOGICA --> PERSISTENCIA
+    PERSISTENCIA --> DATOS
+
+    style VISTA        fill:#dbeafe,stroke:#3b82f6,color:#1e3a5f
+    style LOGICA       fill:#dcfce7,stroke:#22c55e,color:#14532d
+    style PERSISTENCIA fill:#ffedd5,stroke:#f97316,color:#7c2d12
+    style DATOS        fill:#f3e8ff,stroke:#a855f7,color:#4a1272

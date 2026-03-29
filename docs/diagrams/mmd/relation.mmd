@@ -1,0 +1,65 @@
+---
+config:
+  theme: redux-color
+  layout: elk
+---
+classDiagram
+    direction TB
+
+    class SaveSlots["SaveSlots"] {
+        <<Table>>
+        +INTEGER id PK
+        +TEXT slot_name
+        +TEXT player_name
+        +TEXT created_at
+        +TEXT last_saved
+        +REAL play_time
+    }
+
+    class Players["Players"] {
+        <<Table>>
+        +INTEGER id PK
+        +INTEGER slot_id FK
+        +TEXT name
+        +REAL pos_x
+        +REAL pos_y
+        +REAL pos_z
+    }
+
+    class Farms["Farms"] {
+        <<Table>>
+        +INTEGER id PK
+        +INTEGER slot_id FK
+        +TEXT farm_name
+        +INTEGER size_x
+        +INTEGER size_y
+        +INTEGER unlocked
+    }
+
+    class FarmTiles["FarmTiles"] {
+        <<Table>>
+        +INTEGER id PK
+        +INTEGER farm_id FK
+        +INTEGER tile_x
+        +INTEGER tile_y
+        +TEXT soil_state
+        +TEXT crop_id
+        +INTEGER growth_stage
+        +INTEGER days_planted
+    }
+
+    class Inventory["Inventory"] {
+        <<Table>>
+        +INTEGER id PK
+        +INTEGER slot_id FK
+        +TEXT item_id
+        +TEXT item_name
+        +INTEGER quantity
+        +INTEGER slot_index
+        +TEXT item_data
+    }
+
+    SaveSlots "1" --> "0..*" Players   : slot_id · CASCADE DELETE
+    SaveSlots "1" --> "0..*" Farms     : slot_id · CASCADE DELETE
+    SaveSlots "1" --> "0..*" Inventory : slot_id · CASCADE DELETE
+    Farms     "1" --> "0..*" FarmTiles : farm_id · CASCADE DELETE

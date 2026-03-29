@@ -2,7 +2,8 @@ using System.Data;
 using System.IO;
 using Unity.VisualScripting;
 using UnityEngine;
-using System.Data.SQLite; // SQLiteConnection  ← viene del paquete instalado con NuGetForUnity
+using System.Data.SQLite;
+using System.Collections.Generic; // SQLiteConnection  ← viene del paquete instalado con NuGetForUnity
 
 //Correccion conflicto con System.action porque detectaba otras versiones de system.dll
 public delegate void SqlParametrizer(IDbCommand cmd);
@@ -23,6 +24,9 @@ public class DatabaseManager : MonoBehaviour
 
     //Nombre de la db
     private const string DB_NAME = "savegame.db";
+
+    //Flag para saber si la conexión está cerrada para evitar el eror que se cierra dos veces
+    private bool _connectionClosed = false;
 
     //Ruta completa donde se guarda el archivo
     // Application.persistentdatapath es la carpeta de datos del juegpo
@@ -61,6 +65,8 @@ public class DatabaseManager : MonoBehaviour
     /// Abre la conexión y crea las tablas si no existen todavía.
     private void InitializeDatabase()
     {
+        // Reset del flag al inicializar por si se reinicial la db
+        _connectionClosed = false;
         // Formato de connection string que entiende Mono.Data.Sqlite
         string connectionString = $"Data Source={DbPath};Version=3;";
 
@@ -159,15 +165,30 @@ public class DatabaseManager : MonoBehaviour
         }
     }
 
-    // Ejecuta sentencia sql que devuelve datos como select
-    // Devuelve IdataReader para leer fila a fila los datos
-    //todo explicar
-    public IDataReader ExecuteReader(string sql, SqlParametrizer parameterize = null)
+    // Devuelve los datos ya leídos en una lista, en lugar de devolver un reader "vivo".
+    // Así el comando se cierra inmediatamente y la conexión queda libre.
+    public List<Dictionary<string, object>> ExecuteQuery(string sql, SqlParametrizer parameterize = null)
     {
-        IDbCommand cmd = _connection.CreateCommand();
-        cmd.CommandText = sql;
-        parameterize?.Invoke(cmd);
-        return cmd.ExecuteReader();
+        var results = new List<Dictionary<string, object>>();
+
+        using (IDbCommand cmd = _connection.CreateCommand()) // using → se libera siempre
+        {
+            cmd.CommandText = sql;
+            parameterize?.Invoke(cmd);
+
+            using (IDataReader reader = cmd.ExecuteReader()) // using → reader se cierra siempre
+            {
+                while (reader.Read())
+                {
+                    var row = new Dictionary<string, object>();
+                    for (int i = 0; i < reader.FieldCount; i++)
+                        row[reader.GetName(i)] = reader.GetValue(i); // guardamos columna por nombre
+                    results.Add(row);
+                }
+            } // reader se cierra aquí
+        } // comando se libera aquí
+
+        return results; // devolvemos datos ya extraídos
     }
 
     /// Ejecuta una sentencia SQL y devuelve el primer valor de la primera fila.
@@ -205,10 +226,21 @@ public class DatabaseManager : MonoBehaviour
 
     private void CloseConnection()
     {
+        // Si ya cerramos la conexión, no hacemos nadaEsto evita el ObjectDisposedException cuando se llama tanto OnDestroy como OnApplicationQuit
+        if (_connectionClosed)
+        {
+            Debug.Log("[DB] Conexión ya estaba cerrada, ignorando");
+            return;
+        }
+
+        // Comprobació adicional
         if (_connection != null && _connection.State == ConnectionState.Open)
         {
             _connection.Close();
             _connection.Dispose();
+            _connection = null;
+            _connectionClosed = true;
+
             Debug.Log("[DB] Conexión cerrada.");
         }
     }

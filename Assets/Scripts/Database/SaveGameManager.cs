@@ -22,6 +22,15 @@ public class SaveGameManager : MonoBehaviour
         Instance = this;
         DontDestroyOnLoad(gameObject);
 
+        // Añadimos una proteccion porque si la instancia es nula los Awake se han iniciado en el orden incorrecto, manejamos esa posibilidad
+        if (DatabaseManager.Instance == null)
+        {
+            Debug.LogError("[SaveGameManager] DatabaseManager.Instance es null. " +
+                        "Asegúrate de que DatabaseManager esté en la escena y " +
+                        "configurado ANTES en Edit > Project Settings > Script Execution Order.");
+            return;
+        }
+
         // Inicializamos los repositorios pasándoles la instancia del DatabaseManager
         _slotRepo   = new SaveSlotRepository(DatabaseManager.Instance);
         _playerRepo = new PlayerRepository(DatabaseManager.Instance);

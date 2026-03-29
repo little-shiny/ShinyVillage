@@ -1,0 +1,58 @@
+---
+
+config : 
+    layout: elk
+---
+erDiagram
+    SAVE_SLOT {
+        int id PK
+        string slot_name
+        string player_name
+        string created_at
+        string last_saved
+        float play_time
+    }
+
+    PLAYER {
+        int id PK
+        int slot_id FK
+        string name
+        float pos_x
+        float pos_y
+        float pos_z
+    }
+
+    FARM {
+        int id PK
+        int slot_id FK
+        string farm_name
+        int size_x
+        int size_y
+        int unlocked
+    }
+
+    FARM_TILE {
+        int id PK
+        int farm_id FK
+        int tile_x
+        int tile_y
+        string soil_state
+        string crop_id
+        int growth_stage
+        int days_planted
+    }
+
+    INVENTORY {
+        int id PK
+        int slot_id FK
+        string item_id
+        string item_name
+        int quantity
+        int slot_index
+        string item_data
+    }
+
+    SAVE_SLOT ||--o{ PLAYER      : "tiene"
+    SAVE_SLOT ||--o{ FARM        : "posee"
+    SAVE_SLOT ||--o{ INVENTORY   : "almacena"
+    FARM      ||--o{ FARM_TILE   : "contiene"

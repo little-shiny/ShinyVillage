@@ -1,0 +1,64 @@
+---
+config : 
+    layout: elk
+---
+flowchart TD
+    A([Inicio de la aplicación]) --> B[Awake: GameManager\nDatabaseManager\nSaveGameManager]
+    B --> C[/Escena: Menú Principal/]
+
+    C --> D{¿Qué hace el jugador?}
+
+    D --> E[Nueva Partida]
+    D --> F[Cargar Partida]
+
+    E --> E1[Introduce nombre\nde slot y jugador]
+    E1 --> E2{¿Campos válidos?}
+    E2 -- No --> E3[Muestra error UI]
+    E3 --> E1
+    E2 -- Sí --> E4[SaveGameManager.NewGame\nInserta en BD]
+    E4 --> G
+
+    F --> F1[Carga lista de slots\ndesde BD]
+    F1 --> F2{¿Hay partidas?}
+    F2 -- No --> F3[Muestra aviso\nsin partidas]
+    F3 --> D
+    F2 -- Sí --> F4[Muestra lista SaveSlotUI]
+    F4 --> F5{Acción del jugador}
+    F5 -- Cargar --> F6[SaveGameManager.LoadGame]
+    F6 --> G
+    F5 -- Borrar --> F7[Diálogo confirmación]
+    F7 -- Confirmar --> F8[DeleteSave · BD CASCADE]
+    F8 --> F4
+    F7 -- Cancelar --> F4
+
+    G[/Escena: Juego SampleScene/]
+    G --> H[Inicializa Player\nInventario · Tilemap]
+
+    H --> I{Bucle de juego}
+
+    I --> J[Movimiento WASD\nAnimación]
+    J --> I
+
+    I --> K[Pulsa SPACE\nInteracción con Tile]
+    K --> K1{¿Tile interactuable?}
+    K1 -- Sí --> K2[SetInteracted\nCambia tile visual]
+    K1 -- No --> I
+    K2 --> I
+
+    I --> L[Item entra en collider\ndel Player]
+    L --> M[Inventory.Add\nInventory_UI.Refresh]
+    M --> I
+
+    I --> N[Pulsa TAB\nToggle Inventario]
+    N --> N1{¿Inventario abierto?}
+    N1 -- No --> N2[Abre panel\nInventory_UI.Refresh]
+    N1 -- Sí --> N3[Cierra panel]
+    N2 --> I
+    N3 --> I
+
+    I --> O[Soltar ítem\nDesde UI]
+    O --> P[Player.DropItem\nInstantiate en escena]
+    P --> I
+
+    I --> Q([Salir / Cerrar app])
+    Q --> R[OnApplicationQuit\nCierra conexión BD]
