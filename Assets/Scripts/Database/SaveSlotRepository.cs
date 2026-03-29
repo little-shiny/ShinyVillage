@@ -13,6 +13,7 @@ public class SaveSlotData
     public DateTime CreatedAt;
     public DateTime LastSaved;
     public float PlayTime;        // En segundos
+    public int IslandSeed; //Semilla de los colores de la isla
 }
 
 
@@ -37,10 +38,12 @@ public class SaveSlotRepository
     {
         string now = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
 
+        int islandSeed = UnityEngine.Random.Range(1000, 999999); //Se genera la semilla aleatoria
+
         // Insertar el slot
         _db.ExecuteNonQuery(
-            @"INSERT INTO SaveSlots (slot_name, player_name, created_at, last_saved, play_time)
-              VALUES (@slot_name, @player_name, @created_at, @last_saved, 0)",
+            @"INSERT INTO SaveSlots (slot_name, player_name, created_at, last_saved, play_time, island_seed)
+              VALUES (@slot_name, @player_name, @created_at, @last_saved, 0, @island_seed)",
             cmd =>
             {
                 // Usamos parámetros para evitar SQL Injection y problemas con caracteres especiales
@@ -48,6 +51,7 @@ public class SaveSlotRepository
                 DatabaseManager.AddParameter(cmd, "@player_name", playerName);
                 DatabaseManager.AddParameter(cmd, "@created_at",  now);
                 DatabaseManager.AddParameter(cmd, "@last_saved",  now);
+                DatabaseManager.AddParameter(cmd, "@island_seed", islandSeed); //Añadida la semilla como parametro
             }
         );
 
@@ -70,7 +74,8 @@ public class SaveSlotRepository
 
         // Usamos ahora executeQuery
         var rows = _db.ExecuteQuery(
-            "SELECT id, slot_name, player_name, created_at, last_saved, play_time " + "FROM SaveSlots ORDER BY last_saved DESC"
+            "SELECT id, slot_name, player_name, created_at, last_saved, play_time, island_seed " + 
+            "FROM SaveSlots ORDER BY last_saved DESC"
         );
 
         // Para cada resultado de la query anterior
@@ -83,7 +88,8 @@ public class SaveSlotRepository
                 PlayerName = row["player_name"].ToString(),   
                 CreatedAt  = DateTime.Parse(row["created_at"].ToString()),
                 LastSaved  = DateTime.Parse(row["last_saved"].ToString()),
-                PlayTime   = Convert.ToSingle(row["play_time"])
+                PlayTime   = Convert.ToSingle(row["play_time"]),
+                IslandSeed = Convert.ToInt32(row["island_seed"]) // Se lee la semilla
             });
         }
 
