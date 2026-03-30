@@ -338,65 +338,47 @@ public class SettingsManager : MonoBehaviour
     public void SaveGame()
     {
         // Se verifica que el SaveGameManager esté disponible
-        if (SaveGameManager.Instance == null)
+        if (SaveGameManager.Instance.CurrentSlotId == -1)
         {
             Debug.LogError("[SettingsManager] SaveGameManager no está disponible");
             return;
         }
 
-        // Se verifica que haya una partida activa
+        // Se busca el componente del Player en la escena
+
+        Player player = FindObjectOfType<Player>();
+
+        if(player == null)
+        {
+            Debug.LogError("[SettingsManager] No se encontró el componente Player en la escena");
+            return;
+        }
+
+
         if (SaveGameManager.Instance.CurrentSlotId == -1)
         {
             Debug.LogWarning("[SettingsManager] No hay ninguna partida activa para guardar");
             return;
         }
 
-        // Se obtiene el jugador actual
-        // Aquí hay que obtener el PlayerData del sistema de juego
-        // Por ahora se usa un placeholder
-        PlayerData currentPlayer = GetCurrentPlayer();
-        
-        if (currentPlayer == null)
+        /// Se crea el playerData con los datos actuales (posicion y nombre que ya existen en la BD)
+        PlayerData currentPLayer = new PlayerData
         {
-            Debug.LogError("[SettingsManager] No se pudo obtener los datos del jugador actual");
-            return;
-        }
+            SlotId = SaveGameManager.Instance.CurrentSlotId,
+            Name = "Jugador", //nombre por defecto
+            Position = player.transform.position //posicion actual del jugador
+        };
 
-        // Se calcula el tiempo de juego actual
-        float playTime = Time.time; // Placeholder - debería ser el tiempo real de juego
+        /// Se calcula el tiempo de juego actual
+        float playTime = Time.time; 
 
         // Se guarda la partida
-        SaveGameManager.Instance.SaveCurrentGame(currentPlayer, playTime);
-        
-        Debug.Log("[SettingsManager] Partida guardada exitosamente");
+        SaveGameManager.Instance.SaveCurrentGame(currentPLayer, playTime);
+
+        Debug.Log($"[SettingsManager] Partida guardada - Posición: {player.transform.position}");
     }
 
 
-    /// Obtiene los datos del jugador actual usando el PlayerSaveHelper.
-
-    private PlayerData GetCurrentPlayer()
-    {
-        // Se intenta obtener el PlayerSaveHelper del jugador
-        PlayerSaveHelper saveHelper = PlayerSaveHelper.GetInstance();
-        
-        if (saveHelper == null)
-        {
-            Debug.LogError("[SettingsManager] No se encontró PlayerSaveHelper en la escena");
-            Debug.LogWarning("[SettingsManager] Asegúrate de que el GameObject Player tenga el componente PlayerSaveHelper");
-            return null;
-        }
-
-        // Se obtienen los datos del jugador
-        PlayerData playerData = saveHelper.GetPlayerData();
-        
-        if (playerData == null)
-        {
-            Debug.LogError("[SettingsManager] No se pudieron obtener los datos del jugador");
-            return null;
-        }
-
-        return playerData;
-    }
 
     // ═══════════════════════════════════════════════════════════════
     // NAVEGACIÓN AL MENÚ PRINCIPAL
