@@ -336,48 +336,47 @@ public class SettingsManager : MonoBehaviour
     /// Guarda la partida actual usando el SaveGameManager.
 
     public void SaveGame()
+{
+    // Se verifica que el SaveGameManager exista
+    if (SaveGameManager.Instance == null)
     {
-        // Se verifica que el SaveGameManager esté disponible
-        if (SaveGameManager.Instance.CurrentSlotId == -1)
-        {
-            Debug.LogError("[SettingsManager] SaveGameManager no está disponible");
-            return;
-        }
-
-        // Se busca el componente del Player en la escena
-
-        Player player = FindObjectOfType<Player>();
-
-        if(player == null)
-        {
-            Debug.LogError("[SettingsManager] No se encontró el componente Player en la escena");
-            return;
-        }
-
-
-        if (SaveGameManager.Instance.CurrentSlotId == -1)
-        {
-            Debug.LogWarning("[SettingsManager] No hay ninguna partida activa para guardar");
-            return;
-        }
-
-        /// Se crea el playerData con los datos actuales (posicion y nombre que ya existen en la BD)
-        PlayerData currentPLayer = new PlayerData
-        {
-            SlotId = SaveGameManager.Instance.CurrentSlotId,
-            Name = "Jugador", //nombre por defecto
-            Position = player.transform.position //posicion actual del jugador
-        };
-
-        /// Se calcula el tiempo de juego actual
-        float playTime = Time.time; 
-
-        // Se guarda la partida
-        SaveGameManager.Instance.SaveCurrentGame(currentPLayer, playTime);
-
-        Debug.Log($"[SettingsManager] Partida guardada - Posición: {player.transform.position}");
+        Debug.LogError("[SettingsManager] SaveGameManager no está disponible");
+        Debug.LogWarning("[SettingsManager] Asegúrate de iniciar el juego desde MainMenu, no directamente desde SampleScene");
+        return;
     }
 
+    // Se verifica que haya una partida activa
+    if (SaveGameManager.Instance.CurrentSlotId == -1)
+    {
+        Debug.LogWarning("[SettingsManager] No hay ninguna partida activa para guardar");
+        return;
+    }
+
+    // Se busca el componente Player en la escena
+    Player player = FindObjectOfType<Player>();
+    
+    if (player == null)
+    {
+        Debug.LogError("[SettingsManager] No se encontró el componente Player en la escena");
+        return;
+    }
+
+    // Se crea el PlayerData con los datos actuales
+    PlayerData currentPlayer = new PlayerData
+    {
+        SlotId = SaveGameManager.Instance.CurrentSlotId,
+        Name = "Jugador", // Nombre por defecto
+        Position = player.transform.position // Posición actual del jugador
+    };
+
+    // Se calcula el tiempo de juego actual
+    float playTime = Time.time;
+
+    //  Se guarda la partida
+    SaveGameManager.Instance.SaveCurrentGame(currentPlayer, playTime);
+
+    Debug.Log($"[SettingsManager] Partida guardada - Posición: {player.transform.position}");
+}
 
 
     // ═══════════════════════════════════════════════════════════════
