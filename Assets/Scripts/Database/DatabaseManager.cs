@@ -33,7 +33,9 @@ public class DatabaseManager : MonoBehaviour
 
     //Ruta completa donde se guarda el archivo
     // Application.persistentdatapath es la carpeta de datos del juegpo
-    private string DbPath => Path.Combine(Application.persistentDataPath, DB_NAME);
+
+    // Para poder manejar y hacer pruebas se va a establecer una carpeta en la raíz de la carpeta del proyecto (fuera de assets)
+    private string DbPath => Path.Combine(Application.dataPath,"..", DB_NAME);
 
     private void Awake()
     {
