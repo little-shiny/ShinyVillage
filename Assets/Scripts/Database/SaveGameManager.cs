@@ -1,5 +1,5 @@
+using System.Collections.Generic;
 using UnityEngine;
-
 /// Punto de entrada único para guardar/cargar partidas.
 /// Los scripts del juego solo hablan con esta clase, no con los repositorios directamente.
 /// Esto hace que sea fácil cambiar la implementación sin tocar el resto del código.
@@ -70,7 +70,17 @@ public class SaveGameManager : MonoBehaviour
         PlayerData player = _playerRepo.LoadPlayer(slotId);
         // Aquí cargaríamos inventario, mapa de la granja
 
-        Debug.Log($"[Save] Partida {slotId} cargada.");
+        // Carga el slot completo para poder ver la isla
+        List<SaveSlotData> allSlots = GetAllSaveSlots();
+        SaveSlotData currentSlot = allSlots.Find(s => s.Id == slotId);
+
+        if(currentSlot != null && IslandManager.Instance != null)
+        {
+            //Se carga la configuración de la isla
+            IslandManager.Instance.LoadIsland(currentSlot);
+        }
+
+        Debug.Log($"[Save] Partida {slotId} cargada con isla: {currentSlot?.SlotName}");
         return player;
     }
 

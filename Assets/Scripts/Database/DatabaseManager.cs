@@ -10,6 +10,9 @@ public delegate void SqlParametrizer(IDbCommand cmd);
 
 // Gestiona la conexion y las operaciones con la db en sqllite
 //Singleton para que se pueda acceder desde todas las partes del juego 
+/// Se guarda en: Application.persistentDataPath/savegame.db
+
+
 public class DatabaseManager : MonoBehaviour
 {
     //Singleton : una sola instancia
@@ -30,7 +33,9 @@ public class DatabaseManager : MonoBehaviour
 
     //Ruta completa donde se guarda el archivo
     // Application.persistentdatapath es la carpeta de datos del juegpo
-    private string DbPath => Path.Combine(Application.persistentDataPath, DB_NAME);
+
+    // Para poder manejar y hacer pruebas se va a establecer una carpeta en la raíz de la carpeta del proyecto (fuera de assets)
+    private string DbPath => Path.Combine(Application.dataPath,"..", DB_NAME);
 
     private void Awake()
     {
@@ -94,7 +99,9 @@ public class DatabaseManager : MonoBehaviour
                 player_name TEXT NOT NULL,           -- Nombre del jugador
                 created_at  TEXT NOT NULL,           -- Fecha de creación
                 last_saved  TEXT NOT NULL,           -- Última vez guardado
-                play_time   REAL DEFAULT 0           -- Tiempo total jugado en segundos
+                play_time   REAL DEFAULT 0,           -- Tiempo total jugado en segundos
+                island_seed INTEGER DEFAULT 0        -- columna con la semilla del color de la isla. con defualt se puede añadir columna sin romper la base de datos
+
             );
 
             -- Datos del jugador vinculados a un slot
@@ -176,16 +183,15 @@ public class DatabaseManager : MonoBehaviour
             cmd.CommandText = sql;
             parameterize?.Invoke(cmd);
 
-            using (IDataReader reader = cmd.ExecuteReader()) // using → reader se cierra siempre
+            using IDataReader reader = cmd.ExecuteReader(); // using → reader se cierra siempre
+            while (reader.Read())
             {
-                while (reader.Read())
-                {
-                    var row = new Dictionary<string, object>();
-                    for (int i = 0; i < reader.FieldCount; i++)
-                        row[reader.GetName(i)] = reader.GetValue(i); // guardamos columna por nombre
-                    results.Add(row);
-                }
-            } // reader se cierra aquí
+                var row = new Dictionary<string, object>();
+                for (int i = 0; i < reader.FieldCount; i++)
+                    row[reader.GetName(i)] = reader.GetValue(i); // guardamos columna por nombre
+                results.Add(row);
+            }
+            // reader se cierra aquí
         } // comando se libera aquí
 
         return results; // devolvemos datos ya extraídos

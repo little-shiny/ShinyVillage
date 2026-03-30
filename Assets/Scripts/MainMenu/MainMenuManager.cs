@@ -50,7 +50,7 @@ public class MainMenuManager : MonoBehaviour
     // ── Referencias UI: Confirmación de borrado ───────────────────────────────
 
     [Header("Panel Confirmación Borrar")]
-    [SerializeField] private TextMeshProUGUI confirmDeleteText;
+    [SerializeField] private GameObject confirmDeletePanel;
 
     // ── Nombre de la escena de juego ─────────────────────────────────────────
 
@@ -200,7 +200,7 @@ public class MainMenuManager : MonoBehaviour
             le.preferredWidth  = -1f;  // -1 = ignorado, el ancho lo gestiona el padre
 
             // ── Comprobamos que el prefab tiene SaveSlotUI ────────────────────
-            SaveSlotUI slotUI = slotGO.GetComponent<SaveSlotUI>();
+            SaveSlot_UI slotUI = slotGO.GetComponent<SaveSlot_UI>();
             if (slotUI == null)
             {
                 Debug.LogError($"[Menu] El prefab '{saveSlotPrefab.name}' no tiene SaveSlotUI. " +
@@ -259,10 +259,24 @@ public class MainMenuManager : MonoBehaviour
         _pendingDeleteSlotId = slotId;
         _pendingDeleteSlotGO = slotGameObject;
 
-        if (confirmDeleteText != null)
-            confirmDeleteText.text = "¿Seguro que quieres borrar esta partida?\nEsta acción no se puede deshacer.";
+        if (confirmDeletePanel != null)
+        {
+            //Hay que buscar el gameObject que se llama "Message" en el panel de advertencia de cancelación
+            Transform textTransform = confirmDeletePanel.transform.Find("Message");
 
-        confirmationPanel.SetActive(true);
+            if(textTransform != null)
+            {
+                //Se obtiene el componente TMP del objeto
+                TextMeshProUGUI confirmText = textTransform.GetComponent<TextMeshProUGUI>();
+
+                if(confirmText != null)
+                {
+                    confirmText.text = "¿Seguro que quieres borrar esta partida?\nEsta acción no se puede deshacer.";
+                }
+            }
+
+            confirmationPanel.SetActive(true);
+        }
     }
 
     /// Vuelve al panel principal desde el panel de carga.
