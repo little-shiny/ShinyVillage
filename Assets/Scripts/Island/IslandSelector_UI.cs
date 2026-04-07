@@ -15,35 +15,55 @@ public class IslandSelector_UI : MonoBehaviour
     private List<GameObject> _instantiatedButtons = new List<GameObject>();
 
     /// <summary>
-    /// Abre el selector y carga todas las islas disponibles.
-    /// </summary>
-    public void OpenSelector()
+/// Abre el selector y carga todas las islas disponibles.
+/// </summary>
+public void OpenSelector()
+{
+    // Se limpia la lista anterior por si acaso
+    ClearIslandList();
+    
+    // VERIFICACIÓN: El prefab debe estar asignado
+    if (islandButtonPrefab == null)
     {
-        // Se limpia la lista anterior por si acaso
-        ClearIslandList();
-        
-        // Se obtienen todos los slots de guardado
-        List<SaveSlotData> allSlots = SaveGameManager.Instance.GetAllSaveSlots();
-        
-        Debug.Log($"[IslandSelector] Cargando {allSlots.Count} islas disponibles");
-        
-        // Se crea un botón por cada isla
-        foreach (SaveSlotData slot in allSlots)
-        {
-            GameObject buttonObj = Instantiate(islandButtonPrefab, islandListContainer);
-            IslandButton_UI buttonUI = buttonObj.GetComponent<IslandButton_UI>();
-            
-            if (buttonUI != null)
-            {
-                buttonUI.Setup(slot, this);
-                _instantiatedButtons.Add(buttonObj);
-            }
-        }
-        
-        // Se muestra el panel
-        if (selectorPanel != null)
-            selectorPanel.SetActive(true);
+        Debug.LogError("[IslandSelector] El prefab 'islandButtonPrefab' NO está asignado en el Inspector. " +
+                      "No se pueden crear los botones.");
+        return;
     }
+    
+    // VERIFICACIÓN: El contenedor debe existir
+    if (islandListContainer == null)
+    {
+        Debug.LogError("[IslandSelector] El contenedor 'islandListContainer' NO está asignado.");
+        return;
+    }
+    
+    // Se obtienen todos los slots de guardado
+    List<SaveSlotData> allSlots = SaveGameManager.Instance.GetAllSaveSlots();
+    
+    Debug.Log($"[IslandSelector] Cargando {allSlots.Count} islas disponibles");
+    
+    // Se crea un botón por cada isla
+    foreach (SaveSlotData slot in allSlots)
+    {
+        GameObject buttonObj = Instantiate(islandButtonPrefab, islandListContainer);
+        IslandButton_UI buttonUI = buttonObj.GetComponent<IslandButton_UI>();
+        
+        if (buttonUI != null)
+        {
+            buttonUI.Setup(slot, this);
+            _instantiatedButtons.Add(buttonObj);
+        }
+        else
+        {
+            Debug.LogError($"[IslandSelector] El prefab no tiene el componente IslandButton_UI. " +
+                          "Botón inválido para {slot.SlotName}");
+        }
+    }
+    
+    // Se muestra el panel
+    if (selectorPanel != null)
+        selectorPanel.SetActive(true);
+}
 
     /// <summary>
     /// Cierra el selector de islas.

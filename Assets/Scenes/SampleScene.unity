@@ -2821,6 +2821,10 @@ PrefabInstance:
       propertyPath: m_PreferredHeight
       value: 250
       objectReference: {fileID: 0}
+    - target: {fileID: 1732502013219630414, guid: d6efa704d6f64fb42bbff15fb620de84, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 560600846}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -3189,10 +3193,10 @@ RectTransform:
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 1129225419}
+  - {fileID: 822757171}
   - {fileID: 924232042}
   - {fileID: 854195105}
-  - {fileID: 822757171}
-  - {fileID: 1129225419}
   - {fileID: 1039207972}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -4429,7 +4433,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14a85d515e2fa8441bd97c2a7d368662, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::IslandSelector_UI
-  islandButtonPrefab: {fileID: 560600846}
+  islandButtonPrefab: {fileID: 375042490017319222, guid: d6efa704d6f64fb42bbff15fb620de84, type: 3}
   islandListContainer: {fileID: 218428868}
   selectorPanel: {fileID: 854195104}
 --- !u!114 &854195107
@@ -19252,9 +19256,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 854195109}
-        m_TargetAssemblyTypeName: PanelController, Assembly-CSharp
-        m_MethodName: TogglePanel
+      - m_Target: {fileID: 854195106}
+        m_TargetAssemblyTypeName: IslandSelector_UI, Assembly-CSharp
+        m_MethodName: CloseSelector
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
