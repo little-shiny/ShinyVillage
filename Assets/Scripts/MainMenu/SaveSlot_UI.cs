@@ -32,7 +32,7 @@ public class SaveSlot_UI : MonoBehaviour
     [Header("Buttons")]
     [SerializeField] private Button loadButton;               
     [SerializeField] private Button deleteButton;       
-    [SerializeField] private Button overwriteButton;         
+ 
 
     // ── Datos internos ────────────────────────────────────────────────────────
 
@@ -54,7 +54,7 @@ public class SaveSlot_UI : MonoBehaviour
         if (playTimeText    == null) playTimeText    = transform.Find("PlayTimeText")   ?.GetComponent<TextMeshProUGUI>();
         if (loadButton      == null) loadButton      = transform.Find("LoadButton")     ?.GetComponent<Button>();
         if (deleteButton    == null) deleteButton    = transform.Find("DeleteButton")   ?.GetComponent<Button>();
-        if (overwriteButton == null) overwriteButton = transform.Find("OverwriteButton")?.GetComponent<Button>();
+        
 
         // Corrige escala 0 en hijos (bug del prefab)
         foreach (Transform t in GetComponentsInChildren<Transform>(includeInactive: true))
@@ -96,27 +96,23 @@ public class SaveSlot_UI : MonoBehaviour
     playTimeText.text   = FormatPlayTime(data.PlayTime);
 
     // 2) Botones: si faltan, NO romper visualización de textos
-    bool faltanBotones = loadButton == null || deleteButton == null || overwriteButton == null;
+    bool faltanBotones = loadButton == null || deleteButton == null;
     if (faltanBotones)
     {
         Debug.LogWarning("[SaveSlotUI] Faltan botones; se muestran textos pero no habrá acciones:\n" +
                          $"  loadButton={loadButton}\n" +
-                         $"  deleteButton={deleteButton}\n" +
-                         $"  overwriteButton={overwriteButton}");
+                         $"  deleteButton={deleteButton}\n");
         return;
     }
 
     // Limpieza defensiva para evitar listeners duplicados al refrescar lista
     loadButton.onClick.RemoveAllListeners();
     deleteButton.onClick.RemoveAllListeners();
-    overwriteButton.onClick.RemoveAllListeners();
-
+    
     loadButton.onClick.AddListener(() => _menuManager.OnLoadSlotClicked(_slotData.Id));
     deleteButton.onClick.AddListener(() => _menuManager.OnDeleteSlotClicked(_slotData.Id, gameObject));
-    overwriteButton.onClick.AddListener(() => _menuManager.OnOverwriteSlotClicked(_slotData.Id));
-
+    
     bool hayPartidaActiva = SaveGameManager.Instance != null && SaveGameManager.Instance.CurrentSlotId != -1;
-    overwriteButton.gameObject.SetActive(hayPartidaActiva);
 }
 
     // ── Métodos auxiliares ────────────────────────────────────────────────────
