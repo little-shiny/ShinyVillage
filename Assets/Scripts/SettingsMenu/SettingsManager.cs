@@ -97,6 +97,7 @@ public class SettingsManager : MonoBehaviour
     private void Start()
     {
 
+
         // Buscar referencias en la escena actual
         FindReferencesInScene();
 
