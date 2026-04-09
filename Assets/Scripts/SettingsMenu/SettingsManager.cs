@@ -362,7 +362,7 @@ public class SettingsManager : MonoBehaviour
 
     public void SaveGame()
     {
-        // Se verifica que el SaveGameManager exista
+         // Se verifica que el SaveGameManager exista
         if (SaveGameManager.Instance == null)
         {
             Debug.LogError("[SettingsManager] SaveGameManager no está disponible");
@@ -377,10 +377,12 @@ public class SettingsManager : MonoBehaviour
             return;
         }
 
-         // Se usa la referencia cacheada del jugador en lugar de buscarla cada vez
-        if (_cachedPlayer == null)
+        // Se obtiene la referencia al jugador (se busca solo la primera vez que se necesita)
+        Player player = GetPlayerReference();
+        
+        if (player == null)
         {
-            Debug.LogError("[SettingsManager] No hay referencia al Player. La referencia debería haberse cargado al inicio");
+            Debug.LogWarning("[SettingsManager] No se pudo obtener la referencia al Player. Probablemente estás en MainMenu donde no hay Player.");
             return;
         }
 
@@ -389,7 +391,7 @@ public class SettingsManager : MonoBehaviour
         {
             SlotId = SaveGameManager.Instance.CurrentSlotId,
             Name = "Jugador",
-            Position = _cachedPlayer.transform.position
+            Position = player.transform.position
         };
 
         // Se calcula el tiempo de juego actual
@@ -398,17 +400,41 @@ public class SettingsManager : MonoBehaviour
         // Se guarda la partida completa (posición + inventario)
         SaveGameManager.Instance.SaveCurrentGame(
             currentPlayer,
-            _cachedPlayer.inventory,
+            player.inventory,
             playTime
         );
 
         Debug.Log($"[SettingsManager] Partida guardada exitosamente");
-        Debug.Log($"  - Posición: {_cachedPlayer.transform.position}");
+        Debug.Log($"  - Posición: {player.transform.position}");
         Debug.Log($"  - Tiempo jugado: {playTime:F2}s");
     }
 
 
+    /// <summary>
+    /// Obtiene la referencia al jugador (solo cuando se necesita).
+    /// Si no está cacheada, la busca en la escena.
+    /// </summary>
+    private Player GetPlayerReference()
+    {
+        // Si ya está cacheada, se devuelve directamente
+        if (_cachedPlayer != null)
+        {
+            return _cachedPlayer;
+        }
 
+        // Si no está cacheada, se busca en la escena
+        _cachedPlayer = FindObjectOfType<Player>();
+
+        // NO se muestra error aquí porque puede ser normal no encontrar Player en MainMenu
+        if (_cachedPlayer != null)
+        {
+            Debug.Log("[SettingsManager] Referencia al Player obtenida correctamente");
+        }
+
+        return _cachedPlayer;
+    }
+
+    
 
     // ═══════════════════════════════════════════════════════════════
     // NAVEGACIÓN AL MENÚ PRINCIPAL
