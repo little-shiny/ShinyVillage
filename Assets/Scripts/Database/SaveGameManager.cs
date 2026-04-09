@@ -124,23 +124,22 @@ public class SaveGameManager : MonoBehaviour
 
         Debug.Log($"[Save] Inventario del jugador cargado: {inventoryItems.Count} items");
     }
-    
+
     /// Guarda el estado actual. Llamar periódicamente o al salir al menú
-    public void SaveCurrentGame(PlayerData currentPlayer, float playTime)
+    public void SaveCurrentGame(PlayerData currentPlayer, Inventory playerInventory, float playTime)
     {
         if (CurrentSlotId == -1)
         {
-            Debug.LogError("[Save] No hay ningún slot activo. ¿Olvidaste llamar a NewGame o LoadGame?");
+            Debug.LogError("[SaveGameManager] No hay ningún slot activo. ¿Olvidaste llamar a NewGame o LoadGame?");
             return;
         }
 
-        // Guardamos todos los sistemas
+        // Se guardan todos los sistemas
         _playerRepo.SavePlayer(currentPlayer);
+        _inventoryRepo.SaveInventory(CurrentSlotId, playerInventory); // ← Guarda el inventario
         _slotRepo.UpdateLastSaved(CurrentSlotId, playTime);
-        // _farmRepo.SaveFarms(...)
-        // _inventoryRepo.SaveInventory(...)
 
-        Debug.Log("[Save] Partida guardada.");
+        Debug.Log("[SaveGameManager] Partida guardada correctamente.");
     }
 
     public System.Collections.Generic.List<SaveSlotData> GetAllSaveSlots()

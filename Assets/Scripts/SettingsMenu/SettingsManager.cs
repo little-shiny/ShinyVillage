@@ -7,51 +7,50 @@ using TMPro;
 /// <summary>
 /// Gestiona los ajustes del juego incluyendo volumen de música, brillo y guardado de partida.
 /// Este manager utiliza PlayerPrefs para persistir los ajustes entre sesiones.
-/// Se implementa como Singleton para facilitar el acceso desde cualquier parte del juego.
-/// Persiste entre escenas con DontDestroyOnLoad.
+/// Se implementa como Singleton para facilitar el acceso desde cualquier parte del juego y el resto de los GameManagers
 /// </summary>
 public class SettingsManager : MonoBehaviour
 {
     // ═══════════════════════════════════════════════════════════════
     // SINGLETON
     // ═══════════════════════════════════════════════════════════════
-    
+
     public static SettingsManager Instance { get; private set; }
 
     // ═══════════════════════════════════════════════════════════════
     // REFERENCIAS DE UI
     // ═══════════════════════════════════════════════════════════════
-    
+
     [Header("Panel de Ajustes")]
     [Tooltip("Panel principal que contiene todos los controles de ajustes")]
     [SerializeField] private GameObject settingsPanel;
-    
+
     [Header("Controles de Audio")]
     [Tooltip("Slider para controlar el volumen de la música")]
     [SerializeField] private Slider musicVolumeSlider;
-    
+
     [Tooltip("Texto que muestra el porcentaje actual del volumen")]
     [SerializeField] private TextMeshProUGUI musicVolumeText;
-    
+
     [Header("Controles de Brillo")]
     [Tooltip("Slider para controlar el brillo de la pantalla")]
     [SerializeField] private Slider brightnessSlider;
-    
+
     [Tooltip("Texto que muestra el porcentaje actual del brillo")]
     [SerializeField] private TextMeshProUGUI brightnessText;
-    
+
     [Header("Referencias de Audio")]
-    [Tooltip("AudioSource que reproduce la música del juego - se busca automáticamente si no está asignado")]
+    [Tooltip("AudioSource que reproduce la música del juego")]
     [SerializeField] private AudioSource musicAudioSource;
-    
+
     [Header("Referencias de Post-Processing")]
-    [Tooltip("Volume de Post-Processing para controlar el brillo - se busca automáticamente si no está asignado")]
+    [Tooltip("Volume de Post-Processing para controlar el brillo")]
     [SerializeField] private Volume postProcessVolume;
 
     // ═══════════════════════════════════════════════════════════════
     // CLAVES DE PLAYERPREFS
     // ═══════════════════════════════════════════════════════════════
-    
+
     // Estas constantes definen las claves bajo las cuales se guardan los ajustes
     private const string MUSIC_VOLUME_KEY = "MusicVolume";
     private const string BRIGHTNESS_KEY = "Brightness";
@@ -59,7 +58,7 @@ public class SettingsManager : MonoBehaviour
     // ═══════════════════════════════════════════════════════════════
     // VALORES POR DEFECTO
     // ═══════════════════════════════════════════════════════════════
-    
+
     private const float DEFAULT_MUSIC_VOLUME = 0.7f;  // 70% de volumen por defecto
     private const float DEFAULT_BRIGHTNESS = 0f;      // 0 de post-exposure (brillo neutro)
 
@@ -77,132 +76,33 @@ public class SettingsManager : MonoBehaviour
         }
 
         Instance = this;
-        DontDestroyOnLoad(gameObject);
-        
-        Debug.Log("[SettingsManager] Inicializado y persistente entre escenas.");
-    }
-
-    private void OnEnable()
-    {
-        // Suscribirse al evento de carga de escena
-        SceneManager.sceneLoaded += OnSceneLoaded;
-    }
-
-    private void OnDisable()
-    {
-        // Desuscribirse del evento de carga de escena
-        SceneManager.sceneLoaded -= OnSceneLoaded;
+        // No se usa DontDestroyOnLoad porque este manager vive en la escena de juego
     }
 
     private void Start()
     {
-
-
-        // Buscar referencias en la escena actual
-        FindReferencesInScene();
+        // El panel inicia cerrado
+        if (settingsPanel != null)
+        {
+            settingsPanel.SetActive(false);
+        }
 
         // Se cargan los ajustes guardados
         LoadSettings();
-        
+
         // Se configuran los listeners de los sliders
         SetupListeners();
-        
+
         // Se validan las referencias
         ValidateReferences();
-    }
-
-    /// <summary>
-    /// Se llama automáticamente cuando se carga una nueva escena.
-    /// Busca las referencias necesarias en la nueva escena y aplica los ajustes guardados.
-    /// </summary>
-    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
-    {
-        Debug.Log($"[SettingsManager] Escena cargada: {scene.name}");
-        
-        // Buscar nuevas referencias en la escena recién cargada
-        FindReferencesInScene();
     }
 
     // ═══════════════════════════════════════════════════════════════
     // CONFIGURACIÓN INICIAL
     // ═══════════════════════════════════════════════════════════════
 
-    /// <summary>
-    /// Busca referencias de AudioSource y Volume en la escena actual.
-    /// Se ejecuta automáticamente al cargar cada escena.
-    /// </summary>
-    private void FindReferencesInScene()
-    {
-        string sceneName = SceneManager.GetActiveScene().name;
-        
-        // ─────────────────────────────────────────────────────────────
-        // Buscar AudioSource de música si no está asignado manualmente
-        // ─────────────────────────────────────────────────────────────
-        if (musicAudioSource == null)
-        {
-            // Opción 1: Buscar por nombre "MusicManager"
-            GameObject musicGO = GameObject.Find("MusicManager");
-            if (musicGO != null)
-            {
-                musicAudioSource = musicGO.GetComponent<AudioSource>();
-                if (musicAudioSource != null)
-                {
-                    Debug.Log($"[SettingsManager] AudioSource encontrado en {sceneName}: MusicManager");
-                }
-            }
-            
-            // Opción 2: Si no se encuentra por nombre, buscar cualquier AudioSource con Loop activado
-            if (musicAudioSource == null)
-            {
-                AudioSource[] sources = FindObjectsOfType<AudioSource>();
-                foreach (var source in sources)
-                {
-                    if (source.loop && source.clip != null)
-                    {
-                        musicAudioSource = source;
-                        Debug.Log($"[SettingsManager] AudioSource encontrado en {sceneName}: {source.gameObject.name}");
-                        break;
-                    }
-                }
-            }
-        }
-        
-        // ─────────────────────────────────────────────────────────────
-        // Buscar Volume de Post-Processing si no está asignado
-        // ─────────────────────────────────────────────────────────────
-        if (postProcessVolume == null)
-        {
-            postProcessVolume = FindObjectOfType<Volume>();
-            if (postProcessVolume != null)
-            {
-                Debug.Log($"[SettingsManager] Volume encontrado en {sceneName}: {postProcessVolume.gameObject.name}");
-            }
-        }
-        
-        // ─────────────────────────────────────────────────────────────
-        // Aplicar volumen guardado al AudioSource encontrado
-        // ─────────────────────────────────────────────────────────────
-        if (musicAudioSource != null)
-        {
-            float savedVolume = PlayerPrefs.GetFloat(MUSIC_VOLUME_KEY, DEFAULT_MUSIC_VOLUME);
-            musicAudioSource.volume = savedVolume;
-            Debug.Log($"[SettingsManager] Volumen aplicado al AudioSource: {savedVolume}");
-        }
-        
-        // ─────────────────────────────────────────────────────────────
-        // Aplicar brillo guardado al Volume encontrado
-        // ─────────────────────────────────────────────────────────────
-        if (postProcessVolume != null)
-        {
-            float savedBrightness = PlayerPrefs.GetFloat(BRIGHTNESS_KEY, DEFAULT_BRIGHTNESS);
-            ApplyBrightness(savedBrightness);
-            Debug.Log($"[SettingsManager] Brillo aplicado al Volume: {savedBrightness}");
-        }
-    }
 
-    /// <summary>
     /// Configura los listeners de los sliders para que respondan a cambios del usuario.
-    /// </summary>
     private void SetupListeners()
     {
         if (musicVolumeSlider != null)
@@ -216,78 +116,40 @@ public class SettingsManager : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Valida que todas las referencias necesarias estén asignadas.
-    /// Adaptado para no dar warnings innecesarios según la escena.
-    /// </summary>
+    /// Valida que todas las referencias necesarias estén asignadas en elinspector.
     private void ValidateReferences()
     {
-        string sceneName = SceneManager.GetActiveScene().name;
-        
-        // Panel de settings solo es necesario en MainMenu
-        if (settingsPanel == null && sceneName == "MainMenu")
-        {
-            Debug.LogWarning("[SettingsManager] Panel de ajustes no asignado en MainMenu. " +
-                           "Asigna el SettingsPanel en el Inspector.");
-        }
+        if (settingsPanel == null)
+            Debug.LogError("[SettingsManager] Falta asignar el panel de ajustes en el Inspector");
 
-        // Sliders solo son necesarios en MainMenu
-        if (musicVolumeSlider == null && sceneName == "MainMenu")
-        {
-            Debug.LogWarning("[SettingsManager] Slider de música no asignado en MainMenu.");
-        }
+        if (musicVolumeSlider == null)
+            Debug.LogWarning("[SettingsManager] Falta asignar el slider de música");
 
-        if (brightnessSlider == null && sceneName == "MainMenu")
-        {
-            Debug.LogWarning("[SettingsManager] Slider de brillo no asignado en MainMenu.");
-        }
+        if (brightnessSlider == null)
+            Debug.LogWarning("[SettingsManager] Falta asignar el slider de brillo");
 
-        // AudioSource debe existir en todas las escenas con música
         if (musicAudioSource == null)
-        {
-            Debug.LogWarning($"[SettingsManager] No se encontró AudioSource de música en {sceneName}. " +
-                           "Crea un GameObject 'MusicManager' con un componente AudioSource.");
-        }
-        else
-        {
-            Debug.Log($"[SettingsManager] AudioSource OK en {sceneName}: {musicAudioSource.gameObject.name}");
-        }
+            Debug.LogWarning("[SettingsManager] Falta asignar el AudioSource de música");
 
-        // Volume solo da warning en MainMenu (opcional en otras escenas)
-        if (postProcessVolume == null && sceneName == "MainMenu")
-        {
-            Debug.LogWarning("[SettingsManager] No se encontró Volume de Post-Processing en MainMenu.");
-        }
-        else if (postProcessVolume != null)
-        {
-            Debug.Log($"[SettingsManager] Volume OK en {sceneName}: {postProcessVolume.gameObject.name}");
-        }
+        if (postProcessVolume == null)
+            Debug.LogWarning("[SettingsManager] Falta asignar el Volume de Post-Processing");
     }
 
     // ═══════════════════════════════════════════════════════════════
     // GESTIÓN DEL PANEL
     // ═══════════════════════════════════════════════════════════════
 
-    /// <summary>
-    /// Abre el panel de ajustes desde un botón.
-    /// </summary>
+    /// Abre el panel de ajustes desde un boton
     public void OpenSettings()
     {
-            if (settingsPanel != null)
+        if (settingsPanel != null)
         {
             settingsPanel.SetActive(true);
-            EnsurePanelPosition(); // 
             Debug.Log("[SettingsManager] Panel de ajustes abierto");
-        }
-        else
-        {
-            Debug.LogWarning("[SettingsManager] No se puede abrir el panel: settingsPanel es null");
         }
     }
 
-    /// <summary>
     /// Cierra el panel de ajustes.
-    /// </summary>
     public void CloseSettings()
     {
         if (settingsPanel != null)
@@ -297,18 +159,14 @@ public class SettingsManager : MonoBehaviour
         }
     }
 
-    /// <summary>
+
     /// Alterna la visibilidad del panel de ajustes.
-    /// </summary>
     public void ToggleSettings()
     {
         if (settingsPanel != null)
         {
             bool isActive = settingsPanel.activeSelf;
             settingsPanel.SetActive(!isActive);
-            
-            string estado = isActive ? "cerrado" : "abierto";
-            Debug.Log($"[SettingsManager] Panel de ajustes {estado}");
         }
     }
 
@@ -316,10 +174,9 @@ public class SettingsManager : MonoBehaviour
     // CONTROL DE MÚSICA
     // ═══════════════════════════════════════════════════════════════
 
-    /// <summary>
     /// Se llama cuando el usuario cambia el valor del slider de música.
     /// Actualiza el volumen del AudioSource y el texto mostrado.
-    /// </summary>
+
     private void OnMusicVolumeChanged(float value)
     {
         // Se aplica el volumen al AudioSource
@@ -332,9 +189,8 @@ public class SettingsManager : MonoBehaviour
         UpdateMusicVolumeText(value);
     }
 
-    /// <summary>
-    /// Actualiza el texto que muestra el porcentaje de volumen cuando cambia.
-    /// </summary>
+    /// Actualiza el texto que muestra el porcentaje de volumen cuando cambia
+
     private void UpdateMusicVolumeText(float value)
     {
         if (musicVolumeText != null)
@@ -344,26 +200,25 @@ public class SettingsManager : MonoBehaviour
         }
     }
 
-    /// <summary>
     /// Establece el volumen de la música directamente.
-    /// </summary>
+
     public void SetMusicVolume(float volume)
     {
         // Se asegura que el valor esté en el rango válido
         volume = Mathf.Clamp01(volume);
-        
+
         // Se actualiza el slider
         if (musicVolumeSlider != null)
         {
             musicVolumeSlider.value = volume;
         }
-        
-        // Se aplica el volumen (el listener del slider también lo hará, pero lo hacemos aquí por seguridad)
+
+        // Se aplica el volumen (el listener del slider también lo hara pero lo hacemos aquí por si se llama 
         if (musicAudioSource != null)
         {
             musicAudioSource.volume = volume;
         }
-        
+
         UpdateMusicVolumeText(volume);
     }
 
@@ -371,21 +226,21 @@ public class SettingsManager : MonoBehaviour
     // CONTROL DE BRILLO
     // ═══════════════════════════════════════════════════════════════
 
-    /// <summary>
+
     /// Se llama cuando el usuario cambia el valor del slider de brillo.
-    /// </summary>
+
     private void OnBrightnessChanged(float value)
     {
         // Se aplica el brillo 
         ApplyBrightness(value);
-        
+
         // Se actualiza el texto del porcentaje
         UpdateBrightnessText(value);
     }
 
-    /// <summary>
+
     /// Aplica el brillo al Volume de Post-Processing usando ColorAdjustments.
-    /// </summary>
+
     private void ApplyBrightness(float value)
     {
         if (postProcessVolume != null && postProcessVolume.profile != null)
@@ -403,9 +258,9 @@ public class SettingsManager : MonoBehaviour
         }
     }
 
-    /// <summary>
+
     /// Actualiza el texto que muestra el valor del brillo.
-    /// </summary>
+
     private void UpdateBrightnessText(float value)
     {
         if (brightnessText != null)
@@ -418,9 +273,8 @@ public class SettingsManager : MonoBehaviour
         }
     }
 
-    /// <summary>
+
     /// Establece el brillo directamente.
-    /// </summary>
     public void SetBrightness(float brightness)
     {
         // Se actualiza el slider
@@ -428,7 +282,7 @@ public class SettingsManager : MonoBehaviour
         {
             brightnessSlider.value = brightness;
         }
-        
+
         // Se aplica el brillo
         ApplyBrightness(brightness);
         UpdateBrightnessText(brightness);
@@ -438,10 +292,8 @@ public class SettingsManager : MonoBehaviour
     // GUARDADO Y CARGA DE AJUSTES
     // ═══════════════════════════════════════════════════════════════
 
-    /// <summary>
     /// Guarda todos los ajustes actuales usando PlayerPrefs.
     /// Se puede llamar desde un botón "Guardar Ajustes" en la UI.
-    /// </summary>
     public void SaveSettings()
     {
         // Se guardan los valores de los sliders
@@ -457,14 +309,13 @@ public class SettingsManager : MonoBehaviour
 
         // Se asegura que los datos se escriban al disco
         PlayerPrefs.Save();
-        
+
         Debug.Log("[SettingsManager] Ajustes guardados exitosamente");
     }
 
-    /// <summary>
     /// Carga los ajustes guardados desde PlayerPrefs.
     /// Se llama automáticamente al iniciar.
-    /// </summary>
+
     private void LoadSettings()
     {
         // Se cargan los ajustes o se usan valores por defecto si no existen
@@ -482,9 +333,8 @@ public class SettingsManager : MonoBehaviour
     // GUARDADO DE PARTIDA
     // ═══════════════════════════════════════════════════════════════
 
-    /// <summary>
     /// Guarda la partida actual usando el SaveGameManager.
-    /// </summary>
+
     public void SaveGame()
     {
         // Se verifica que el SaveGameManager exista
@@ -504,42 +354,50 @@ public class SettingsManager : MonoBehaviour
 
         // Se busca el componente Player en la escena
         Player player = FindObjectOfType<Player>();
-        
+
         if (player == null)
         {
             Debug.LogError("[SettingsManager] No se encontró el componente Player en la escena");
             return;
         }
 
-        // Se crea el PlayerData con los datos actuales
+        // Se crea el PlayerData con los datos actuales del jugador
         PlayerData currentPlayer = new PlayerData
         {
             SlotId = SaveGameManager.Instance.CurrentSlotId,
-            Name = "Jugador", // Nombre por defecto
-            Position = player.transform.position // Posición actual del jugador
+            Name = "Jugador",
+            Position = player.transform.position
         };
 
         // Se calcula el tiempo de juego actual
         float playTime = Time.time;
 
-        // Se guarda la partida
-        SaveGameManager.Instance.SaveCurrentGame(currentPlayer, playTime);
+        // Se guarda la partida completa (posición + inventario)
+        SaveGameManager.Instance.SaveCurrentGame(
+            currentPlayer,
+            player.inventory,
+            playTime
+        );
 
-        Debug.Log($"[SettingsManager] Partida guardada - Posición: {player.transform.position}");
+        Debug.Log($"[SettingsManager] Partida guardada exitosamente");
+        Debug.Log($"  - Posición: {player.transform.position}");
+        Debug.Log($"  - Tiempo jugado: {playTime:F2}s");
     }
+
+
+
 
     // ═══════════════════════════════════════════════════════════════
     // NAVEGACIÓN AL MENÚ PRINCIPAL
     // ═══════════════════════════════════════════════════════════════
 
-    /// <summary>
+
     /// Carga la escena del menú principal.
-    /// </summary>
     public void GoToMainMenu()
     {
         // Antes de cambiar de escena, se guardan los ajustes
         SaveSettings();
-        
+
         // Se limpia la isla actual
         if (IslandManager.Instance != null)
         {
@@ -548,26 +406,7 @@ public class SettingsManager : MonoBehaviour
 
         // Se carga la escena del menú principal
         SceneManager.LoadScene("MainMenu");
-        
-        Debug.Log("[SettingsManager] Cargando menú principal...");
-    }
 
-    /// <summary>
-/// Asegura que el panel de settings esté correctamente posicionado al abrirse.
-/// </summary>
-    private void EnsurePanelPosition()
-    {
-        if (settingsPanel != null)
-        {
-            RectTransform rectTransform = settingsPanel.GetComponent<RectTransform>();
-            if (rectTransform != null)
-            {
-                // Forzar recálculo del layout
-                Canvas.ForceUpdateCanvases();
-                
-                // Asegurar que está dentro de la pantalla
-                rectTransform.anchoredPosition = Vector2.zero;
-            }
-        }
+        Debug.Log("[SettingsManager] Cargando menú principal...");
     }
 }
