@@ -60,6 +60,9 @@ public class SettingsManager : MonoBehaviour
     // ═══════════════════════════════════════════════════════════════
 
     private const float DEFAULT_MUSIC_VOLUME = 0.7f;  // 70% de volumen por defecto
+
+    // Referencia al jugador que se carga al inicio de la partida, no al abrir el panel
+    private Player _cachedPlayer;
     private const float DEFAULT_BRIGHTNESS = 0f;      // 0 de post-exposure (brillo neutro)
 
     // ═══════════════════════════════════════════════════════════════
@@ -95,6 +98,26 @@ public class SettingsManager : MonoBehaviour
 
         // Se validan las referencias
         ValidateReferences();
+
+        LoadPlayerReferences();
+    }
+    /// <summary>
+    /// Carga las referencias del jugador AL INICIO de la partida, no al abrir el panel de settings.
+    /// Este método se ejecuta una sola vez en Start().
+    /// </summary>
+    private void LoadPlayerReferences()
+    {
+        // Se busca el componente Player en la escena UNA SOLA VEZ al cargar la partida
+        _cachedPlayer = FindObjectOfType<Player>();
+
+        if (_cachedPlayer == null)
+        {
+            Debug.LogWarning("[SettingsManager] No se encontró el componente Player en la escena al cargar");
+        }
+        else
+        {
+            Debug.Log("[SettingsManager] Referencia al Player cargada correctamente al inicio de la partida");
+        }
     }
 
     // ═══════════════════════════════════════════════════════════════
@@ -352,12 +375,10 @@ public class SettingsManager : MonoBehaviour
             return;
         }
 
-        // Se busca el componente Player en la escena
-        Player player = FindObjectOfType<Player>();
-
-        if (player == null)
+         // Se usa la referencia cacheada del jugador en lugar de buscarla cada vez
+        if (_cachedPlayer == null)
         {
-            Debug.LogError("[SettingsManager] No se encontró el componente Player en la escena");
+            Debug.LogError("[SettingsManager] No hay referencia al Player. La referencia debería haberse cargado al inicio");
             return;
         }
 
@@ -366,7 +387,7 @@ public class SettingsManager : MonoBehaviour
         {
             SlotId = SaveGameManager.Instance.CurrentSlotId,
             Name = "Jugador",
-            Position = player.transform.position
+            Position = _cachedPlayer.transform.position
         };
 
         // Se calcula el tiempo de juego actual
@@ -375,12 +396,12 @@ public class SettingsManager : MonoBehaviour
         // Se guarda la partida completa (posición + inventario)
         SaveGameManager.Instance.SaveCurrentGame(
             currentPlayer,
-            player.inventory,
+            _cachedPlayer.inventory,
             playTime
         );
 
         Debug.Log($"[SettingsManager] Partida guardada exitosamente");
-        Debug.Log($"  - Posición: {player.transform.position}");
+        Debug.Log($"  - Posición: {_cachedPlayer.transform.position}");
         Debug.Log($"  - Tiempo jugado: {playTime:F2}s");
     }
 
