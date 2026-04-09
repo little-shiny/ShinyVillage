@@ -80,6 +80,10 @@ public class SettingsManager : MonoBehaviour
 
         Instance = this;
         // No se usa DontDestroyOnLoad porque este manager vive en la escena de juego
+        
+        // Se cargan las referencias del jugador AL INICIAR LA PARTIDA (en Awake, no en Start)
+        // Awake se ejecuta aunque el GameObject esté desactivado
+        LoadPlayerReferences();
     }
 
     private void Start()
@@ -98,8 +102,6 @@ public class SettingsManager : MonoBehaviour
 
         // Se validan las referencias
         ValidateReferences();
-
-        LoadPlayerReferences();
     }
     /// <summary>
     /// Carga las referencias del jugador AL INICIO de la partida, no al abrir el panel de settings.
