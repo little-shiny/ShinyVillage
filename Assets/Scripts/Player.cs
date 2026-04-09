@@ -4,6 +4,27 @@ public class Player : MonoBehaviour
 {
     public Inventory inventory;
 
+    //metodo que devuelve los datos actuales del jugador para guardarlos en la bbdd
+    public PlayerData GetPLayerData()
+    {
+        return new PlayerData
+        {
+            SlotId = SaveGameManager.Instance.CurrentSlotId,
+            Name = gameObject.name, // 
+            Position = transform.position
+        };
+    }
+
+    // Metodo que aplica los datos cargados al jugador (principalmente y de momento, la posicion)
+    public void ApplyPLayerData(PlayerData data)
+    {
+        if (data != null)
+        {
+            transform.position = data.Position;
+            Debug.Log($"[Player] Posición restaurada: {data.Position}");
+        }
+    } 
+
     // Awake inicializa las variables antes de que se inicie la aplicación, de manera que solo se carga una vez
     private void Awake()
     {

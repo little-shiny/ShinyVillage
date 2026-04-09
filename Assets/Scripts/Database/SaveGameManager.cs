@@ -11,7 +11,8 @@ public class SaveGameManager : MonoBehaviour
     // Repositorios
     private SaveSlotRepository _slotRepo;
     private PlayerRepository   _playerRepo;
-    // Aquí añadiremos FarmRepository, InventoryRepository...
+    
+    private InventoryRepository _inventoryRepo;
 
     // Slot actualmente cargado
     public int CurrentSlotId { get; private set; } = -1;
@@ -34,6 +35,7 @@ public class SaveGameManager : MonoBehaviour
         // Inicializamos los repositorios pasándoles la instancia del DatabaseManager
         _slotRepo   = new SaveSlotRepository(DatabaseManager.Instance);
         _playerRepo = new PlayerRepository(DatabaseManager.Instance);
+        _inventoryRepo = new InventoryRepository(DatabaseManager.Instance);
     }
 
     // -------------------------------------------------------
@@ -57,7 +59,7 @@ public class SaveGameManager : MonoBehaviour
         };
         _playerRepo.SavePlayer(defaultPlayer);
 
-        // Aquí crearíamos la granja inicial, el inventrario
+        // El inventario inicial está vacío, no es necesario guardarlo aún
 
         Debug.Log($"[Save] Nueva partida creada: '{slotName}' para '{playerName}'");
     }
@@ -84,6 +86,45 @@ public class SaveGameManager : MonoBehaviour
         return player;
     }
 
+    /// <summary>
+    /// Carga el inventario del jugador desde la base de datos y lo aplica al inventario actual.
+    /// Se debe llamar después de LoadGame, cuando el Player ya esté instanciado.
+    /// </summary>
+    /// <param name="playerInventory">Referencia al inventario del jugador</param>
+    public void LoadPlayerInventory(Inventory playerInventory)
+    {
+        if (CurrentSlotId == -1)
+        {
+            Debug.LogError("[Save] No hay ningún slot activo. ¿Olvidaste llamar a LoadGame?");
+            return;
+        }
+
+        // Se cargan los items de la base de datos
+        List<InventoryItemData> inventoryItems = _inventoryRepo.LoadInventory(CurrentSlotId);
+
+        // Se aplican al inventario del jugador
+        foreach (var itemData in inventoryItems)
+        {
+            // Se obtiene el prefab del item desde el ItemManager
+            Item itemPrefab = GameManager.instance.itemManager.GetItemByName(itemData.ItemName);
+            
+            if (itemPrefab != null && itemData.SlotIndex >= 0 && itemData.SlotIndex < playerInventory.slots.Count)
+            {
+                // Se restaura el slot con los datos guardados
+                var slot = playerInventory.slots[itemData.SlotIndex];
+                slot.itemName = itemData.ItemName;
+                slot.icon = itemPrefab.data.icon;
+                slot.count = itemData.Quantity;
+            }
+            else
+            {
+                Debug.LogWarning($"[Save] No se pudo cargar item '{itemData.ItemName}' en posición {itemData.SlotIndex}");
+            }
+        }
+
+        Debug.Log($"[Save] Inventario del jugador cargado: {inventoryItems.Count} items");
+    }
+    
     /// Guarda el estado actual. Llamar periódicamente o al salir al menú
     public void SaveCurrentGame(PlayerData currentPlayer, float playTime)
     {
