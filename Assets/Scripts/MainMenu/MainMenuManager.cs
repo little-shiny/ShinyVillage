@@ -233,24 +233,6 @@ public class MainMenuManager : MonoBehaviour
         SceneManager.LoadScene(gameSceneName);
     }
 
-    /// Sobrescribe el slot con el estado actual del juego.
-    /// Solo funciona si hay una partida activa (CurrentSlotId != -1).
-    public void OnOverwriteSlotClicked(int slotId)
-    {
-        if (SaveGameManager.Instance.CurrentSlotId == -1)
-        {
-            Debug.LogWarning("[Menu] No hay partida activa para sobrescribir.");
-            return;
-        }
-
-        SaveGameManager.Instance.SaveCurrentGame(
-            new PlayerData { SlotId = slotId, Name = "", Position = Vector3.zero },
-            playTime: 0f
-        );
-
-        Debug.Log($"[Menu] Slot {slotId} sobrescrito.");
-        RefrescarListaPartidas();
-    }
 
     /// Muestra el diálogo de confirmación antes de borrar.
     /// NO borra inmediatamente: esperamos confirmación del jugador.
