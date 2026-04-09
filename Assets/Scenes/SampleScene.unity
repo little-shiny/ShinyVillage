@@ -4993,6 +4993,7 @@ GameObject:
   - component: {fileID: 1039884276}
   - component: {fileID: 1039884279}
   - component: {fileID: 1039884280}
+  - component: {fileID: 1039884281}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -5026,8 +5027,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f41d09600601acb49807137924eb1689, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
-  itemManager: {fileID: 0}
-  tileManager: {fileID: 0}
+  itemManager: {fileID: 1039884273}
+  tileManager: {fileID: 1039884276}
 --- !u!4 &1039884275
 Transform:
   m_ObjectHideFlags: 0
@@ -5098,6 +5099,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::IslandManager
   backgroundTilemap: {fileID: 1044165873}
   interactableTilemap: {fileID: 1377071030}
+  _currentIsland: {fileID: 0}
 --- !u!114 &1039884280
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5117,6 +5119,23 @@ MonoBehaviour:
   brightnessText: {fileID: 1382805926}
   musicAudioSource: {fileID: 374606589}
   postProcessVolume: {fileID: 441548019}
+--- !u!114 &1039884281
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1039884272}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 979e80bbde0dd8b4a9fb097dc7cb5eab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UIManager
+  inventoryPanel: {fileID: 924232041}
+  settingsPanel: {fileID: 1039207971}
+  inventoryButton: {fileID: 0}
+  settingsButton: {fileID: 1129225420}
+  inventoryUI: {fileID: 924232043}
 --- !u!114 &1042659040 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1081793805783444762, guid: 97579b7e98fa746499ba2874600a579f, type: 3}
@@ -18894,6 +18913,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 3923138862995216366, guid: e2eba081274d512478a3cb7306fc0165, type: 3}
   m_PrefabInstance: {fileID: 1129225418}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1129225420 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7753000117925477072, guid: e2eba081274d512478a3cb7306fc0165, type: 3}
+  m_PrefabInstance: {fileID: 1129225418}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Button
 --- !u!1 &1163599468
 GameObject:
   m_ObjectHideFlags: 0
