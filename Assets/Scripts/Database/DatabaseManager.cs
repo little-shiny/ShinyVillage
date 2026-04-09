@@ -70,7 +70,7 @@ public class DatabaseManager : MonoBehaviour
     /// Abre la conexión y crea las tablas si no existen todavía.
     private void InitializeDatabase()
     {
-        // Reset del flag al inicializar por si se reinicial la db
+        // Reset  al inicializar por si se reinicial la db
         _connectionClosed = false;
         // Formato de connection string que entiende Mono.Data.Sqlite
         string connectionString = $"Data Source={DbPath};Version=3;";
