@@ -142,6 +142,7 @@ public class SaveGameManager : MonoBehaviour
         Debug.Log("[SaveGameManager] Partida guardada correctamente.");
     }
 
+    
     public System.Collections.Generic.List<SaveSlotData> GetAllSaveSlots()
         => _slotRepo.GetAllSlots();
 

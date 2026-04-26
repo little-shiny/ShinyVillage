@@ -151,6 +151,20 @@ public class MainMenuManager : MonoBehaviour
             Debug.LogError("[Menu] saveSlotPrefab es NULL → asigna 'SaveSlotItem' en el Inspector.");
             return;
         }
+        
+        if (SaveGameManager.Instance == null)
+    {
+        Debug.LogError("[Menu] SaveGameManager.Instance es NULL. " +
+                       "Asegúrate de que el GameObject con SaveGameManager esté presente en la escena del MainMenu.");
+        
+        // Muestra el mensaje de "no hay partidas" como fallback
+        if (noSavesText != null)
+        {
+            noSavesText.gameObject.SetActive(true);
+            noSavesText.text = "Error: No se puede conectar con el sistema de guardado.";
+        }
+        return;
+    }
 
         // ── Configuramos el VerticalLayoutGroup por código ────────────────────
         // Garantiza que childControlHeight = true para que el ContentSizeFitter

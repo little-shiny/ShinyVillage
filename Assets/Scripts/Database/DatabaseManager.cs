@@ -12,7 +12,6 @@ public delegate void SqlParametrizer(IDbCommand cmd);
 //Singleton para que se pueda acceder desde todas las partes del juego 
 /// Se guarda en: Application.persistentDataPath/savegame.db
 
-
 public class DatabaseManager : MonoBehaviour
 {
     //Singleton : una sola instancia
