@@ -18858,18 +18858,18 @@ PrefabInstance:
     - target: {fileID: 7753000117925477072, guid: e2eba081274d512478a3cb7306fc0165, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 1039207975}
+      objectReference: {fileID: 2077993525}
     - target: {fileID: 7753000117925477072, guid: e2eba081274d512478a3cb7306fc0165, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7753000117925477072, guid: e2eba081274d512478a3cb7306fc0165, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: OpenSettings
+      value: CerrarSettings
       objectReference: {fileID: 0}
     - target: {fileID: 7753000117925477072, guid: e2eba081274d512478a3cb7306fc0165, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: SettingsManager, Assembly-CSharp
+      value: UIManager, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 7753000117925477072, guid: e2eba081274d512478a3cb7306fc0165, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
