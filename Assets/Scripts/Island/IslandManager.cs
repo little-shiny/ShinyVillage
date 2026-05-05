@@ -81,6 +81,16 @@ public class IslandManager : MonoBehaviour
     private void Start()
     {
         ValidateReferences();
+
+        // Al cargar SampleScene, si hay una partida activa cargamos su isla.
+        // SaveGameManager persiste entre escenas, así que CurrentSlotId ya está asignado.
+        if (SaveGameManager.Instance != null && SaveGameManager.Instance.CurrentSlotId != -1)
+        {
+            var allSlots = SaveGameManager.Instance.GetAllSaveSlots();
+            SaveSlotData current = allSlots.Find(s => s.Id == SaveGameManager.Instance.CurrentSlotId);
+            if (current != null)
+                LoadIsland(current);
+        }
     }
     
     /// <summary>
