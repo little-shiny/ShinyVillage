@@ -32,6 +32,15 @@ public class Player : MonoBehaviour
         inventory = new Inventory(21);
     }
 
+    private void Start()
+    {
+        if (SaveGameManager.Instance != null && SaveGameManager.Instance.CurrentSlotId != -1)
+        {
+            SaveGameManager.Instance.LoadPlayerPosition(this);
+            SaveGameManager.Instance.LoadPlayerInventory(inventory);
+        }
+    }
+
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Space))

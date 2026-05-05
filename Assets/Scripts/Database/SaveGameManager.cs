@@ -125,6 +125,22 @@ public class SaveGameManager : MonoBehaviour
         Debug.Log($"[Save] Inventario del jugador cargado: {inventoryItems.Count} items");
     }
 
+    /// <summary>
+    /// Carga la posición del jugador desde la base de datos y la aplica al player.
+    /// Se debe llamar después de LoadGame, cuando el Player ya esté instanciado.
+    /// </summary>
+    public void LoadPlayerPosition(Player player)
+    {
+        if (CurrentSlotId == -1)
+        {
+            Debug.LogError("[Save] No hay ningún slot activo. ¿Olvidaste llamar a LoadGame?");
+            return;
+        }
+
+        PlayerData data = _playerRepo.LoadPlayer(CurrentSlotId);
+        player.ApplyPLayerData(data);
+    }
+
     /// Guarda el estado actual. Llamar periódicamente o al salir al menú
     public void SaveCurrentGame(PlayerData currentPlayer, Inventory playerInventory, float playTime)
     {
