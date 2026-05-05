@@ -88,12 +88,6 @@ public class SettingsManager : MonoBehaviour
 
     private void Start()
     {
-        // El panel inicia cerrado
-        if (settingsPanel != null)
-        {
-            settingsPanel.SetActive(false);
-        }
-
         // Se cargan los ajustes guardados
         LoadSettings();
 

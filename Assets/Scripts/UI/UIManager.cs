@@ -297,10 +297,10 @@ public class UIManager : MonoBehaviour
             Debug.LogWarning("[UIManager] No se puede abrir settings: settingsPanel no asignado.");
             return;
         }
-        
-        _settingsOpen = !_settingsOpen;
+
+        _settingsOpen = !settingsPanel.activeSelf;
         settingsPanel.SetActive(_settingsOpen);
-        
+
         Debug.Log($"[UIManager] Settings {(_settingsOpen ? "abierto" : "cerrado")}.");
     }
 
