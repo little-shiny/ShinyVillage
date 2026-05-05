@@ -92,7 +92,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 48.7
+  m_fontSize: 51.4
   m_fontSizeBase: 24.88
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -1019,7 +1019,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 64.55
+  m_fontSize: 77.1
   m_fontSizeBase: 28
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -1128,7 +1128,6 @@ MonoBehaviour:
   playTimeText: {fileID: 149054527505434223}
   loadButton: {fileID: 643577579469595259}
   deleteButton: {fileID: 2316565822348455432}
-  overwriteButton: {fileID: 4314720322294925055}
 --- !u!114 &5835656259070938533
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1143,7 +1142,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.LayoutElement
   m_IgnoreLayout: 0
   m_MinWidth: -1
-  m_MinHeight: 150
+  m_MinHeight: 200
   m_PreferredWidth: -1
   m_PreferredHeight: 200
   m_FlexibleWidth: 1

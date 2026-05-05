@@ -1064,7 +1064,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5835656259070938533, guid: 2f3479e827d06b945958d791febe35e3, type: 3}
       propertyPath: m_MinHeight
-      value: 200
+      value: 150
       objectReference: {fileID: 0}
     - target: {fileID: 5835656259070938533, guid: 2f3479e827d06b945958d791febe35e3, type: 3}
       propertyPath: m_FlexibleHeight
@@ -1116,7 +1116,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8303636751470154053, guid: 2f3479e827d06b945958d791febe35e3, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 200
+      value: 150
       objectReference: {fileID: 0}
     - target: {fileID: 8303636751470154053, guid: 2f3479e827d06b945958d791febe35e3, type: 3}
       propertyPath: m_LocalPosition.x
@@ -4586,8 +4586,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1476186753}
   m_HandleRect: {fileID: 1476186752}
   m_Direction: 0
-  m_Value: 1
-  m_Size: 0.9999999
+  m_Value: 0
+  m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
