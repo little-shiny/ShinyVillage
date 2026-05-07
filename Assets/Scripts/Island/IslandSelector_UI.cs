@@ -97,16 +97,29 @@ public class IslandSelector_UI : MonoBehaviour
     {
         Debug.Log($"[IslandSelector] Viajando a: '{slotData.SlotName}' (seed={slotData.IslandSeed})");
 
-        // Cambia el slot activo, carga visuales de la isla
+        Player player = FindAnyObjectByType<Player>();
+
+        // Guardar la partida actual antes de cambiar de slot
+        if (player != null)
+        {
+            SaveGameManager.Instance.SaveCurrentGame(player.GetPLayerData(), player.inventory, 0f);
+            Debug.Log("[IslandSelector] Partida actual guardada antes de viajar.");
+        }
+
+        // Cambia el slot activo y carga los visuales de la isla destino
         SaveGameManager.Instance.LoadGame(slotData.Id);
 
         // Aplica posición e inventario del jugador destino al Player de la escena
-        Player player = FindAnyObjectByType<Player>();
         if (player != null)
         {
             SaveGameManager.Instance.LoadPlayerPosition(player);
             SaveGameManager.Instance.LoadPlayerInventory(player.inventory);
             Debug.Log($"[IslandSelector] Posición e inventario del jugador '{slotData.PlayerName}' aplicados.");
+
+            // Refrescar la UI del inventario para que muestre los items del nuevo slot
+            Inventory_UI inventoryUI = FindAnyObjectByType<Inventory_UI>();
+            if (inventoryUI != null)
+                inventoryUI.Refresh();
         }
         else
         {

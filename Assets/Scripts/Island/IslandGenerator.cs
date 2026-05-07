@@ -100,7 +100,18 @@ public static class IslandGenerator
         float saturation = Random.Range(0.05f, 0.15f);
         // Brillo muy alto
         float value = Random.Range(0.95f, 1f);
-        
+
         return Color.HSVToRGB(hue, saturation, value);
+    }
+
+    /// <summary>
+    /// Genera un color visualmente distinto para cada semilla usando la proporción áurea.
+    /// Garantiza colores bien distribuidos en el espectro para cualquier secuencia de enteros.
+    /// </summary>
+    public static Color GetDistinctColor(int seed)
+    {
+        // El multiplicador de la proporción áurea distribuye los tonos de forma óptima
+        float hue = ((seed * 0.618033988749895f) % 1f + 1f) % 1f;
+        return Color.HSVToRGB(hue, 0.75f, 0.85f);
     }
 }

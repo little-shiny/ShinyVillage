@@ -99,6 +99,14 @@ public class SaveGameManager : MonoBehaviour
             return;
         }
 
+        // Limpiar todos los slots antes de cargar para que no queden items del slot anterior
+        foreach (var slot in playerInventory.slots)
+        {
+            slot.itemName = "";
+            slot.count    = 0;
+            slot.icon     = null;
+        }
+
         // Se cargan los items de la base de datos
         List<InventoryItemData> inventoryItems = _inventoryRepo.LoadInventory(CurrentSlotId);
 

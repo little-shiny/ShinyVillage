@@ -34,6 +34,26 @@ public class IslandButton_UI : MonoBehaviour, IPointerClickHandler
         
         // Auto-asignación defensiva: si el botón no está asignado en el Inspector,
         // se intenta buscar automáticamente en los hijos del GameObject
+        if (colorPreview == null)
+        {
+            Image[] images = GetComponentsInChildren<Image>(true);
+            foreach (Image img in images)
+            {
+                if (img.GetComponent<Button>() == null && img.gameObject != gameObject)
+                {
+                    colorPreview = img;
+                    Debug.Log($"[IslandButton_UI] colorPreview auto-asignado: {img.gameObject.name}");
+                    break;
+                }
+            }
+            if (colorPreview == null)
+            {
+                colorPreview = GetComponent<Image>();
+                if (colorPreview != null)
+                    Debug.LogWarning("[IslandButton_UI] Usando Image raíz como colorPreview.");
+            }
+        }
+
         if (travelButton == null)
         {
             Debug.LogWarning($"[IslandButton_UI] travelButton es NULL, buscando automáticamente...");
@@ -141,12 +161,14 @@ public class IslandButton_UI : MonoBehaviour, IPointerClickHandler
         // Se genera una vista previa del color de la isla
         if (colorPreview != null)
         {
-            IslandConfig preview = IslandGenerator.GenerateIsland(
-                slotData.IslandSeed, 
-                slotData.SlotName
-            );
-            colorPreview.color = preview.accentColor;
-            Debug.Log($"[IslandButton_UI] Color preview asignado: {preview.accentColor}");
+            // Si la semilla es 0 (slots antiguos), se usa el Id del slot como fallback
+            int colorSeed = slotData.IslandSeed != 0 ? slotData.IslandSeed : slotData.Id;
+            colorPreview.color = IslandGenerator.GetDistinctColor(colorSeed);
+            Debug.Log($"[IslandButton_UI] Color preview asignado (seed={colorSeed}): {colorPreview.color}");
+        }
+        else
+        {
+            Debug.LogWarning("[IslandButton_UI] colorPreview es NULL incluso tras auto-asignación. Revisar prefab.");
         }
         
         // Se configura el botón de viaje
