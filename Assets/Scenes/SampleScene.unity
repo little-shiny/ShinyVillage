@@ -4151,9 +4151,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 854195109}
-        m_TargetAssemblyTypeName: PanelController, Assembly-CSharp
-        m_MethodName: TogglePanel
+      - m_Target: {fileID: 854195106}
+        m_TargetAssemblyTypeName: IslandSelector_UI, Assembly-CSharp
+        m_MethodName: OpenSelector
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -4436,6 +4436,7 @@ MonoBehaviour:
   islandButtonPrefab: {fileID: 375042490017319222, guid: d6efa704d6f64fb42bbff15fb620de84, type: 3}
   islandListContainer: {fileID: 218428868}
   selectorPanel: {fileID: 854195104}
+  noOtherIslandsText: {fileID: 0}
 --- !u!114 &854195107
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -22946,9 +22947,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 854195109}
-        m_TargetAssemblyTypeName: PanelController, Assembly-CSharp
-        m_MethodName: ClosePanel
+      - m_Target: {fileID: 854195106}
+        m_TargetAssemblyTypeName: IslandSelector_UI, Assembly-CSharp
+        m_MethodName: CloseSelector
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
