@@ -96,14 +96,22 @@ public class UIManager : MonoBehaviour
     {
         // Validar que las referencias necesarias estén asignadas
         ValidarReferencias();
-        
+
         // Inicializar el estado de los paneles (cerrados por defecto)
         InicializarPaneles();
-        
+
         // Configurar los listeners de los botones
         ConfigurarBotones();
-        
+
         Debug.Log("[UIManager] Inicializado correctamente en SampleScene.");
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Tab))
+        {
+            ToggleInventory();
+        }
     }
 
     /// <summary>
@@ -154,7 +162,7 @@ public class UIManager : MonoBehaviour
         // Si no está asignado Inventory_UI, intentar encontrarlo automáticamente
         if (inventoryUI == null)
         {
-            inventoryUI = FindObjectOfType<Inventory_UI>();
+            inventoryUI = FindAnyObjectByType<Inventory_UI>();
             
             if (inventoryUI != null)
             {
@@ -235,29 +243,22 @@ public class UIManager : MonoBehaviour
     /// </summary>
     public void ToggleInventory()
     {
-        // Si existe el componente Inventory_UI, delegar la lógica a él
+        if (inventoryPanel == null)
+        {
+            Debug.LogWarning("[UIManager] No se puede abrir el inventario: inventoryPanel no asignado.");
+            return;
+        }
+
+        _inventoryOpen = !_inventoryOpen;
+        inventoryPanel.SetActive(_inventoryOpen);
+
         if (inventoryUI != null)
         {
-            inventoryUI.ToggleInventory();
-            _inventoryOpen = !_inventoryOpen;
-            
-            Debug.Log($"[UIManager] Inventario {(_inventoryOpen ? "abierto" : "cerrado")} " +
-                     "mediante Inventory_UI.");
+            if (_inventoryOpen) inventoryUI.Open();
+            else inventoryUI.Close();
         }
-        // Si no existe Inventory_UI, manejar el panel directamente
-        else if (inventoryPanel != null)
-        {
-            _inventoryOpen = !_inventoryOpen;
-            inventoryPanel.SetActive(_inventoryOpen);
-            
-            Debug.Log($"[UIManager] Inventario {(_inventoryOpen ? "abierto" : "cerrado")} " +
-                     "directamente.");
-        }
-        else
-        {
-            Debug.LogWarning("[UIManager] No se puede abrir el inventario: " +
-                           "ni Inventory_UI ni inventoryPanel están disponibles.");
-        }
+
+        Debug.Log($"[UIManager] Inventario {(_inventoryOpen ? "abierto" : "cerrado")}.");
     }
 
     /// <summary>
@@ -265,10 +266,8 @@ public class UIManager : MonoBehaviour
     /// </summary>
     public void AbrirInventario()
     {
-        if (!_inventoryOpen)
-        {
+        if (inventoryPanel != null && !inventoryPanel.activeSelf)
             ToggleInventory();
-        }
     }
 
     /// <summary>
@@ -276,10 +275,8 @@ public class UIManager : MonoBehaviour
     /// </summary>
     public void CerrarInventario()
     {
-        if (_inventoryOpen)
-        {
+        if (inventoryPanel != null && inventoryPanel.activeSelf)
             ToggleInventory();
-        }
     }
 
     // ══════════════════════════════════════════════════════════════════════

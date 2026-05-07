@@ -332,13 +332,5 @@ public class MainMenuManager : MonoBehaviour
         panelToShow.SetActive(true);
     }
 
-    public void CerrarJuego()
-    {
-        Debug.Log("[Menu] Cerrando juego...");
-        #if UNITY_EDITOR
-        UnityEditor.EditorApplication.isPlaying = false;
-        #else
-        Application.Quit();
-        #endif
-    }
+    
 }

@@ -8,27 +8,23 @@ public class Inventory_UI : MonoBehaviour
     public Player player;
 
     public List<Slot_UI> slots = new List<Slot_UI>();
-    void Update()
-    {
-        // Atajo de teclado para abrirse
-        if (Input.GetKeyDown(KeyCode.Tab)) // Al presionar el tabulador
-        {
-            ToggleInventory();
-        }
-    }
-
     public void ToggleInventory()
     {
-        // comprobamos el estado del inventario
         if (!inventoryPanel.activeSelf)
-        {
-            inventoryPanel.SetActive(true); // Hace visible el inventario
-            Refresh(); // Se carga la información del inventario
-        }
+            Open();
         else
-        {
-            inventoryPanel.SetActive(false); // Lo oculta
-        }
+            Close();
+    }
+
+    public void Open()
+    {
+        inventoryPanel.SetActive(true);
+        Refresh();
+    }
+
+    public void Close()
+    {
+        inventoryPanel.SetActive(false);
     }
 
     // Método que obtiene la información del inventario para mostrarla al abrirlo

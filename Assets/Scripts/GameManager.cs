@@ -163,4 +163,14 @@ public class GameManager : MonoBehaviour
         
         return todasValidas;
     }
+
+    public void CerrarJuego()
+    {
+        Debug.Log("[Menu] Cerrando juego...");
+        #if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+        #else
+        Application.Quit();
+        #endif
+    }
 }
