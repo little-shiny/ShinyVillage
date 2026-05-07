@@ -145,8 +145,8 @@ public class IslandButton_UI : MonoBehaviour, IPointerClickHandler
                 slotData.IslandSeed, 
                 slotData.SlotName
             );
-            colorPreview.color = preview.globalTint;
-            Debug.Log($"[IslandButton_UI] Color preview asignado: {preview.globalTint}");
+            colorPreview.color = preview.accentColor;
+            Debug.Log($"[IslandButton_UI] Color preview asignado: {preview.accentColor}");
         }
         
         // Se configura el botón de viaje

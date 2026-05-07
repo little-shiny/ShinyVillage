@@ -1,9 +1,10 @@
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 /// <summary>
-/// Menú que muestra todas las islas disponibles (partidas guardadas).
-/// Permite al jugador viajar entre diferentes islas (cambiar entre partidas guardadas de forma visual) para simular el viaje
+/// Menú que muestra todas las islas disponibles (partidas guardadas) excepto la actual.
+/// Permite al jugador viajar entre islas cargando colores, inventario y posición.
 /// </summary>
 public class IslandSelector_UI : MonoBehaviour
 {
@@ -11,59 +12,72 @@ public class IslandSelector_UI : MonoBehaviour
     [SerializeField] private GameObject islandButtonPrefab;
     [SerializeField] private Transform islandListContainer;
     [SerializeField] private GameObject selectorPanel;
-    
+
+    [Header("Mensaje vacío")]
+    [Tooltip("Texto que se muestra cuando no hay otras islas disponibles")]
+    [SerializeField] private TextMeshProUGUI noOtherIslandsText;
+
     private List<GameObject> _instantiatedButtons = new List<GameObject>();
 
     /// <summary>
-/// Abre el selector y carga todas las islas disponibles.
-/// </summary>
-public void OpenSelector()
-{
-    // Se limpia la lista anterior por si acaso
-    ClearIslandList();
-    
-    // VERIFICACIÓN: El prefab debe estar asignado
-    if (islandButtonPrefab == null)
+    /// Abre el selector y carga todas las islas disponibles excepto la isla actual.
+    /// </summary>
+    public void OpenSelector()
     {
-        Debug.LogError("[IslandSelector] El prefab 'islandButtonPrefab' NO está asignado en el Inspector. " +
-                      "No se pueden crear los botones.");
-        return;
-    }
-    
-    // VERIFICACIÓN: El contenedor debe existir
-    if (islandListContainer == null)
-    {
-        Debug.LogError("[IslandSelector] El contenedor 'islandListContainer' NO está asignado.");
-        return;
-    }
-    
-    // Se obtienen todos los slots de guardado
-    List<SaveSlotData> allSlots = SaveGameManager.Instance.GetAllSaveSlots();
-    
-    Debug.Log($"[IslandSelector] Cargando {allSlots.Count} islas disponibles");
-    
-    // Se crea un botón por cada isla
-    foreach (SaveSlotData slot in allSlots)
-    {
-        GameObject buttonObj = Instantiate(islandButtonPrefab, islandListContainer);
-        IslandButton_UI buttonUI = buttonObj.GetComponent<IslandButton_UI>();
-        
-        if (buttonUI != null)
+        ClearIslandList();
+
+        if (islandButtonPrefab == null)
         {
-            buttonUI.Setup(slot, this);
-            _instantiatedButtons.Add(buttonObj);
+            Debug.LogError("[IslandSelector] 'islandButtonPrefab' no asignado en el Inspector.");
+            return;
         }
-        else
+
+        if (islandListContainer == null)
         {
-            Debug.LogError($"[IslandSelector] El prefab no tiene el componente IslandButton_UI. " +
-                          "Botón inválido para {slot.SlotName}");
+            Debug.LogError("[IslandSelector] 'islandListContainer' no asignado en el Inspector.");
+            return;
         }
+
+        if (SaveGameManager.Instance == null)
+        {
+            Debug.LogError("[IslandSelector] SaveGameManager no disponible.");
+            return;
+        }
+
+        int currentSlotId = SaveGameManager.Instance.CurrentSlotId;
+        List<SaveSlotData> allSlots = SaveGameManager.Instance.GetAllSaveSlots();
+
+        // Se excluye la isla actual de la lista
+        List<SaveSlotData> otherSlots = allSlots.FindAll(s => s.Id != currentSlotId);
+
+        Debug.Log($"[IslandSelector] {otherSlots.Count} islas disponibles (excluyendo la actual, id={currentSlotId})");
+
+        bool hayOtrasIslas = otherSlots.Count > 0;
+
+        if (noOtherIslandsText != null)
+            noOtherIslandsText.gameObject.SetActive(!hayOtrasIslas);
+
+        if (hayOtrasIslas)
+        {
+            foreach (SaveSlotData slot in otherSlots)
+            {
+                GameObject buttonObj = Instantiate(islandButtonPrefab, islandListContainer);
+                if (buttonObj.TryGetComponent(out IslandButton_UI buttonUI))
+                {
+                    buttonUI.Setup(slot, this);
+                    _instantiatedButtons.Add(buttonObj);
+                }
+                else
+                {
+                    Debug.LogError($"[IslandSelector] El prefab no tiene IslandButton_UI. Botón inválido para '{slot.SlotName}'.");
+                    Destroy(buttonObj);
+                }
+            }
+        }
+
+        if (selectorPanel != null)
+            selectorPanel.SetActive(true);
     }
-    
-    // Se muestra el panel
-    if (selectorPanel != null)
-        selectorPanel.SetActive(true);
-}
 
     /// <summary>
     /// Cierra el selector de islas.
@@ -72,33 +86,37 @@ public void OpenSelector()
     {
         if (selectorPanel != null)
             selectorPanel.SetActive(false);
-        
+
         ClearIslandList();
     }
 
     /// <summary>
-    /// Viaja a una isla específica (carga la partida guardada).
+    /// Viaja a una isla: cambia el slot activo y carga colores, inventario y posición.
     /// </summary>
-    /// <param name="slotData">Datos de la isla destino</param>
     public void TravelToIsland(SaveSlotData slotData)
     {
-        Debug.Log($"[IslandSelector] Iniciando viaje a: {slotData.SlotName}");
-        
-        // Se carga la partida guardada
+        Debug.Log($"[IslandSelector] Viajando a: '{slotData.SlotName}' (seed={slotData.IslandSeed})");
+
+        // Cambia el slot activo, carga visuales de la isla
         SaveGameManager.Instance.LoadGame(slotData.Id);
-        
-        // Se carga la isla visualmente
-        IslandManager.Instance.LoadIsland(slotData);
-        
-        // Se cierra el selector
+
+        // Aplica posición e inventario del jugador destino al Player de la escena
+        Player player = FindAnyObjectByType<Player>();
+        if (player != null)
+        {
+            SaveGameManager.Instance.LoadPlayerPosition(player);
+            SaveGameManager.Instance.LoadPlayerInventory(player.inventory);
+            Debug.Log($"[IslandSelector] Posición e inventario del jugador '{slotData.PlayerName}' aplicados.");
+        }
+        else
+        {
+            Debug.LogError("[IslandSelector] No se encontró el componente Player en la escena.");
+        }
+
         CloseSelector();
-        
-        Debug.Log($"[IslandSelector] Viaje completado a: {slotData.SlotName}");
+        Debug.Log($"[IslandSelector] Viaje completado a '{slotData.SlotName}'.");
     }
 
-    /// <summary>
-    /// Limpia todos los botones instanciados.
-    /// </summary>
     private void ClearIslandList()
     {
         foreach (GameObject btn in _instantiatedButtons)
@@ -106,7 +124,6 @@ public void OpenSelector()
             if (btn != null)
                 Destroy(btn);
         }
-        
         _instantiatedButtons.Clear();
     }
 }
